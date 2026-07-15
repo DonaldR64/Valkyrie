@@ -41,7 +41,27 @@
           </div>
     </div>    
     <div class="row">
-        <label>Special Rules:</label><input type="text" name="attr_special">
+        <h3>Special Rules</h3>
+        <div class="specials">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Special</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="attr_special1name"></td>  
+                        <td><input type="text" name="attr_special1desc"></td> 
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="attr_special2name"></td>  
+                        <td><input type="text" name="attr_special2desc"></td> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="row">
@@ -261,7 +281,7 @@
                 <h1><span name="attr_character_name"></span></h1>
                 <h3><span name="attr_class"></span> Class <span name="attr_type"></span></h3>
                 <h3>Size: <span name="attr_size"></span></h3>
-                <h3>Special: <span name="attr_special"></span></h3>
+
           </section>
 
           <section class="common f-center">
@@ -298,6 +318,14 @@
           </section>
 
           <section class="system">
+            <h3>Special Rules</h3>
+            <div class="systeminfo">
+                <h4><span name="attr_special1name"></span></h4>
+                <h4><span name="attr_special1desc"></span></h4>
+                <h4><span name="attr_special2name"></span></h4>
+                <h4><span name="attr_special2desc"></span></h4>
+            </div>
+
             <h3>Systems</h3>
             <div class="systeminfo">
                 <h4><span name="attr_system1name"></span></h4>
