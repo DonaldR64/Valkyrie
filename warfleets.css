@@ -200,12 +200,9 @@ input[type="hidden"][name="attr_faction"]:is([value="Imperial Guard"]) ~ .header
   flex-direction: center;
   background-color: white;
 }
-
 .system {
-    grid-area: system;
-    place-items: center;
-    flex-direction: center;
-    background-color: white;
+  grid-area: system;
+  background-color:  white;
 }
 
 
@@ -213,7 +210,7 @@ input[type="hidden"][name="attr_faction"]:is([value="Imperial Guard"]) ~ .header
   grid-area: systeminfo;
   display: grid;
   grid-gap: 2px;
-  grid-template-columns: 1fr 1fr 8fr;
+  grid-template-columns: 1fr 3fr 8fr;
   grid-template-rows: 1fr;
   background-color: white;
   text-align: center;
@@ -229,7 +226,7 @@ input[type="hidden"][value="Off"].system1-status ~ .system1{
 .system1 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 8fr;
+  grid-template-columns: 1fr 3fr 8fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -245,7 +242,7 @@ input[type="hidden"][value="Off"].system2-status ~ .system2{
 .system2 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 8fr;
+  grid-template-columns: 1fr 3fr 8fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -261,7 +258,7 @@ input[type="hidden"][value="Off"].system3-status ~ .system3{
 .system3 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 8fr;
+  grid-template-columns: 1fr 3fr 8fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -277,7 +274,7 @@ input[type="hidden"][value="Off"].system4-status ~ .system4{
 .system4 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 8fr;
+  grid-template-columns: 1fr 3fr 8fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -293,7 +290,7 @@ input[type="hidden"][value="Off"].system5-status ~ .system5{
 .system5 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 8fr;
+  grid-template-columns: 1fr 3fr 8fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
