@@ -207,16 +207,7 @@ input[type="hidden"][name="attr_faction"]:is([value="Imperial Guard"]) ~ .header
     flex-direction: center;
     background-color: white;
 }
-.specialinfo {
-  grid-area: specialinfo;
-  display: grid;
-  grid-gap: 2px;
-  grid-template-columns: 1fr 6fr;
-  grid-template-rows: auto;
-  background-color: white;
-  text-align: left;
-  align-items: left;
-}
+
 
 .systeminfo {
   grid-area: systeminfo;
@@ -225,22 +216,91 @@ input[type="hidden"][name="attr_faction"]:is([value="Imperial Guard"]) ~ .header
   grid-template-columns: 1fr 1fr 6fr;
   grid-template-rows: auto;
   background-color: white;
-  text-align: left;
-  align-items: left;
+  text-align: center;
+  align-items: center;
 }
 
 
-.systemsindiv {
-  grid-area: systemsindiv;
-  display: grid;
-  grid-gap: 2px;
-  grid-template-columns: 1fr 1fr 6fr;
-  grid-template-rows: auto;
-  background-color: white;
-  text-align: left;
-  align-items: left;
+
+/* System 1 */
+input[type="hidden"][value="Off"].system1-status ~ .system1{
+    display: none;
 }
 
+.system1 {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr 1fr 6fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 2 */
+input[type="hidden"][value="Off"].system2-status ~ .system2{
+    display: none;
+}
+
+.system2 {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr 1fr 6fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 3 */
+input[type="hidden"][value="Off"].system3-status ~ .system3{
+    display: none;
+}
+
+.system3 {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr 1fr 6fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 4 */
+input[type="hidden"][value="Off"].system4-status ~ .system4{
+    display: none;
+}
+
+.system4 {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr 1fr 6fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 5 */
+input[type="hidden"][value="Off"].system5-status ~ .system5{
+    display: none;
+}
+
+.system5 {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr 1fr 6fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
 
 
 .weapon {

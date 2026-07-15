@@ -317,38 +317,58 @@
             <h4><span name="attr_titlename"></span></h4>
           </section>
 
-          <section class="system">
-            <h3>Special Rules</h3>
-            <div class="specialinfo">
-                <h4><span name="attr_special1name"></span></h4>
-                <h4><span name="attr_special1desc"></span></h4>
-                <h4><span name="attr_special2name"></span></h4>
-                <h4><span name="attr_special2desc"></span></h4>
-            </div>
-
-            <h3>Systems</h3>
+            <section class="system">
+            <h3>systems</h3>
             <div class="systeminfo">
                 <div><span>Damage</span></div>
                 <div><span>Name</span></div>
                 <div><span>Description</span></div>
             </div>
-            <div class="systemsindiv">
-                <h4><span name="attr_system1damage"></span></h4>
+
+
+            <input type="hidden" name="attr_system1equipped" class="system1-status" value="Off">
+            <div class="system1">
+                <h4><span name="attr_system1damage"></span>/2</h4>
                 <h4><span name="attr_system1name"></span></h4>
                 <h4><span name="attr_system1desc"></span></h4>
-                <h4><span name="attr_system2damage"></span></h4>
-                <h4><span name="attr_system2name"></span></h4>
-                <h4><span name="attr_system2desc"></span></h4>
-                <h4><span name="attr_system3damage"></span></h4>
+            </div>
+            
+
+            <input type="hidden" name="attr_system2equipped" class="system2-status" value="Off">
+            <div class="system2">
+                <h4><span name="attr_system1damage"></span>/2</h4>
+                <h4><span name="attr_system1name"></span></h4>
+                <h4><span name="attr_system1desc"></span></h4>
+            </div>
+
+
+            <input type="hidden" name="attr_system3equipped" class="system3-status" value="Off">
+            <div class="system3">
+                <h4><span name="attr_system3damage"></span>/2</h4>
                 <h4><span name="attr_system3name"></span></h4>
                 <h4><span name="attr_system3desc"></span></h4>
-                <h4><span name="attr_system4damage"></span></h4>
+            </div>
+
+
+            <input type="hidden" name="attr_system4equipped" class="system4-status" value="Off">
+            <div class="system4">
+                <h4><span name="attr_system4damage"></span>/2</h4>
                 <h4><span name="attr_system4name"></span></h4>
                 <h4><span name="attr_system4desc"></span></h4>
-                <h4><span name="attr_system5damage"></span></h4>
+            </div>
+
+
+            <input type="hidden" name="attr_system5equipped" class="system5-status" value="Off">
+            <div class="system5">
+                <h4><span name="attr_system5damage"></span>/2</h4>
                 <h4><span name="attr_system5name"></span></h4>
                 <h4><span name="attr_system5desc"></span></h4>
             </div>
+
+
+
+
+
           </section>
 
           <section class="weapon">
@@ -364,7 +384,7 @@
 
 
             <input type="hidden" name="attr_weapon1equipped" class="weapon1-status" value="Off">
-            <div class="weapon2">
+            <div class="weapon1">
                 <h4><span name="attr_weapon1name"></span></h4>
                 <h4><span name="attr_weapon1facing"></span></h4>
                 <h4><span name="attr_weapon1range"></span></h4>
