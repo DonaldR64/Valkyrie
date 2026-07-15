@@ -412,7 +412,12 @@
 
             <input type="hidden" name="attr_system1equipped" class="system1-status" value="Off">
             <div class="system1">
-                <h4><span name="attr_system1status"></span></h4>
+                <h4><select name="attr_system1status">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Disabled">Disabled</option>
+                    </select></h4>
                 <h4><span name="attr_system1name"></span></h4>
                 <h4><span name="attr_system1desc"></span></h4>
             </div>
