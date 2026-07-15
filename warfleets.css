@@ -242,7 +242,7 @@ input[type="hidden"][value="Off"].system2-status ~ .system2{
 .system2 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 3fr 8fr;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -258,7 +258,7 @@ input[type="hidden"][value="Off"].system3-status ~ .system3{
 .system3 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 3fr 8fr;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -274,7 +274,7 @@ input[type="hidden"][value="Off"].system4-status ~ .system4{
 .system4 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 3fr 8fr;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -290,7 +290,7 @@ input[type="hidden"][value="Off"].system5-status ~ .system5{
 .system5 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 3fr 8fr;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;

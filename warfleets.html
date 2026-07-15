@@ -128,12 +128,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                         </select></td>
-                    <td><select name="attr_system1status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                         <td><input type="text" name="attr_system1name"></td>  
                         <td><input type="text" name="attr_system1desc"></td> 
                     </tr>
@@ -142,12 +136,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                         </select></td>
-                    <td><select name="attr_system2status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                         <td><input type="text" name="attr_system2name"></td>  
                         <td><input type="text" name="attr_system2desc"></td> 
                     </tr>
@@ -170,12 +158,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                         </select></td>
-                    <td><select name="attr_system4status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                         <td><input type="text" name="attr_system4name"></td> 
                         <td><input type="text" name="attr_system4desc"></td>  
                     </tr>
@@ -184,12 +166,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                         </select></td>
-                    <td><select name="attr_system5status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                         <td><input type="text" name="attr_system5name"></td> 
                         <td><input type="text" name="attr_system5desc"></td>  
                     </tr>
@@ -207,7 +183,6 @@
             <thead>
                 <tr>
                     <th>Equipped</th>
-                    <th>Status</th>
                     <th>Weapon</th>
                     <th>Facing</th>
                     <th>Range</th>
@@ -224,12 +199,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
-                    <td><select name="attr_weapon1status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                     <td><input type="text" name="attr_weapon1name"></td>
                     <td><select name="attr_weapon1facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -247,12 +216,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
-                    <td><select name="attr_weapon2status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                     <td><input type="text" name="attr_weapon2name"></td>
                     <td><select name="attr_weapon2facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -272,12 +235,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
-                    <td><select name="attr_weapon3status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                     <td><input type="text" name="attr_weapon3name"></td>
                     <td><select name="attr_weapon3facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -297,12 +254,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
-                    <td><select name="attr_weapon4status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                     <td><input type="text" name="attr_weapon4name"></td>
                     <td><select name="attr_weapon4facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -322,12 +273,6 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
-                    <td><select name="attr_weapon5status">
-                        <option value="" selected disabled hidden>Choose here</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Disabled">Disabled</option>
-                    </select></td> 
                     <td><input type="text" name="attr_weapon5name"></td>
                     <td><select name="attr_weapon5facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -421,7 +366,8 @@
 
             <input type="hidden" name="attr_system2equipped" class="system2-status" value="Off">
             <div class="system2">
-                <h4><span name="attr_system2status"></span></h4>
+                <input type="checkbox" name="attr_system2damage1" value="1">
+                <input type="checkbox" name="attr_system2damage2" value="1">                
                 <h4><span name="attr_system2name"></span></h4>
                 <h4><span name="attr_system2desc"></span></h4>
             </div>
@@ -429,7 +375,8 @@
 
             <input type="hidden" name="attr_system3equipped" class="system3-status" value="Off">
             <div class="system3">
-                <h4><span name="attr_system3status"></span>/2</h4>
+                <input type="checkbox" name="attr_system3damage1" value="1">
+                <input type="checkbox" name="attr_system3damage2" value="1">
                 <h4><span name="attr_system3name"></span></h4>
                 <h4><span name="attr_system3desc"></span></h4>
             </div>
@@ -437,7 +384,8 @@
 
             <input type="hidden" name="attr_system4equipped" class="system4-status" value="Off">
             <div class="system4">
-                <h4><span name="attr_system4status"></span>/2</h4>
+                <input type="checkbox" name="attr_system4damage1" value="1">
+                <input type="checkbox" name="attr_system4damage2" value="1">
                 <h4><span name="attr_system4name"></span></h4>
                 <h4><span name="attr_system4desc"></span></h4>
             </div>
@@ -445,7 +393,8 @@
 
             <input type="hidden" name="attr_system5equipped" class="system5-status" value="Off">
             <div class="system5">
-                <h4><span name="attr_system5status"></span>/2</h4>
+                <input type="checkbox" name="attr_system5damage1" value="1">
+                <input type="checkbox" name="attr_system5damage2" value="1">
                 <h4><span name="attr_system5name"></span></h4>
                 <h4><span name="attr_system5desc"></span></h4>
             </div>
@@ -459,7 +408,7 @@
           <section class="weapon">
             <h3>Weapons</h3>
             <div class="weaponinfo">
-                <div><span>Status</span></div>
+                <div><span>Damage</span></div>
                 <div><span>Weapon</span></div>
                 <div><span>Facing</span></div>
                 <div><span>Range</span></div>
