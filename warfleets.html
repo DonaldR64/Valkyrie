@@ -177,6 +177,7 @@
             <thead>
                 <tr>
                     <th>Equipped</th>
+                    <th>Status</th>
                     <th>Weapon</th>
                     <th>Facing</th>
                     <th>Range</th>
@@ -193,6 +194,12 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
+                    <td><select name="attr_weapon1status">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Disabled">Disabled</option>
+                    </select></td> 
                     <td><input type="text" name="attr_weapon1name"></td>
                     <td><select name="attr_weapon1facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -210,6 +217,12 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
+                    <td><select name="attr_weapon2status">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Disabled">Disabled</option>
+                    </select></td> 
                     <td><input type="text" name="attr_weapon2name"></td>
                     <td><select name="attr_weapon2facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -229,6 +242,12 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
+                    <td><select name="attr_weapon3status">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Disabled">Disabled</option>
+                    </select></td> 
                     <td><input type="text" name="attr_weapon3name"></td>
                     <td><select name="attr_weapon3facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -248,6 +267,12 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
+                    <td><select name="attr_weapon4status">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Disabled">Disabled</option>
+                    </select></td> 
                     <td><input type="text" name="attr_weapon4name"></td>
                     <td><select name="attr_weapon4facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -267,6 +292,12 @@
                         <option value = "Off">Off</option>
                         <option value = "Equipped">Equipped</option>
                     </select></td>
+                    <td><select name="attr_weapon5status">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Disabled">Disabled</option>
+                    </select></td> 
                     <td><input type="text" name="attr_weapon5name"></td>
                     <td><select name="attr_weapon5facing">
                         <option value="" selected disabled hidden>Choose here</option>
@@ -396,6 +427,7 @@
           <section class="weapon">
             <h3>Weapons</h3>
             <div class="weaponinfo">
+                <div><span>Status</span></div>
                 <div><span>Weapon</span></div>
                 <div><span>Facing</span></div>
                 <div><span>Range</span></div>
@@ -407,6 +439,7 @@
 
             <input type="hidden" name="attr_weapon1equipped" class="weapon1-status" value="Off">
             <div class="weapon1">
+                <h4><span name="attr_weapon1status"></span></h4>
                 <h4><span name="attr_weapon1name"></span></h4>
                 <h4><span name="attr_weapon1facing"></span></h4>
                 <h4><span name="attr_weapon1range"></span></h4>
@@ -416,6 +449,7 @@
             </div>
             <input type="hidden" name="attr_weapon2equipped" class="weapon2-status" value="Off">
             <div class="weapon2">
+                <h4><span name="attr_weapon2status"></span></h4>
                 <h4><span name="attr_weapon2name"></span></h4>
                 <h4><span name="attr_weapon2facing"></span></h4>
                 <h4><span name="attr_weapon2range"></span></h4>
@@ -427,6 +461,7 @@
 
             <input type="hidden" name="attr_weapon3equipped" class="weapon3-status" value="Off">
             <div class="weapon3">
+                <h4><span name="attr_weapon3status"></span></h4>
                 <h4><span name="attr_weapon3name"></span></h4>
                 <h4><span name="attr_weapon3facing"></span></h4>
                 <h4><span name="attr_weapon3range"></span></h4>
@@ -438,6 +473,7 @@
 
             <input type="hidden" name="attr_weapon4equipped" class="weapon4-status" value="Off">
             <div class="weapon4">
+                <h4><span name="attr_weapon4status"></span></h4>
                 <h4><span name="attr_weapon4name"></span></h4>
                 <h4><span name="attr_weapon4facing"></span></h4>
                 <h4><span name="attr_weapon4range"></span></h4>
@@ -449,6 +485,7 @@
 
             <input type="hidden" name="attr_weapon5equipped" class="weapon5-status" value="Off">
             <div class="weapon5">
+                <h4><span name="attr_weapon5status"></span></h4>
                 <h4><span name="attr_weapon5name"></span></h4>
                 <h4><span name="attr_weapon5facing"></span></h4>
                 <h4><span name="attr_weapon5range"></span></h4>
