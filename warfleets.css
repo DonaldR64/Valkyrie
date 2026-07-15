@@ -25,80 +25,13 @@
 input[type="hidden"][name="attr_faction"] ~ .mysheet {
     background-color: lightgray;
 }
-input[type="hidden"][name="attr_faction"][value="Ultramarines"] ~ .mysheet {
-    background-color: #0437F2;
+input[type="hidden"][name="attr_faction"][value="Chaos"] ~ .mysheet {
+    background-color: #ff0000;
 }
-input[type="hidden"][name="attr_faction"][value="Grey Knights"] ~ .mysheet {
-    background-color: #a9a9a9;
-}
-input[type="hidden"][name="attr_faction"][value="Plague Disciples"] ~ .mysheet {
-    background-color: #B3CF99;
-}
-input[type="hidden"][name="attr_faction"][value="Blood Angels"] ~ .mysheet {
-    background-color: #be0b07;
-}
-input[type="hidden"][name="attr_faction"][value="Dao Union"] ~ .mysheet {
-  background-color: #be0b07;
-}
-input[type="hidden"][name="attr_faction"]:is([value="Imperial Guard"],[value="Inquisition"]) ~ .mysheet {
+input[type="hidden"][name="attr_faction"]:is([value="Imperial Navy"],[value="Inquisition"]) ~ .mysheet {
     background-color: black;
-  }
-input[type="hidden"][name="attr_faction"][value="Space Wolves"] ~ .mysheet {
-    background-color: #dae6ef;
 }
-input[type="hidden"][name="attr_faction"][value="Alien Hives"] ~ .mysheet {
-  background-color: #8000809d;
-}
-input[type="hidden"][name="attr_faction"][value="Genestealer Cult"] ~ .mysheet {
-  background-color: #9E1F15;
-}
-input[type="hidden"][name="attr_faction"][value="Dwarf"] ~ .mysheet {
-  background-color: #0c2f67;
-}
-input[type="hidden"][name="attr_faction"][value="Infected Colony"] ~ .mysheet {
-  background-color: #FADF4C;
-}
-input[type="hidden"][name="attr_faction"][value="Orks"] ~ .mysheet {
-  background-color: #3a8000;
-}
-input[type="hidden"][name="attr_faction"]:is([value="Ratlings"],[value="Goblins"]) ~ .mysheet {
-  background-color: #F4D14A;
-}
-input[type="hidden"][name="attr_faction"][value="Necron"] ~ .mysheet {
-  background-color: #828b8e;
-}
-input[type="hidden"][name="attr_faction"][value="Harlequin"] ~ .mysheet {
-  background-image: linear-gradient(to bottom right, #fa78d5,#0505ff)
-}
-input[type="hidden"][name="attr_faction"][value="Skitarii"] ~ .mysheet {
-  background-color: #9A1115;
-}
-input[type="hidden"][name="attr_faction"][value="Drukhari"] ~ .mysheet {
-  background-color: #000000;
-}
-input[type="hidden"][name="attr_faction"][value="Blessed Sisters"] ~ .mysheet {
-  background-color: #0072bb;
-}
-input[type="hidden"][name="attr_faction"][value="Kroot"] ~ .mysheet {
-  background: radial-gradient(ellipse at bottom, #473127, transparent),
-            radial-gradient(ellipse at top, #0f130e, transparent);
-}
-input[type="hidden"][name="attr_faction"][value="Slaanesh"] ~ .mysheet {
-  background-color: #FFC0CB;
-}
-input[type="hidden"][name="attr_faction"][value="Dark Angels"] ~ .mysheet {
-  background-color: #24572B;
-}
-input[type="hidden"][name="attr_faction"][value="Thousand Sons"] ~ .mysheet {
-    background-color: #0000FF;
-  }
-  input[type="hidden"][name="attr_faction"][value="Eldar"] ~ .mysheet {
-    background-color: #F1B94C;
-  }
-  
-  input[type="hidden"][name="attr_faction"][value="Adeptus Custodes"] ~ .mysheet {
-    background-color: #d4af37;
-  }
+
   
 
 
@@ -114,8 +47,8 @@ main {
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas:"flag     header    header    header  flag2"
                       "common   common    common    att     att"
-                      "common   common    common   upgrades upgrades"
-                      "weapon   weapon    weapon    weapon  weapon"
+                      "common   common    common   herotitle herotitle"
+                      "system   system    system    system  system"
                       "weapon   weapon    weapon    weapon  weapon";
 }
 
@@ -254,43 +187,18 @@ input[type="hidden"][name="attr_faction"]:is([value="Imperial Guard"]) ~ .header
 
  
 
-.upgrades {
-  grid-area: upgrades;
+.herotitle {
+  grid-area: herotitle;
   place-items: center;
   flex-direction: center;
   background-color: white;
 }
 
-  
-input[type="hidden"][value="Off"].keyword1-status ~ .key1{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword2-status ~ .key2{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword3-status ~ .key3{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword4-status ~ .key4{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword5-status ~ .key5{
-    display: none
-}
-input[type="hidden"][value="Off"].keyword6-status ~ .key6{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword7-status ~ .key7{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword8-status ~ .key8{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword9-status ~ .key9{
-    display: none;
-}
-input[type="hidden"][value="Off"].keyword10-status ~ .key10{
-    display: none;
+.system {
+    grid-area: system;
+    place-items: center;
+    flex-direction: center;
+    background-color: white;
 }
 
 
@@ -397,97 +305,6 @@ input[type="hidden"][value="Equipped"].weapon5-status ~ .weapon5{
     align-items: center;
     padding: 3px;
 }
-
-/* Weapon 6 */
-input[type="hidden"][value="Off"].weapon6-status ~ .weapon6{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon6-status ~ .weapon6{
-    display: grid;
-}
-  
-.weapon6 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 5fr 1fr 1fr 1fr 1fr 3fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* Weapon 7 */
-input[type="hidden"][value="Off"].weapon7-status ~ .weapon7{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon7-status ~ .weapon7{
-    display: grid;
-}
-  
-.weapon7 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 5fr 1fr 1fr 1fr 1fr 3fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* Weapon 8 */
-input[type="hidden"][value="Off"].weapon8-status ~ .weapon8{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon8-status ~ .weapon8{
-    display: grid;
-}
-  
-.weapon8 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 5fr 1fr 1fr 1fr 1fr 3fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* Weapon 9 */
-input[type="hidden"][value="Off"].weapon9-status ~ .weapon9{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon9-status ~ .weapon9{
-    display: grid;
-}
-  
-.weapon9 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 5fr 1fr 1fr 1fr 1fr 3fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* Weapon 10 */
-input[type="hidden"][value="Off"].weapon10-status ~ .weapon10{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon10-status ~ .weapon10{
-    display: grid;
-}
-  
-.weapon10 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 5fr 1fr 1fr 1fr 1fr 3fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
 
 
 
