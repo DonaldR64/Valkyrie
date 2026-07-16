@@ -161,7 +161,7 @@ input[type="hidden"][name="attr_faction"]:is([value="Federation"]) ~ .header :is
   grid-area: weaponinfo;
   display: grid;
   grid-gap: 2px;
-  grid-template-columns: 2fr 10fr 2fr 2fr 2fr 2fr 6fr;
+  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   background-color: white;
   text-align: center;
@@ -169,14 +169,12 @@ input[type="hidden"][name="attr_faction"]:is([value="Federation"]) ~ .header :is
 }
 
 /* Weapon 1 */
-input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
-    display: none;
-}
+
 
 .weapon1 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -185,14 +183,12 @@ input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
 }
 
 /* Weapon 2 */
-input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
-    display: none;
-}
+
  
 .weapon2 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;
@@ -201,17 +197,12 @@ input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
 }
 
 /* Weapon 3 */
-input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon3-status ~ .weapon3{
-    display: grid;
-}
+
   
 .weapon3 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     text-align: center;
     align-items: center;
@@ -219,17 +210,12 @@ input[type="hidden"][value="Equipped"].weapon3-status ~ .weapon3{
 }
 
 /* Weapon 4 */
-input[type="hidden"][value="Off"].weapon4-status ~ .weapon4{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon4-status ~ .weapon4{
-    display: grid;
-}
+
   
 .weapon4 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     text-align: center;
     align-items: center;
@@ -237,67 +223,16 @@ input[type="hidden"][value="Equipped"].weapon4-status ~ .weapon4{
 }
 
 /* Weapon 5 */
-input[type="hidden"][value="Off"].weapon5-status ~ .weapon5{
-    display: none;
-}
-input[type="hidden"][value="Equipped"].weapon5-status ~ .weapon5{
-    display: grid;
-}
+
   
 .weapon5 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     text-align: center;
     align-items: center;
     padding: 3px;
 }
 
-
-
-.spheader {
-  text-align: center;
-}
-
-.spheader h2 {
-  text-align: center;
-  color: white;
-}
-
-input[type="hidden"][name="attr_faction"]:is([value="Plague Disciples"],[value="Space Wolves"],[value="Grey Knights"],[value="Ratlings"],[value="Goblins"],[value="Slaanesh"],[value="Infected Colony"],[value="Eldar"],[value="Adeptus Custodes"]) ~ .spheader h2 {
-  color: black;
-}
-input[type="hidden"][name="attr_faction"]:is([value="Necron"]) ~ .spheader h2 {
-  color:  #39FF14;
-}
-
-
-.spbody h4 {
-  color: white;
-}
-input[type="hidden"][name="attr_faction"]:is([value="Plague Disciples"],[value="Space Wolves"],[value="Grey Knights"],[value="Ratlings"],[value="Goblins"],[value="Slaanesh"],[value="Infected Colony"],[value="Eldar"],[value="Adeptus Custodes"]) ~ .spbody {
-  color: black;
-}
-input[type="hidden"][name="attr_faction"]:is([value="Necron"]) ~ .spbody {
-  color:  #39FF14;
-}
-.item span {
-  font-size: 14px;
-}
-
-.spbody {
-  color: white;
-  align-items: center;
-  text-align: center;
-  padding: 0px 0px 0px 20px;
-}
-
-.item {
-  align-items: left;
-  width: fit-content;
-  padding: 5px;
-  text-align: left;
-  margin-bottom: 1em;
-}
 
