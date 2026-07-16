@@ -155,6 +155,13 @@ section {
   max-height: 100%;
 }
 
+.checkbox { position: absolute; bottom: 0px; right: 0px; }
+
+
+
+
+
+
 
 .reserve {
   grid-area: reserve;
