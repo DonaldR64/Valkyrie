@@ -120,20 +120,6 @@ section {
 /*------------- Section-specific CSS -------------*/
 
 
-.shields {
-  grid-area: shields;
-  align-items: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  border-style: none;
-}
-
-.common > img {
-  object-fit: contain;
-  width: 100%;
-  max-height: 100%;
-}
 
 .header {
   grid-area: header;
@@ -141,142 +127,27 @@ section {
   border-style: none;
 }
 
-.header h1 {
-  color: black;
-}
-.header h3 {
-  color: black;
-}
-.header h4 {
-  color: black;
-}
 
 input[type="hidden"][name="attr_faction"]:is([value="Klingon"]) ~ .header :is(h1,h3,h4) {
   color: #ffffff;
 }
-
-
-
-
-.att {
-  grid-area: att;
-  place-items: center;
-  flex-direction: center;
-  background-color: white;
+input[type="hidden"][name="attr_faction"]:is([value="Federation"]) ~ .header :is(h1,h3,h4) {
+  color: #000000;
 }
 
-.attinfo {
-    grid-area: attinfo;
-    display: grid;
-    grid-gap: 2px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    background-color: white;
-    text-align: center;
-    align-items: center;
-}
-
-
-
-
- 
-
-.system {
-  grid-area: system;
+.shields {
+  grid-area: shields;
   background-color:  white;
 }
 
-
-.systeminfo{
-  grid-area: systeminfo;
-  display: grid;
-  grid-gap: 2px;
-  grid-template-columns: 2fr 6fr 14fr;
-  grid-template-rows: 1fr;
-  background-color: white;
-  text-align: center;
-  align-items: center;
+.reserve {
+  grid-area: reserve;
+  background-color:  white;
 }
 
-
-/* System 1 */
-input[type="hidden"][value="Off"].system1-status ~ .system1{
-    display: none;
-}
-
-.system1 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 6fr 14fr;
-    grid-template-rows: 1;
-    background-color: white;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* System 2 */
-input[type="hidden"][value="Off"].system2-status ~ .system2{
-    display: none;
-}
-
-.system2 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 6fr 14fr;
-    grid-template-rows: 1;
-    background-color: white;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* System 3 */
-input[type="hidden"][value="Off"].system3-status ~ .system3{
-    display: none;
-}
-
-.system3 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 6fr 14fr;
-    grid-template-rows: 1;
-    background-color: white;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* System 4 */
-input[type="hidden"][value="Off"].system4-status ~ .system4{
-    display: none;
-}
-
-.system4 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 6fr 14fr;
-    grid-template-rows: 1;
-    background-color: white;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* System 5 */
-input[type="hidden"][value="Off"].system5-status ~ .system5{
-    display: none;
-}
-
-.system5 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 1fr 6fr 14fr;
-    grid-template-rows: 1;
-    background-color: white;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
+.engine {
+  grid-area: engine;
+  background-color:  white;
 }
 
 
