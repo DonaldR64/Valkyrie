@@ -276,11 +276,20 @@ input[type="hidden"][value="Equipped"].weapon5-status ~ .weapon5{
     padding: 3px;
 }
 
-.reservelist {
+.reservelistA {
     display: grid;
     grid-gap: 1px;
     grid-template-columns: 4fr 1fr 1fr;
-    grid-template-rows: 10;
+    grid-template-rows: 4;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+.reservelistB {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 6;
     text-align: center;
     align-items: center;
     padding: 3px;
