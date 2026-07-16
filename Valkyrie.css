@@ -1,0 +1,454 @@
+/*Configure the tab buttons*/
+.sheet-input,
+.sheet-display,
+.sheet-abilities {
+    display: none;
+}
+
+
+/* show the selected tab */
+.sheet-tabstoggle[value="input"] ~ div.sheet-input,
+.sheet-tabstoggle[value="display"] ~ div.sheet-display,
+.sheet-tabstoggle[value="abilities"] ~ div.sheet-abilities {
+    display: block;
+}
+
+
+.mysheet {
+    width: 830;
+    height: 830px;
+}
+.attributes {
+    padding: 15px 0px 0px 15px;
+}
+
+input[type="hidden"][name="attr_faction"] ~ .mysheet {
+    background-color: lightgray;
+}
+input[type="hidden"][name="attr_faction"][value="Chaos"] ~ .mysheet {
+    background-color: #ff0000;
+}
+input[type="hidden"][name="attr_faction"]:is([value="Imperial Navy"],[value="Inquisition"]) ~ .mysheet {
+    background-color: black;
+}
+
+  
+
+
+
+
+
+main {
+  display: grid;
+  width: 800px;
+  height: 800px;
+  grid-gap: 4px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:"flag     header    header    header  flag2"
+                      "common   common    common    att     att"
+                      "common   common    common   herotitle herotitle"
+                      "system   system    system    system  system"
+                      "weapon   weapon    weapon    weapon  weapon";
+}
+
+
+
+
+
+/*----------------- GENERAL CSS ------------------*/
+
+section {
+    padding: 5px;
+    border-style: solid;
+}
+
+/* CSS Flexbox styling, used for adjusting how content inside section behaves */
+.f-col {
+  display: flex;
+  flex-direction: column;
+}
+.f-row {
+  display: flex;
+  flex-direction: row;
+  justify-items: all;
+}
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.nowrap {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.f-center {
+  align-items: center;
+  justify-content: center;
+}
+
+
+/*----------------- Text & Input styling -----------------*/
+
+/* these are for overwriting default CSS that comes from Roll20 */
+
+.charsheet * {
+  font-family: "serif;";
+}
+
+.charsheet h1{
+  text-align: center;
+  color: white;
+}
+.charsheet h2{
+  text-align: center;
+  color:  darkred;
+}
+.charsheet h3{
+  text-align: center;
+  color: black;
+}
+
+.charsheet h4{
+  text-align: center;
+  color: darkred;
+}
+
+.charsheet h5{
+  text-align: center;
+  color: darkred;
+}
+
+
+
+/*------------- Section-specific CSS -------------*/
+
+
+.flag {
+  grid-area: flag;
+  align-items: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: none;
+}
+
+.flag2 {
+  grid-area: flag2;
+  align-items: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: none;
+}
+
+.header {
+  grid-area: header;
+  flex-direction: center;
+  border-style: none;
+}
+
+.header h1 {
+  color: black;
+}
+.header h3 {
+  color: black;
+}
+.header h4 {
+  color: black;
+}
+
+input[type="hidden"][name="attr_faction"]:is([value="Imperial Navy"]) ~ .header :is(h1,h3,h4) {
+  color: #ffffff;
+}
+
+
+
+.common {
+  grid-area: common;
+  background-color: white;
+}
+
+.common > img {
+  object-fit: contain;
+  width: 100%;
+  max-height: 100%;
+}
+
+
+.att {
+  grid-area: att;
+  place-items: center;
+  flex-direction: center;
+  background-color: white;
+}
+
+.attinfo {
+    grid-area: attinfo;
+    display: grid;
+    grid-gap: 2px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+}
+
+
+
+
+ 
+
+.herotitle {
+  grid-area: herotitle;
+  place-items: center;
+  flex-direction: center;
+  background-color: white;
+}
+.system {
+  grid-area: system;
+  background-color:  white;
+}
+
+
+.systeminfo{
+  grid-area: systeminfo;
+  display: grid;
+  grid-gap: 2px;
+  grid-template-columns: 2fr 6fr 14fr;
+  grid-template-rows: 1fr;
+  background-color: white;
+  text-align: center;
+  align-items: center;
+}
+
+
+/* System 1 */
+input[type="hidden"][value="Off"].system1-status ~ .system1{
+    display: none;
+}
+
+.system1 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 2 */
+input[type="hidden"][value="Off"].system2-status ~ .system2{
+    display: none;
+}
+
+.system2 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 3 */
+input[type="hidden"][value="Off"].system3-status ~ .system3{
+    display: none;
+}
+
+.system3 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 4 */
+input[type="hidden"][value="Off"].system4-status ~ .system4{
+    display: none;
+}
+
+.system4 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* System 5 */
+input[type="hidden"][value="Off"].system5-status ~ .system5{
+    display: none;
+}
+
+.system5 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 6fr 14fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+
+.weapon {
+  grid-area: weapon;
+  background-color:  white;
+}
+
+.weaponinfo{
+  grid-area: weaponinfo;
+  display: grid;
+  grid-gap: 2px;
+  grid-template-columns: 2fr 10fr 2fr 2fr 2fr 2fr 6fr;
+  grid-template-rows: 1fr;
+  background-color: white;
+  text-align: center;
+  align-items: center;
+}
+
+/* Weapon 1 */
+input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
+    display: none;
+}
+
+.weapon1 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* Weapon 2 */
+input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
+    display: none;
+}
+ 
+.weapon2 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+    grid-template-rows: 1;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* Weapon 3 */
+input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
+    display: none;
+}
+input[type="hidden"][value="Equipped"].weapon3-status ~ .weapon3{
+    display: grid;
+}
+  
+.weapon3 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+    grid-template-rows: 1;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* Weapon 4 */
+input[type="hidden"][value="Off"].weapon4-status ~ .weapon4{
+    display: none;
+}
+input[type="hidden"][value="Equipped"].weapon4-status ~ .weapon4{
+    display: grid;
+}
+  
+.weapon4 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+    grid-template-rows: 1;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+/* Weapon 5 */
+input[type="hidden"][value="Off"].weapon5-status ~ .weapon5{
+    display: none;
+}
+input[type="hidden"][value="Equipped"].weapon5-status ~ .weapon5{
+    display: grid;
+}
+  
+.weapon5 {
+    display: grid;
+    grid-gap: 1px;
+  grid-template-columns: 1fr 1fr 10fr 2fr 2fr 2fr 2fr 6fr;
+    grid-template-rows: 1;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+}
+
+
+
+.spheader {
+  text-align: center;
+}
+
+.spheader h2 {
+  text-align: center;
+  color: white;
+}
+
+input[type="hidden"][name="attr_faction"]:is([value="Plague Disciples"],[value="Space Wolves"],[value="Grey Knights"],[value="Ratlings"],[value="Goblins"],[value="Slaanesh"],[value="Infected Colony"],[value="Eldar"],[value="Adeptus Custodes"]) ~ .spheader h2 {
+  color: black;
+}
+input[type="hidden"][name="attr_faction"]:is([value="Necron"]) ~ .spheader h2 {
+  color:  #39FF14;
+}
+
+
+.spbody h4 {
+  color: white;
+}
+input[type="hidden"][name="attr_faction"]:is([value="Plague Disciples"],[value="Space Wolves"],[value="Grey Knights"],[value="Ratlings"],[value="Goblins"],[value="Slaanesh"],[value="Infected Colony"],[value="Eldar"],[value="Adeptus Custodes"]) ~ .spbody {
+  color: black;
+}
+input[type="hidden"][name="attr_faction"]:is([value="Necron"]) ~ .spbody {
+  color:  #39FF14;
+}
+.item span {
+  font-size: 14px;
+}
+
+.spbody {
+  color: white;
+  align-items: center;
+  text-align: center;
+  padding: 0px 0px 0px 20px;
+}
+
+.item {
+  align-items: left;
+  width: fit-content;
+  padding: 5px;
+  text-align: left;
+  margin-bottom: 1em;
+}
+
