@@ -280,10 +280,8 @@ input[type="hidden"][value="Equipped"].weapon5-status ~ .weapon5{
     display: grid;
     grid-gap: 1px;
     grid-template-columns: 4fr 1fr 1fr;
-    grid-template-rows: 4;
+    grid-template-rows: 10;
     text-align: center;
     align-items: center;
     padding: 3px;
-
-
 }
