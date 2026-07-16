@@ -147,13 +147,10 @@ section {
 
 .shields {
   grid-area: shields;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
-.shields > img {
-  object-fit: fill;
-  width: 100%;
-  max-height: 100%;
-}
 
 .checkbox { position: absolute; bottom: 0px; right: 0px; }
 
