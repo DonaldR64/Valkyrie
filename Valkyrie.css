@@ -24,7 +24,7 @@ input[type="hidden"][name="attr_faction"] ~ .mysheet {
     background-color: lightgray;
 }
 input[type="hidden"][name="attr_faction"][value="Federation"] ~ .mysheet {
-    background-color: lightblue;
+    background-color: mediumblue;
 }
 input[type="hidden"][name="attr_faction"][value="Klingon"] ~ .mysheet {
     background-color: black;
