@@ -524,7 +524,7 @@
     });
 
     $20('.reservecheck :checkbox').change(function () {
-        var $20cs = $(this).closest('.reservecheck').find(':checkbox:checked');
+        var $20cs = $20(this).closest('.reservecheck').find(':checkbox:checked');
         if ($20cs.length > 3) {
             this.checked = false;
         }
