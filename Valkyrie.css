@@ -211,7 +211,7 @@ section {
 .e1 {
     background-color: #E75801;
 }
-input.e1col [value=0] ~ .e1 {
+input.e1col [value="R"] ~ .e1 {
    background-color: red;
 }
 
