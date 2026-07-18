@@ -528,8 +528,10 @@
     on("change:fwdshields1 change:fwdshields2 change:portshields1 change:portshields2 change:stbdshields1 change:stbdshields2 change:aftshields1 change:aftshields2 change:reserve1 change:reserve2 change:reserve3 change:reserve4 change:reserve5 change:reserve6", function(eventInfo){
         attrib = eventInfo.sourceAttribute;
         console.log(attrib)
-        getAttrs(attrib,function(values){
-            console.log(values[attrib])
+
+        getAttrs(getArr,function(values){
+            const attribVal = values[attrib];
+            console.log(attribVal)
         })
 
 
