@@ -523,6 +523,12 @@
         setAttrs({sheetTab:"ship"});
     });
 
+    $20('.reservechecks :checkbox').change(function () {
+        var $20cs = $20(this).closest('.reservechecks').find(':checkbox:checked');
+        if ($20cs.length > 3) {
+            this.checked = false;
+        }
+    });
 
 
     on("change:attrs sheet:opened", function() { 
