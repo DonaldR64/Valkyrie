@@ -529,7 +529,7 @@
         attrib = eventInfo.sourceAttribute;
         console.log(attrib)
 
-        getAttrs(attrib,function(values){
+        getAttrs(["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"],function(values){
             const attribVal = values[attrib];
             console.log(attribVal)
         })
