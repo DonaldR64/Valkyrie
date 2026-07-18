@@ -529,7 +529,7 @@
         const attrib = eventInfo.sourceAttribute;
         console.log(attrib)
 
-        getAttrs(["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"],function(values){
+        getAttrs(["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6","currentReserve"],function(values){
             let checked = 0;
             let array = ["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"];
             for (let i=0;i<array.length;i++) {
@@ -538,8 +538,8 @@
             }
             const attribVal = values[attrib];
             console.log(attribVal)
-            if (attribVal > 0) {
-                console.log("Total: " + checked)
+            if (attribVal > 0 && checked > currentReserve) {
+                console.log("TOo Much")
             }
 
 
@@ -565,17 +565,6 @@
             if (values.type === "Drone" || values.type === "Mine") {
                 display = "drone";
             }
-
-            let checked = 0;
-            let array = ["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"];
-            for (let i=0;i<array.length;i++) {
-                let v = values[array[i]];
-                if (v === "1") {checked++};
-            }
-
-
-
-
 
             let top = ["","","","","","","","",""];
             let bot = ["","","","","","","","",""];
