@@ -215,7 +215,7 @@ input[type="hidden"][value="O"].c1-status ~ .e1{
     background-color: #E75801;
 }
 input[type="hidden"][value="R"].c1-status ~ .e1{
-    background-color: #90ee90;
+    background-color: #FE9100;
 }
 
 
@@ -226,7 +226,7 @@ input[type="hidden"][value="O"].c2-status ~ .e2{
     background-color: #E75801;
 }
 input[type="hidden"][value="R"].c2-status ~ .e2{
-    background-color: #90ee90;
+    background-color: #FE9100;
 }
 
 
@@ -237,7 +237,7 @@ input[type="hidden"][value="O"].c3-status ~ .e3{
     background-color: #E75801;
 }
 input[type="hidden"][value="R"].c3-status ~ .e3{
-    background-color: #90ee90;
+    background-color: #FE9100;
 }
 
 .e4 {
@@ -247,7 +247,7 @@ input[type="hidden"][value="O"].c4-status ~ .e4{
     background-color: #E75801;
 }
 input[type="hidden"][value="R"].c4-status ~ .e4{
-    background-color: #90ee90;
+    background-color: #FE9100;
 }
 
 .e5 {
@@ -257,7 +257,7 @@ input[type="hidden"][value="O"].c5-status ~ .e5{
     background-color: #E75801;
 }
 input[type="hidden"][value="R"].c5-status ~ .e5{
-    background-color: #90ee90;
+    background-color: #FE9100;
 }
 
 .e6 {
@@ -267,17 +267,17 @@ input[type="hidden"][value="O"].c6-status ~ .e6{
     background-color: #E75801;
 }
 input[type="hidden"][value="R"].c6-status ~ .e6{
-    background-color: #90ee90;
+    background-color: #FE9100;
 }
 
 .e7 {
     background-color: #E75801;
 }
 input[type="hidden"][value="O"].c7-status ~ .e7{
-    background-color: #90ee90;
+    background-color: #E75801;
 }
 input[type="hidden"][value="R"].c7-status ~ .e7{
-    background-color: #90ee90;
+    background-color: #FE9100;
 }
 
 .e8 {
@@ -287,7 +287,7 @@ input[type="hidden"][value="O"].c8-status ~ .e8{
     background-color: #E75801;
 }
 input[type="hidden"][value="R"].c8-status ~ .e8{
-    background-color: #90ee90;
+    background-color: #E75801;
 }
 
 
