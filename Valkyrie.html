@@ -526,17 +526,25 @@
 
 
     on("change:fwdshields1 change:fwdshields2 change:portshields1 change:portshields2 change:stbdshields1 change:stbdshields2 change:aftshields1 change:aftshields2 change:reserve1 change:reserve2 change:reserve3 change:reserve4 change:reserve5 change:reserve6", function(eventInfo){
-        attrib = eventInfo.sourceAttribute;
+        const attrib = eventInfo.sourceAttribute;
         console.log(attrib)
 
         getAttrs(["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"],function(values){
-            attribVal = values[attrib];
-
+            let checked = 0;
+            let array = ["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"];
+            for (let i=0;i<array.length;i++) {
+                let v = values[array[i]];
+                if (v === "1") {checked++};
+            }
+            const attribVal = values[attrib];
+            console.log(attribVal)
+            if (attribVal > 0) {
+                console.log("Total: " + checked)
+            }
 
 
         })
 
-            console.log(attribVal)
 
 
     });
