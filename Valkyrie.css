@@ -235,9 +235,7 @@ section {
 .centre {
     grid-column: 2/6;
     grid-row: 2/6;
-}
-.centrepic > img {
-  object-fit:scale-down;
+    object-fit:scale-down;
 }
 
 
