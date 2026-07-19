@@ -238,6 +238,7 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .centrepic img{
@@ -245,6 +246,7 @@ section {
     max-height: 160px
 }
 .centretext {
+    position: absolute;
     grid-column:2/6;
     grid-row: 2/6;
     z-index: 100;
