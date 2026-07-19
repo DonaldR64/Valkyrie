@@ -412,9 +412,8 @@ input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
     display: none;
 }
 input[type="hidden"][value="Normal"].weapon3-status ~ .weapon3{
-    display: grid
+    display: grid;
     background-color: green;
-
 }
 input[type="hidden"][value="Down"].weapon3-status ~ .weapon3{
     display: grid;
