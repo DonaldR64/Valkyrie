@@ -153,8 +153,6 @@ section {
 /* The parent container holding everything */
 .image-container {
   position: relative;
-  width: 100%;        /* Scales to fit your layout */
-  display: inline-block; /* Forces div to match the image size */
 }
 
 /* Make sure the image behaves responsively */
