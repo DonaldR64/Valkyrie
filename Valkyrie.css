@@ -358,7 +358,7 @@ input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
 }
 input[type="hidden"][value="Normal"].weapon1-status ~ .weapon1{
     display: grid;
-    background-color: #90EE90;
+    background-color: white;
 
 }
 input[type="hidden"][value="Down"].weapon1-status ~ .weapon1{
@@ -375,7 +375,6 @@ input[type="hidden"][value="Down"].weapon1-status ~ .weapon1{
     grid-gap: 1px;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
-    background-color: white;
     text-align: center;
     align-items: center;
     padding: 3px;
@@ -387,7 +386,7 @@ input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
 }
 input[type="hidden"][value="Normal"].weapon2-status ~ .weapon2{
     display: grid;
-    background-color: #90EE90;
+    background-color: white;
 }
 input[type="hidden"][value="Down"].weapon2-status ~ .weapon2{
     display: grid;
@@ -402,7 +401,6 @@ input[type="hidden"][value="Down"].weapon2-status ~ .weapon2{
     grid-gap: 1px;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
-    background-color: white;
     text-align: center;
     align-items: center;
     padding: 3px;
@@ -414,7 +412,7 @@ input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
 }
 input[type="hidden"][value="Normal"].weapon3-status ~ .weapon3{
     display: grid;
-    background-color: #90EE90;
+    background-color: white;
 }
 input[type="hidden"][value="Down"].weapon3-status ~ .weapon3{
     display: grid;
@@ -441,7 +439,7 @@ input[type="hidden"][value="Off"].weapon4-status ~ .weapon4{
 }
 input[type="hidden"][value="Normal"].weapon4-status ~ .weapon4{
     display: grid;
-    background-color: #90EE90;
+    background-color: white;
 
 }
 input[type="hidden"][value="Down"].weapon4-status ~ .weapon4{
@@ -469,7 +467,7 @@ input[type="hidden"][value="Off"].weapon5-status ~ .weapon5{
 }
 input[type="hidden"][value="Normal"].weapon5-status ~ .weapon5{
     display: grid;
-    background-color: #90EE90;
+    background-color: white;
 
 }
 input[type="hidden"][value="Down"].weapon5-status ~ .weapon5{
@@ -524,7 +522,7 @@ input[type="hidden"][value="Down"].weapon5-status ~ .weapon5{
 
 /* Shields */
 .shieldstatus h4 {
-    color: black;
+    color: white;
 }
 input[type="hidden"][value="None"].shield-status ~ .shieldstatus{
     display: none;
@@ -537,7 +535,7 @@ input[type="hidden"][value="Normal"].shield-status ~ .shieldstatus{
     text-align: center;
     align-items: center;
     padding: 3px;    
-    background-color:  #90EE90;
+    background-color:  green;
 }
 input[type="hidden"][value="Down"].shield-status ~ .shieldstatus{
     display: grid;
@@ -553,7 +551,7 @@ input[type="hidden"][value="Down"].shield-status ~ .shieldstatus{
 
 /* Thrusters */
 .thrusterstatus h4{
-    color: black;
+    color: white;
 }
 input[type="hidden"][value="None"].thruster-status ~ .thrusterstatus{
     display: none;
@@ -566,7 +564,7 @@ input[type="hidden"][value="Normal"].thruster-status ~ .thrusterstatus{
     text-align: center;
     align-items: center;
     padding: 3px;    
-    background-color:  #90EE90;
+    background-color:  green;
 }
 input[type="hidden"][value="Down"].thruster-status ~ .thrusterstatus{
 display: grid;
@@ -581,7 +579,7 @@ display: grid;
 
 /* System 1 */
 .system1status h4{
-    color: black
+    color: white
 }
 input[type="hidden"][value="None"].system1-status ~ .system1status{
     display: none;
@@ -594,7 +592,7 @@ input[type="hidden"][value="Normal"].system1-status ~ .system1status{
     text-align: center;
     align-items: center;
     padding: 3px;    
-    background-color:  #90EE90;
+    background-color:  green;
 }
 input[type="hidden"][value="Down"].system1-status ~ .system1status{
 display: grid;
@@ -610,7 +608,7 @@ display: grid;
 
 /* System 2 */
 .system2status h4{
-    color: black;
+    color: white;
 }
 input[type="hidden"][value="None"].system2-status ~ .system2status{
     display: none;
@@ -623,7 +621,7 @@ input[type="hidden"][value="Normal"].system2-status ~ .system2status{
     text-align: center;
     align-items: center;
     padding: 3px;    
-    background-color:  #90EE90;
+    background-color:  green;
 }
 input[type="hidden"][value="Down"].system2-status ~ .system2status{
 display: grid;
@@ -638,7 +636,7 @@ display: grid;
 
 /* System 3 */
 .system3status h4{
-    color: black;
+    color: white;
 }
 input[type="hidden"][value="None"].system3-status ~ .system3status{
     display: none;
@@ -651,7 +649,7 @@ input[type="hidden"][value="Normal"].system3-status ~ .system3status{
     text-align: center;
     align-items: center;
     padding: 3px;    
-    background-color:  #90EE90;
+    background-color:  green;
 }
 input[type="hidden"][value="Down"].system3-status ~ .system3status{
 display: grid;
