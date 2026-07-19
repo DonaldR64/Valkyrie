@@ -237,7 +237,8 @@ section {
     grid-row: 2/6;
 }
 .pic > img {
-  object-fit: contain;
+  height: 100%;
+  width: auto;
 }
 
 
