@@ -148,6 +148,10 @@ section {
 
 .shields {
   grid-area: shields;
+  display: grid;
+}
+
+.shielddisplay {
     display: grid;
     grid-gap: 4px;
     grid-template-columns: 1fr 4fr 1fr;
@@ -155,14 +159,7 @@ section {
     grid-template-areas:    "blank1  fwd blank2"
                             "port    pic stbd"
                             "blank3  aft blank4"; 
-    background-color: white;}
-
-.shielddisplay {
-    grid-column: 1 / -1; /* Spans from the first column line to the very last */
-    grid-row: 1 / -1;    /* Spans from the first row line to the very last */
-    /* Optional: Ensure content stretches fully inside the cell */
-    width: 100%;
-    height: 100%;
+    background-color: white;
 }
 
 .blank1 {
