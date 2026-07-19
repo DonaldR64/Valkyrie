@@ -150,31 +150,55 @@ section {
   grid-area: shields;
 }
 
-/* The parent container holding everything */
-.image-container {
-  position: relative;
+.shielddisplay {
+    display: grid;
+    grid-gap: 4px;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 1fr 4fr 1fr;
+    grid-template-areas:    "blank1  fwd blank2"
+                            "port    pic stbd"
+                            "blank3  aft blank4"; 
+    background-color: white;
 }
 
-/* Make sure the image behaves responsively */
-.image-container img {
-  width: 100%;
-  height: auto;
-  display: block;    /* Removes extra whitespace under the image */
+.blank1 {
+    grid-area: blank1;
+    background-color: white;
+}
+.blank2 {
+    grid-area: blank2;
+    background-color: white;
+}
+.blank3 {
+    grid-area: blank3;
+    background-color: white;
+}
+.blank4 {
+    grid-area: blank4;
+    background-color: white;
 }
 
-/* The text wrapper floating over the image */
-.overlay-text {
-  position: absolute;
-  top: 38%;          /* Move down 50% from the top of the container */
-  left: 50%;          /* Move right 50% from the left of the container */
-  transform: translate(-50%, -50%); /* Perfectly offsets the text to center it */
-  /* Styling to make text readable */
-  color: white;
-  text-align: center;
-  padding: 20px;
-  border-radius: 8px;
-  width: 80%;        /* Keeps text from hitting the image edges */
+.fwd {
+    grid-area: fwd;
+    background-color: green;
 }
+.port {
+    grid-area: port;
+    background-color: green;
+}
+.stbd {
+    grid-area: stbd;
+    background-color: green;
+}
+.aft {
+    grid-area: aft;
+    background-color: green;
+}
+
+
+
+
+
 
 
 input[type="hidden"][value="Normal"].hull-status ~ .overlay-text h1{
