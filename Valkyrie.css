@@ -488,6 +488,11 @@ input[type="hidden"][value="Normal"].shield-status ~ .shieldstatus{
     padding: 3px;    
     color: green;
 }
+input[type="hidden"][value="Normal"].shield-status ~ .shieldstatus h4 { 
+    color: green;
+}
+
+
 input[type="hidden"][value="Down"].shield-status ~ .shieldstatus{
 display: grid;
     grid-gap: 1px;
@@ -498,7 +503,9 @@ display: grid;
     padding: 3px;    
     color: red;
 }
-
+input[type="hidden"][value="Normal"].shield-status ~ .shieldstatus h4 { 
+    color: red;
+}
 
 
 
