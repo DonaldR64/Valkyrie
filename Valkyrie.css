@@ -353,16 +353,27 @@ input[type="hidden"][value="R"].c8-status ~ .e8{
 }
 
 /* Weapon 1 */
-input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
+input[type="hidden"][value="Off"].weapon1-equipped ~ .weapon1{
     display: none;
 }
-input[type="hidden"][value="Equipped"].weapon1-status ~ .weapon1{
+input[type="hidden"][value="Normal"].weapon1-equipped ~ .weapon1{
     display: grid;
 }
+input[type="hidden"][value="Down"].weapon1-equipped ~ .weapon1{
+    display: grid;
+}
+input[type="hidden"][value="Normal"].weapon1-equipped ~ .weapon1status{
+    color: green;
+}
+input[type="hidden"][value="Down"].weapon1-equipped ~ .weapon1status{
+    color: red;
+}
+
+
 .weapon1 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     background-color: white;
     text-align: center;

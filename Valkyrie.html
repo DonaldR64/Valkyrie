@@ -111,7 +111,8 @@
                <tr>
                     <td><select name="attr_weapon1equipped">
                         <option value = "Off">Off</option>
-                        <option value = "Equipped">Equipped</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Down">Down</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon1name"></td>
                     <td><input type="text" name="attr_weapon1type"></td>
@@ -123,7 +124,8 @@
                <tr>
                     <td><select name="attr_weapon2equipped">
                         <option value = "Off">Off</option>
-                        <option value = "Equipped">Equipped</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Down">Down</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon2name"></td>
                     <td><input type="text" name="attr_weapon2type"></td>
@@ -135,7 +137,8 @@
                <tr>
                     <td><select name="attr_weapon3equipped">
                         <option value = "Off">Off</option>
-                        <option value = "Equipped">Equipped</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Down">Down</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon3name"></td>
                     <td><input type="text" name="attr_weapon3type"></td>
@@ -147,7 +150,8 @@
                <tr>
                     <td><select name="attr_weapon4equipped">
                         <option value = "Off">Off</option>
-                        <option value = "Equipped">Equipped</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Down">Down</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon4name"></td>
                     <td><input type="text" name="attr_weapon4type"></td>
@@ -159,7 +163,8 @@
                <tr>
                     <td><select name="attr_weapon5equipped">
                         <option value = "Off">Off</option>
-                        <option value = "Equipped">Equipped</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Down">Down</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon5name"></td>
                     <td><input type="text" name="attr_weapon5type"></td>
@@ -452,8 +457,9 @@
                 <div><span>Limited</span></div>
             </div>
 
-            <input type="hidden" name="attr_weapon1equipped" class="weapon1-status" value="Off">
+            <input type="hidden" name="attr_weapon1equipped" class="weapon1-equipped" value="Off">
             <div class="weapon1">
+                <span class="weapon1status">■</span>
                 <h4><span>1: </span><span name="attr_weapon1name"></span></h4>
                 <h4><span name="attr_weapon1type"></span></h4>
                 <h4><span name="attr_weapon1facing"></span></h4>
