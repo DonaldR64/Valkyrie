@@ -605,8 +605,9 @@
                 display = "drone";
             }
 
-            let hull = values.hull;
-            let hullMax = values.hull_max;
+            let hull = parseInt(values.hull);
+            let hullMax = parseInt(values.hull_max);
+console.log(hullMax)
             let hullStatus = (hull === hullMax) ? "Normal":"Down";
 
             let top = ["","","","","","","","",""];
