@@ -244,6 +244,13 @@ section {
     object-fit: contain;
     max-height: 160px
 }
+.afttext {
+    grid-column:2/6;
+    grid-row: 2/6;
+}
+.afttext h3{
+    color:white;
+}
 
 
 
