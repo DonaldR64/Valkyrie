@@ -503,9 +503,147 @@ display: grid;
     padding: 3px;    
     color: red;
 }
-input[type="hidden"][value="Down"].shield-status ~ .shieldstatus h4 { 
+input[type="hidden"][value="Down"].thruster-status ~ .shieldstatus h4 { 
     color: red;
 }
+
+/* Thrusters */
+input[type="hidden"][value="None"].thruster-status ~ .thrusterstatus{
+    display: none;
+}
+input[type="hidden"][value="Normal"].thruster-status ~ .thrusterstatus{
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: green;
+}
+input[type="hidden"][value="Normal"].thruster-status ~ .thrusterstatus h4 { 
+    color: green;
+}
+
+
+input[type="hidden"][value="Down"].thruster-status ~ .thrusterstatus{
+display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: red;
+}
+input[type="hidden"][value="Down"].thruster-status ~ .thrusterstatus h4 { 
+    color: red;
+}
+
+
+/* System 1 */
+input[type="hidden"][value="None"].system1-status ~ .system1-status{
+    display: none;
+}
+input[type="hidden"][value="Normal"].system1-status ~ .system1-status{
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: green;
+}
+input[type="hidden"][value="Normal"].system1-status ~ .system1-status h4 { 
+    color: green;
+}
+
+
+input[type="hidden"][value="Down"].system1-status ~ .system1-status{
+display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: red;
+}
+input[type="hidden"][value="Down"].system1-status ~ .system1-status h4 { 
+    color: red;
+}
+
+
+
+/* System 2 */
+input[type="hidden"][value="None"].system2-status ~ .system2-status{
+    display: none;
+}
+input[type="hidden"][value="Normal"].system2-status ~ .system2-status{
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: green;
+}
+input[type="hidden"][value="Normal"].system2-status ~ .system2-status h4 { 
+    color: green;
+}
+
+
+input[type="hidden"][value="Down"].system2-status ~ .system2-status{
+display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: red;
+}
+input[type="hidden"][value="Down"].system2-status ~ .system2-status h4 { 
+    color: red;
+}
+
+/* System 3 */
+input[type="hidden"][value="None"].system3-status ~ .system3-status{
+    display: none;
+}
+input[type="hidden"][value="Normal"].system3-status ~ .system3-status{
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: green;
+}
+input[type="hidden"][value="Normal"].system3-status ~ .system3-status h4 { 
+    color: green;
+}
+
+
+input[type="hidden"][value="Down"].system3-status ~ .system3-status{
+display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;    
+    color: red;
+}
+input[type="hidden"][value="Down"].system3-status ~ .system3-status h4 { 
+    color: red;
+}
+
+
+
 
 
 
