@@ -476,7 +476,7 @@ input[type="hidden"][value="Equipped"].weapon5-status ~ .weapon5{
 
 /* Shields */
 .shieldstatus h4 {
-    color: black;
+    color: white;
 }
 input[type="hidden"][value="None"].shield-status ~ .shieldstatus{
     display: none;
@@ -504,6 +504,9 @@ input[type="hidden"][value="Down"].shield-status ~ .shieldstatus{
 
 
 /* Thrusters */
+.thrusterstatus h4{
+    color: white;
+}
 input[type="hidden"][value="None"].thruster-status ~ .thrusterstatus{
     display: none;
 }
@@ -515,7 +518,7 @@ input[type="hidden"][value="Normal"].thruster-status ~ .thrusterstatus{
     text-align: center;
     align-items: center;
     padding: 3px;    
-    color: green;
+    background-color:  green;
 }
 input[type="hidden"][value="Normal"].thruster-status ~ .thrusterstatus h4 { 
     color: green;
@@ -530,14 +533,14 @@ display: grid;
     text-align: center;
     align-items: center;
     padding: 3px;    
-    color: red;
+    background-color:  red;
 }
-input[type="hidden"][value="Down"].thruster-status ~ .thrusterstatus h4 { 
-    color: red;
-}
-
 
 /* System 1 */
+.system1-status h4{
+    color: black;
+}
+
 input[type="hidden"][value="None"].system1-status ~ .system1-status{
     display: none;
 }
@@ -549,13 +552,8 @@ input[type="hidden"][value="Normal"].system1-status ~ .system1-status{
     text-align: center;
     align-items: center;
     padding: 3px;    
-    color: green;
+    background-color:  green;
 }
-input[type="hidden"][value="Normal"].system1-status ~ .system1-status h4 { 
-    color: green;
-}
-
-
 input[type="hidden"][value="Down"].system1-status ~ .system1-status{
 display: grid;
     grid-gap: 1px;
@@ -564,11 +562,9 @@ display: grid;
     text-align: center;
     align-items: center;
     padding: 3px;    
-    color: red;
+    background-color:  red;
 }
-input[type="hidden"][value="Down"].system1-status ~ .system1-status h4 { 
-    color: red;
-}
+
 
 
 
