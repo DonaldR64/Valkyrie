@@ -503,7 +503,7 @@ display: grid;
     padding: 3px;    
     color: red;
 }
-input[type="hidden"][value="Normal"].shield-status ~ .shieldstatus h4 { 
+input[type="hidden"][value="Down"].shield-status ~ .shieldstatus h4 { 
     color: red;
 }
 
