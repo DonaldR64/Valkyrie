@@ -250,6 +250,7 @@ section {
     grid-column:2/6;
     grid-row: 2/6;
     z-index: 100;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 .centretext h3{
     color: black;
