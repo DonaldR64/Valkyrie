@@ -524,7 +524,7 @@ input[type="hidden"][value="Down"].weapon5-status ~ .weapon5{
 
 /* Shields */
 .shieldstatus h4 {
-    color: white;
+    color: black;
 }
 input[type="hidden"][value="None"].shield-status ~ .shieldstatus{
     display: none;
@@ -553,7 +553,7 @@ input[type="hidden"][value="Down"].shield-status ~ .shieldstatus{
 
 /* Thrusters */
 .thrusterstatus h4{
-    color: white;
+    color: black;
 }
 input[type="hidden"][value="None"].thruster-status ~ .thrusterstatus{
     display: none;
@@ -581,7 +581,7 @@ display: grid;
 
 /* System 1 */
 .system1status h4{
-    color: white;
+    color: black
 }
 input[type="hidden"][value="None"].system1-status ~ .system1status{
     display: none;
@@ -610,7 +610,7 @@ display: grid;
 
 /* System 2 */
 .system2status h4{
-    color: white;
+    color: black;
 }
 input[type="hidden"][value="None"].system2-status ~ .system2status{
     display: none;
@@ -638,7 +638,7 @@ display: grid;
 
 /* System 3 */
 .system3status h4{
-    color: white;
+    color: black;
 }
 input[type="hidden"][value="None"].system3-status ~ .system3status{
     display: none;
