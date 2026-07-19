@@ -187,18 +187,42 @@ section {
 .fwd {
     grid-area: fwd;
     background-color: green;
+    /* Forces the inner element to match the exact size of the grid track */
+    width: 100%;
+    height: 100%; 
+    /* Resets any accidental alignment overrides */
+    justify-self: stretch;
+    align-self: stretch;
 }
 .port {
     grid-area: port;
     background-color: green;
+    /* Forces the inner element to match the exact size of the grid track */
+    width: 100%;
+    height: 100%; 
+    /* Resets any accidental alignment overrides */
+    justify-self: stretch;
+    align-self: stretch;
 }
 .stbd {
     grid-area: stbd;
     background-color: green;
+    /* Forces the inner element to match the exact size of the grid track */
+    width: 100%;
+    height: 100%; 
+    /* Resets any accidental alignment overrides */
+    justify-self: stretch;
+    align-self: stretch;
 }
 .aft {
     grid-area: aft;
     background-color: green;
+    /* Forces the inner element to match the exact size of the grid track */
+    width: 100%;
+    height: 100%; 
+    /* Resets any accidental alignment overrides */
+    justify-self: stretch;
+    align-self: stretch;
 }
 
 
