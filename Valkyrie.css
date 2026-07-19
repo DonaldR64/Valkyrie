@@ -25,10 +25,10 @@
 input[type="hidden"][name="attr_faction"] ~ .mysheet {
     background-color: lightgray;
 }
-input[type="hidden"][name="attr_faction"][value="Federation"] ~ .mysheet {
+input[type="hidden"][name="attr_faction"][value="Terran"] ~ .mysheet {
     background-color: mediumblue;
 }
-input[type="hidden"][name="attr_faction"][value="Klingon"] ~ .mysheet {
+input[type="hidden"][name="attr_faction"][value="Kurgun"] ~ .mysheet {
     background-color: black;
 }
 
