@@ -200,16 +200,37 @@ section {
     grid-column:1/2;
     grid-row: 2/6;
     background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.porttext {
+    grid-column:2/6;
+    grid-row: 1/2;
 }
 .stbd {
     grid-column:6/-1;
     grid-row: 2/6;
     background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.stbdtext {
+    grid-column:2/6;
+    grid-row: 1/2;
 }
 .aft {
     grid-column:2/6;
     grid-row: 6/-1;
     background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.afttext {
+    grid-column:2/6;
+    grid-row: 1/2;
 }
 .pic {
     grid-column: 2/6;
