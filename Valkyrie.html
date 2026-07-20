@@ -327,6 +327,9 @@
           <section class="engine">
             <h3>Warp Engines</h3>
             <div class="enginetop">
+                <div class="topName">
+                    <span> </span>
+                </div>
                 <div class="top0">
                     <h4><span name="attr_top0"></span></h4>
                 </div>
@@ -357,8 +360,12 @@
             </div>
 
             <div class="engineinfo">
-                <div class="e0">
+                <div class="eName">
                     <h4>Engine</h4>
+                </div>
+
+                <div class="e0">
+                    <h4><span>0</span></h4>
                 </div>
 
                 <input type="hidden" name="attr_c1" class="c1-status" value="O">
@@ -402,9 +409,15 @@
                 </div>
 
 
-                <div class="r0">
+                <div class="rName">
                     <h4>Reserve</h4>
                 </div>
+                <div class="r0">
+                    <h4><span>0</span></h4>
+                </div>
+
+
+
                 <div class="r1">
                     <h4><span name="attr_r1"></span></h4>
                 </div>
@@ -459,6 +472,9 @@
 
             </div>
             <div class="enginebot">
+                <div class="botName">
+                    <span> </span>
+                </div>
                 <div class="bot0">
                     <h4><span name="attr_bot0"></span></h4>
                 </div>
@@ -637,11 +653,11 @@
             let hullMax = parseInt(values.hull_max);
             let hullStatus = (hull === hullMax) ? "Normal":"Down";
 
-            let top = ["","","","","","","","",""];
-            let bot = ["","","","","","","","",""];
+            let top = ["","","","","","","","","",""];
+            let bot = ["","","","","","","","","",""];
             let engine = parseInt(values.engineLevel);
             let trans = parseInt(values.engineTrans);
-            let c = ["O","O","O","O","O","O","O","O","O",]
+            let c = ["O","O","O","O","O","O","O","O","O","O"]
             let shieldLevel = 0;
 
             for (let i=0;i<9;i++) {
