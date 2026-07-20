@@ -462,8 +462,8 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
 .reservelistB {
     display: grid;
     grid-gap: 1px;
-    grid-template-columns: 4fr 2fr;
-    grid-template-rows: 6;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
     text-align: center;
     align-items: center;
     padding: 3px;
@@ -472,7 +472,10 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
 
 .engitem {
     background-color: white;
-}
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+} 
+
 
 .syslist {
     display: grid;
