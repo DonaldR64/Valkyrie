@@ -191,15 +191,13 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:red;
 }
 
-input[type="hidden"][value="O"].sd-status ~ .fwd{
-    background-color: red;
-}
-input[type="hidden"][value="1"].sd-status ~ .fwd{
+input[type="hidden"][value=1].sd-status ~ .fwd{
     background-color: orange;
 }
-input[type="hidden"][value="2"].sd-status ~ .fwd{
+input[type="hidden"][value=2].sd-status ~ .fwd{
     background-color: green;
 }
 
