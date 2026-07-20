@@ -211,11 +211,9 @@ input[type="hidden"][value=2].sd-status ~ .fwd{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:red;
 }
 
-input[type="hidden"][value=0].sd-status ~ .port{
-    background-color: red;
-}
 input[type="hidden"][value="1"].sd-status ~ .port{
     background-color: orange;
 }
@@ -234,11 +232,9 @@ input[type="hidden"][value="2"].sd-status ~ .port{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:red;
 }
 
-input[type="hidden"][value=0].sd-status ~ .stbd{
-    background-color: red;
-}
 input[type="hidden"][value="1"].sd-status ~ .stbd{
     background-color: orange;
 }
@@ -257,10 +253,9 @@ input[type="hidden"][value="2"].sd-status ~ .stbd{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:red;
 }
-input[type="hidden"][value=0].sd-status ~ .aft{
-    background-color: red;
-}
+
 input[type="hidden"][value="1"].sd-status ~ .aft{
     background-color: orange;
 }
