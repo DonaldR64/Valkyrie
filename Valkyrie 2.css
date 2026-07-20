@@ -493,7 +493,7 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
 
 
 
-.evenitem2 {
+.r1power {
     background-color: white;
     display: grid;
     grid-gap: 1px;
@@ -504,7 +504,7 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     grid-template-rows: 1fr;
 } 
 
-.odditem2 {
+.r2power {
     background-color: lightgrey;
     display: grid;
     grid-gap: 1px;
@@ -514,6 +514,52 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     grid-template-columns: 4fr 2fr;
     grid-template-rows: 1fr;
 } 
+
+.r3power {
+    background-color: white;
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+} 
+
+.r4power {
+    background-color: lightgrey;
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+} 
+
+.r5power {
+    background-color: white;
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+} 
+
+.r6power {
+    background-color: lightgrey;
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 1fr;
+} 
+
+
 
 
 
