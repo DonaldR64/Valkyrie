@@ -470,7 +470,7 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     background-color: black;
 }
 
-.item {
+.engitem {
     background-color: white;
 }
 
