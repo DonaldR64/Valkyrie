@@ -194,16 +194,14 @@ section {
 }
 
 input[type="hidden"][value="O"].sd-status ~ .fwd{
-    background-color: white;
+    background-color: red;
 }
 input[type="hidden"][value="1"].sd-status ~ .fwd{
     background-color: orange;
 }
 input[type="hidden"][value="2"].sd-status ~ .fwd{
-    background-color: red;
+    background-color: green;
 }
-
-
 
 .fwdtext {
     grid-column:2/6;
@@ -212,11 +210,22 @@ input[type="hidden"][value="2"].sd-status ~ .fwd{
 .port {
     grid-column:1/2;
     grid-row: 2/6;
-    background-color: green;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+input[type="hidden"][value="O"].sd-status ~ .port{
+    background-color: red;
+}
+input[type="hidden"][value="1"].sd-status ~ .port{
+    background-color: orange;
+}
+input[type="hidden"][value="2"].sd-status ~ .port{
+    background-color: green;
+}
+
+
 .porttext {
     grid-column:2/6;
     grid-row: 1/2;
@@ -224,23 +233,45 @@ input[type="hidden"][value="2"].sd-status ~ .fwd{
 .stbd {
     grid-column:6/-1;
     grid-row: 2/6;
-    background-color: green;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+input[type="hidden"][value="O"].sd-status ~ .stbd{
+    background-color: red;
+}
+input[type="hidden"][value="1"].sd-status ~ .stbd{
+    background-color: orange;
+}
+input[type="hidden"][value="2"].sd-status ~ .stbd{
+    background-color: green;
+}
+
 .stbdtext {
     grid-column:2/6;
     grid-row: 1/2;
 }
+
 .aft {
     grid-column:2/6;
     grid-row: 6/-1;
-    background-color: green;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+input[type="hidden"][value="O"].sd-status ~ .aft{
+    background-color: red;
+}
+input[type="hidden"][value="1"].sd-status ~ .aft{
+    background-color: orange;
+}
+input[type="hidden"][value="2"].sd-status ~ .aft{
+    background-color: green;
+}
+
+
+
 .afttext {
     grid-column:2/6;
     grid-row: 1/2;
