@@ -150,7 +150,7 @@ section {
 }
 .weapons {
   grid-area: weapons;
-  background-color:  black;
+  background-color:  white;
 }
 
 /* Power Sub Areas */
@@ -457,10 +457,16 @@ input[type="hidden"][value="Green"].engine-status ~ .enginedamage{
 
 
 /* Weapon Sub sections */
+.weaponsback {
+    display: grid;
+    grid-gap: 4px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(8,1fr);
+    background-color: black;
+}
 .weaponheader {
     background-color: white;
 }
-
 
 .weaponinfo{
   grid-area: weaponinfo;
