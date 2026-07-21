@@ -165,7 +165,7 @@ section {
     align-items: center;
 }
 .shippic img{
-    object-fit: fill;
+    object-fit: contain;
     max-height: 90%;
 }
 
@@ -293,8 +293,6 @@ input[type="hidden"][value="Green"].engine-status ~ .engineinfo{
     grid-area: power;
     background-color:  white;
 }
-
-
 
 
 
