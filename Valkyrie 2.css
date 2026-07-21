@@ -479,7 +479,7 @@ input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
 }
 input[type="hidden"][value="Normal"].weapon1-status ~ .weapon1{
     display: grid;
-    background-color: white;
+    background-color: lightgrey;
 }
 input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
     display: grid;
@@ -530,7 +530,7 @@ input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
 }
 input[type="hidden"][value="Normal"].weapon3-status ~ .weapon3{
     display: grid;
-    background-color: white;
+    background-color: lightgrey;
 }
 input[type="hidden"][value="Damaged"].weapon3-status ~ .weapon3{
     display: grid;
@@ -580,7 +580,7 @@ input[type="hidden"][value="Off"].weapon5-status ~ .weapon5{
 }
 input[type="hidden"][value="Normal"].weapon5-status ~ .weapon5{
     display: grid;
-    background-color: white;
+    background-color: lightgrey;
 }
 input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     display: grid;
