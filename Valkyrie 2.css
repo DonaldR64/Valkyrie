@@ -143,8 +143,8 @@ section {
     grid-area: ship;
     display: grid;
     grid-gap: 4px;
-    grid-template-columns: repeat(8,1fr);
-    grid-template-rows: repeat(8,1fr);
+    grid-template-columns: repeat(9,1fr);
+    grid-template-rows: repeat(9,1fr);
     background-color: white;
 }
 
@@ -157,31 +157,27 @@ section {
 }
 
 .shippic {
-    grid-column: 3/7;
-    grid-row: 2/7;
+    grid-column: 3/8;
+    grid-row: 2/8;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-
-
-
-
 
 .fwd {
-    grid-column:2/6;
-    grid-row: 1/2;
+    grid-column:3/8;
+    grid-row: 2/3;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:red;
 }
-
-input[type="hidden"][value="1"].sd-status ~ .fwd{
+input[type="hidden"][value="Red"].fs-status ~ .fwd{
+    background-color: red;
+}
+input[type="hidden"][value="Orange"].fs-status ~ .fwd{
     background-color: orange;
 }
-input[type="hidden"][value="2"].sd-status ~ .fwd{
+input[type="hidden"][value="Green"].fs-status ~ .fwd{
     background-color: green;
 }
 

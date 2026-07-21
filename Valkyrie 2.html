@@ -407,6 +407,16 @@
             <div class="shippic">
                 <img alt="Character Avatar" name="attr_character_avatar"/>
             </div>
+            <input type="hidden" name="attr_fsstatus" class="fs-status" value="Red">
+            <div class="fwd">
+                <div class="fwdtext">
+                    <h3><span name="attr_fShield"></span></h3>
+                </div>
+            </div>
+
+
+
+
 
 
 
@@ -668,6 +678,12 @@
             let aftShieldArray = values.aftShieldArray.split("/").map((e)=> parseInt(e));
             let aftShield = aftShieldArray[shieldLevel] || 0;
 
+            let fsStatus = (shieldLevel === 2 || portShield === 0) ? "Red":(shieldLevel === 1) ? "Orange":"Green";
+            let psStatus = (shieldLevel === 2 || forShield === 0) ? "Red":(shieldLevel === 1) ? "Orange":"Green";
+            let ssStatus = (shieldLevel === 2 || stbdShield === 0) ? "Red":(shieldLevel === 1) ? "Orange":"Green";
+            let asStatus = (shieldLevel === 2 || aftShield === 0) ? "Red":(shieldLevel === 1) ? "Orange":"Green";
+
+
 
             setAttrs({
                 enginestatus: engineStatus,
@@ -675,9 +691,14 @@
                 power: power,
                 speed: speed,
                 fshield: forShield,
+                fsstatus: fsStatus,
                 pshield: portShield,
+                psstatus: psStatus,
                 sshield: stbdShield,
+                ssstatus: ssStatus,
                 ashield: aftShield,
+                asstatus: asStatus,
+
                 r3display: reserveNames[0],
                 r4display: reserveNames[1],
                 r5display: reserveNames[2],
