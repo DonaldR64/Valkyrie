@@ -271,7 +271,7 @@ input[type="hidden"][value="Green"].as-status ~ .aft{
 
 .centrepic img{
     object-fit: contain;
-    max-height: 160px
+    max-height: 200px;
 }
 .centretext {
     position: absolute;
