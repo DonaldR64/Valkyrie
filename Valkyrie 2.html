@@ -350,63 +350,58 @@
                     <input class="reservechecks" type="checkbox" name="attr_aftshields2" value="1"> 
                 </div>
             </div>
-        </div>
 
-        <div>
-            <h4>Power To</h4>
-            <div class="reservelistB">
-                <input type="hidden" name="attr_r1status" class="r1-status" value="None">
-                <div class="r1power">
-                    <h5>Sensors</h5>
-                    <input class="reservechecks" type="checkbox" name="attr_reserve1" value="1">
-                </div>
 
-                <div class="r2power">
-                    <h5>Impulse Engines</h5>
-                    <input class="reservechecks" type="checkbox" name="attr_reserve2" value="1">
-                </div>
+            <div>
+                <h4>Power To</h4>
+                <div class="reservelistB">
+                    <input type="hidden" name="attr_r1status" class="r1-status" value="None">
+                    <div class="r1power">
+                        <h5>Sensors</h5>
+                        <input class="reservechecks" type="checkbox" name="attr_reserve1" value="1">
+                    </div>
 
-                <input type="hidden" name="attr_r3status" class="r3-status" value="None">
-                <div class="r3power">
-                    <h5><span name="attr_reservename3"></span></h5>
-                    <input class="reservechecks"type="checkbox" name="attr_reserve3" value="1">
-                </div>
+                    <div class="r2power">
+                        <h5>Impulse Engines</h5>
+                        <input class="reservechecks" type="checkbox" name="attr_reserve2" value="1">
+                    </div>
 
-                <input type="hidden" name="attr_r4status" class="r4-status" value="None">
-                <div class="r4power">
-                    <h5><span name="attr_reservename4"></span></h5>
-                    <input class="reservechecks" type="checkbox" name="attr_reserve4" value="1">
-                </div>
+                    <input type="hidden" name="attr_r3status" class="r3-status" value="None">
+                    <div class="r3power">
+                        <h5><span name="attr_reservename3"></span></h5>
+                        <input class="reservechecks"type="checkbox" name="attr_reserve3" value="1">
+                    </div>
 
-                <input type="hidden" name="attr_r5status" class="r5-status" value="None">
-                <div class="r5power">
-                    <h5><span name="attr_reservename5"></span></h5>
-                    <input class="reservechecks" type="checkbox"name="attr_reserve5" value="1">
-                </div>
+                    <input type="hidden" name="attr_r4status" class="r4-status" value="None">
+                    <div class="r4power">
+                        <h5><span name="attr_reservename4"></span></h5>
+                        <input class="reservechecks" type="checkbox" name="attr_reserve4" value="1">
+                    </div>
 
-                <input type="hidden" name="attr_r6status" class="r6-status" value="None">
-                <div class="r6power">
-                    <h5><span name="attr_reservename6"></span></h5>
-                    <input class="reservechecks" type="checkbox" name="attr_reserve6" value="1">
+                    <input type="hidden" name="attr_r5status" class="r5-status" value="None">
+                    <div class="r5power">
+                        <h5><span name="attr_reservename5"></span></h5>
+                        <input class="reservechecks" type="checkbox"name="attr_reserve5" value="1">
+                    </div>
+
+                    <input type="hidden" name="attr_r6status" class="r6-status" value="None">
+                    <div class="r6power">
+                        <h5><span name="attr_reservename6"></span></h5>
+                        <input class="reservechecks" type="checkbox" name="attr_reserve6" value="1">
+                    </div>
                 </div>
             </div>
-        </div>
-
         </section>
 
 
-
-
-
-
-        
-         <section class="ship">
+        <section class="ship">
             <div class="shipname">
                 <h2><span name="attr_character_name"></span></h2>
             </div>
 
             <div class="shippic">
-                <img alt="Character Avatar" name="attr_character_avatar"/>
+                <!-- <img alt="Character Avatar" name="attr_character_avatar"/> -->
+                Placeholder
             </div>
 
             <input type="hidden" name="attr_fsstatus" class="fs-status" value="Red">
@@ -438,19 +433,15 @@
             </div>
 
             <input type="hidden" name="attr_hullstatus" class="hull-status" value="Red">
-            <div class="hull">
+            <div class="hulldamage">
                 <h3>Hull: <span name="attr_hull"></span></h3>
             </div>
 
             <input type="hidden" name="attr_enginestatus" class="engine-status" value="Red">
-            <div class="engineinfo">
+            <div class="enginedamage">
                 <h3>Engine: <span name="attr_engine"></span></h3>
             </div>
-
-
-
-
-         </section>    
+        </section>    
 
         <section class="helm">
             <h3>Helm</h3>
@@ -462,17 +453,17 @@
 
         <section class="systems">
             <h3>Systems</h3>
-                <input type="hidden" name="attr_shieldstatus" class="shield-status" value="None">
+                <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Normal">
                 <div class="shieldstatus">
                     <h4>Shield Emitters</h4>
                 </div>
 
-                <input type="hidden" name="attr_thrusterstatus" class="thruster-status" value="None">
+                <input type="hidden" name="attr_thrusterstatus" class="thruster-status" value="Normal">
                 <div class="thrusterstatus">
                     <h4>Maneuvering Thrusters</h4>
                 </div>
 
-                <input type="hidden" name="attr_sensorstatus" class="sensor-status" value="None">
+                <input type="hidden" name="attr_sensorstatus" class="sensor-status" value="Normal">
                 <div class="sensorstatus">
                     <h4>Sensors</h4>
                 </div>
@@ -491,85 +482,82 @@
                 <div class="system3status">
                     <h4><span name="attr_system3"></span></h4>
                 </div>
-
-
-                    
         </section>
 
 
 
-          <section class="weapons">
-            <h3>Weapons</h3>
-            <div class="weaponinfo">
-                <div><span>Charge</span></div>
-                <div><span>Weapon</span></div>
-                <div><span>Type</span></div>
-                <div><span>Facing</span></div>
-                <div><span>Range</span></div>
-                <div><span>Dice</span></div>
-                <div><span>Ammo</span></div>
-            </div>
+        <section class="weapons">
+        <h3>Weapons</h3>
+        <div class="weaponinfo">
+            <div><span>Charge</span></div>
+            <div><span>Weapon</span></div>
+            <div><span>Type</span></div>
+            <div><span>Facing</span></div>
+            <div><span>Range</span></div>
+            <div><span>Dice</span></div>
+            <div><span>Ammo</span></div>
+        </div>
 
-            <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
-            <div class="weapon1">
-                <h4><span name="attr_weapon1charge"></span></h4>
-                <h4><span name="attr_weapon1name"></span></h4>
-                <h4><span name="attr_weapon1type"></span></h4>
-                <h4><span name="attr_weapon1facing"></span></h4>
-                <h4><span name="attr_weapon1range"></span></h4>
-                <h4><span name="attr_weapon1dice"></span></h4>
-                <h4><span name="attr_weapon1limits"></span></h4>
-            </div>
+        <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
+        <div class="weapon1">
+            <h4><span name="attr_weapon1charge"></span></h4>
+            <h4><span name="attr_weapon1name"></span></h4>
+            <h4><span name="attr_weapon1type"></span></h4>
+            <h4><span name="attr_weapon1facing"></span></h4>
+            <h4><span name="attr_weapon1range"></span></h4>
+            <h4><span name="attr_weapon1dice"></span></h4>
+            <h4><span name="attr_weapon1limits"></span></h4>
+        </div>
 
-            <input type="hidden" name="attr_weapon2status" class="weapon2-status" value="Off">
-            <div class="weapon2">
-                <h4><span name="attr_weapon2charge"></span></h4>
-                <h4><span name="attr_weapon2name"></span></h4>
-                <h4><span name="attr_weapon2type"></span></h4>
-                <h4><span name="attr_weapon2facing"></span></h4>
-                <h4><span name="attr_weapon2range"></span></h4>
-                <h4><span name="attr_weapon2dice"></span></h4>
-                <h4><span name="attr_weapon2limits"></span></h4>
-            </div>
+        <input type="hidden" name="attr_weapon2status" class="weapon2-status" value="Off">
+        <div class="weapon2">
+            <h4><span name="attr_weapon2charge"></span></h4>
+            <h4><span name="attr_weapon2name"></span></h4>
+            <h4><span name="attr_weapon2type"></span></h4>
+            <h4><span name="attr_weapon2facing"></span></h4>
+            <h4><span name="attr_weapon2range"></span></h4>
+            <h4><span name="attr_weapon2dice"></span></h4>
+            <h4><span name="attr_weapon2limits"></span></h4>
+        </div>
 
-            <input type="hidden" name="attr_weapon3status" class="weapon3-status" value="Off">
-            <div class="weapon3">
-                <h4><span name="attr_weapon3charge"></span></h4>
-                <h4><span name="attr_weapon3name"></span></h4>
-                <h4><span name="attr_weapon3type"></span></h4>
-                <h4><span name="attr_weapon3facing"></span></h4>
-                <h4><span name="attr_weapon3range"></span></h4>
-                <h4><span name="attr_weapon3dice"></span></h4>
-                <h4><span name="attr_weapon3limits"></span></h4>
-            </div>
+        <input type="hidden" name="attr_weapon3status" class="weapon3-status" value="Off">
+        <div class="weapon3">
+            <h4><span name="attr_weapon3charge"></span></h4>
+            <h4><span name="attr_weapon3name"></span></h4>
+            <h4><span name="attr_weapon3type"></span></h4>
+            <h4><span name="attr_weapon3facing"></span></h4>
+            <h4><span name="attr_weapon3range"></span></h4>
+            <h4><span name="attr_weapon3dice"></span></h4>
+            <h4><span name="attr_weapon3limits"></span></h4>
+        </div>
 
-            <input type="hidden" name="attr_weapon4status" class="weapon4-status" value="Off">
-            <div class="weapon4">
-                <h4><span name="attr_weapon4charge"></span></h4>
-                <h4><span name="attr_weapon4name"></span></h4>
-                <h4><span name="attr_weapon4type"></span></h4>
-                <h4><span name="attr_weapon4facing"></span></h4>
-                <h4><span name="attr_weapon4range"></span></h4>
-                <h4><span name="attr_weapon4dice"></span></h4>
-                <h4><span name="attr_weapon4limits"></span></h4>
-            </div>
+        <input type="hidden" name="attr_weapon4status" class="weapon4-status" value="Off">
+        <div class="weapon4">
+            <h4><span name="attr_weapon4charge"></span></h4>
+            <h4><span name="attr_weapon4name"></span></h4>
+            <h4><span name="attr_weapon4type"></span></h4>
+            <h4><span name="attr_weapon4facing"></span></h4>
+            <h4><span name="attr_weapon4range"></span></h4>
+            <h4><span name="attr_weapon4dice"></span></h4>
+            <h4><span name="attr_weapon4limits"></span></h4>
+        </div>
 
-            <input type="hidden" name="attr_weapon5status" class="weapon5-status" value="Off">
-            <div class="weapon5">
-                <h4><span name="attr_weapon5charge"></span></h4>
-                <h4><span name="attr_weapon5name"></span></h4>
-                <h4><span name="attr_weapon5type"></span></h4>
-                <h4><span name="attr_weapon5facing"></span></h4>
-                <h4><span name="attr_weapon5range"></span></h4>
-                <h4><span name="attr_weapon5dice"></span></h4>
-                <h4><span name="attr_weapon5limits"></span></h4>
-            </div>
-
-
+        <input type="hidden" name="attr_weapon5status" class="weapon5-status" value="Off">
+        <div class="weapon5">
+            <h4><span name="attr_weapon5charge"></span></h4>
+            <h4><span name="attr_weapon5name"></span></h4>
+            <h4><span name="attr_weapon5type"></span></h4>
+            <h4><span name="attr_weapon5facing"></span></h4>
+            <h4><span name="attr_weapon5range"></span></h4>
+            <h4><span name="attr_weapon5dice"></span></h4>
+            <h4><span name="attr_weapon5limits"></span></h4>
+        </div>
 
 
-            
-          </section>
+
+
+        
+        </section>
         </main>
       </div>
     </div>    
