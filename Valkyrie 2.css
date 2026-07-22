@@ -358,7 +358,7 @@ input[type="hidden"][value="Orange"].fs-status ~ .fwd{
 input[type="hidden"][value="Green"].fs-status ~ .fwd{
     background-color: green;
 }
-.fwdtext h3{
+.fwdtext h1{
     color:white;
 }
 
@@ -378,7 +378,7 @@ input[type="hidden"][value="Orange"].ps-status ~ .port{
 input[type="hidden"][value="Green"].ps-status ~ .port{
     background-color: green;
 }
-.porttext h3{
+.porttext h1{
     color:white;
 }
 
@@ -398,7 +398,7 @@ input[type="hidden"][value="Orange"].ss-status ~ .stbd{
 input[type="hidden"][value="Green"].ss-status ~ .stbd{
     background-color: green;
 }
-.stbdtext h3{
+.stbdtext h1{
     color:white;
 }
 
@@ -418,7 +418,7 @@ input[type="hidden"][value="Orange"].as-status ~ .aft{
 input[type="hidden"][value="Green"].as-status ~ .aft{
     background-color: green;
 }
-.afttext h3{
+.afttext h1{
     color:white;
 }
 
