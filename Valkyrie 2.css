@@ -759,7 +759,7 @@ input[type="hidden"][value="Damaged"].system3-status ~ .system3status h4{
 
 /* Top Sub Areas */
 .sidepic {
-    grid-row: 2/-1;
+    grid-row: 1/-1;
     grid-column: 1/-1;
     align-items: center;
     padding: 3px;
