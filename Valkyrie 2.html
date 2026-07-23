@@ -441,7 +441,7 @@
             <h3>Helm</h3>
             <div class="helminfo">
                 <h4>Max Current Speed: <span name="attr_speed"></span></h4>
-                <h4>Agile: <span name="attr_agiledisplay"></span></h4>
+                <h4><span name="attr_agiledisplay"></span></h4>
             </div>
         </section>
 
@@ -666,9 +666,9 @@
             let power = powerArray[engine] || 0;
 
             let agile = values.agile;
-            let agileDisplay = agile === "1" ? "True":"False";
+            let agileDisplay = agile === "1" ? "Agile":"";
 
-            let speed = Math.ceil((engine + 4) / hullMax * 3);
+            let speed = Math.ceil(engine * 4 / hullMax);
 
             let reserveStatus = [];
             for (let i=0;i<4;i++) {
