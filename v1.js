@@ -598,11 +598,53 @@ const Main = (() => {
             }
             this.player = player;
 
-            ////
+            this.class = aa.class;
+            this.engine = parseInt(token.get("bar1_value"));
+            this.engineMax = aa.engine_max;
+            this.engineTransition = parseInt(aa.engineTransition);
+            this.engineStatus = (engine >= engineTransition) ? "Green":(engine > 0) ? "Yellow":"Red";
 
+            let hull = parseInt(token.get("bar2_value"));
+            this.hullMax = parseInt(aa.hull_max) || 0;
+            let hullStatus = "Red";
+            if (hull > 1) {hullStatus = "Orange"};
+            if (hull > 3) {hullStatus = "Yellow"};
+            if (hull === hullMax) {hullStatus = "Green"};
+            this.hullStatus = hullStatus;
 
-            
+            this.agile = (aa.agile === "1") ? true:false;
+            this.speed = Math.ceil(this.engine * 4 / this.hullMax);
 
+            this.shieldStatus = aa.shieldStatus;
+            let shieldLevel = 0;
+            if (this.shieldStatus === "Damaged") {
+                shieldLevel = 1;
+            }
+            if (this.engineStatus !== "Green") {
+                shieldLevel = Math.min(shieldLevel + 1, 2);
+            }
+            this.shieldLevel = shieldLevel;
+            this.forShieldArray = aa.forShieldArray.split("/").map((e)=> parseInt(e));
+            let forShield = forShieldArray[shieldLevel] || 0;
+            let portShieldArray = aa.portShieldArray.split("/").map((e)=> parseInt(e));
+            let portShield = portShieldArray[shieldLevel] || 0;
+            let stbdShieldArray = values.stbdShieldArray.split("/").map((e)=> parseInt(e));
+            let stbdShield = stbdShieldArray[shieldLevel] || 0;
+            let aftShieldArray = values.aftShieldArray.split("/").map((e)=> parseInt(e));
+            let aftShield = aftShieldArray[shieldLevel] || 0;
+
+            let fsStatus = "Green";
+            if (shieldLevel === 1) {fsStatus = "Orange"};
+            if (shieldLevel === 2 || forShield === 0) {fsStatus = "Red"};
+            let psStatus = "Green";
+            if (shieldLevel === 1) {psStatus = "Orange"};
+            if (shieldLevel === 2 || portShield === 0) {psStatus = "Red"};
+            let ssStatus = "Green";
+            if (shieldLevel === 1) {ssStatus = "Orange"};
+            if (shieldLevel === 2 || stbdShield === 0) {ssStatus = "Red"};
+            let asStatus = "Green";
+            if (shieldLevel === 1) {asStatus = "Orange"};
+            if (shieldLevel === 2 || aftShield === 0) {asStatus = "Red"};
 
 
 
