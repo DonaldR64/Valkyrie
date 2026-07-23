@@ -668,7 +668,7 @@
             let agile = values.agile;
             let agileDisplay = agile === "1" ? "True":"False";
 
-            let speed = Math.round((engine + 2) / hullMax * 6);
+            let speed = Math.ceil((engine + 4) / hullMax * 3);
 
             let reserveStatus = [];
             for (let i=0;i<4;i++) {
