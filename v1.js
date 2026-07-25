@@ -1221,13 +1221,7 @@ const Main = (() => {
         tokens.forEach((token) => {
             let character = getObj("character", token.get("represents"));   
             if (character) {
-                let unit = new Unit(token.get("id"));
-            }
-        });
-        objectives.forEach((token) => {
-            let character = getObj("character", token.get("represents"));   
-            if (character) {
-                let ship = new show_tooltip(token.get("id"));
+                let unit = new Ship(token.get("id"));
             }
         });
 
