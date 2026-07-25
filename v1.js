@@ -1257,9 +1257,63 @@ const Main = (() => {
 
     }
 
-    const NextTurn = () => {
-       
+    const NextPhase = () => {
+        let phases = ["Command","Sensor","Movement","Combat","Repair"];
+        let currentPhase = state.Valkyrie.phase;
+        let phaseNum = phases[currentPhase] || -1; //start will be -1
+        phaseNum += 1;
+        let currentTurn = state.Valkyrie.turn;
+        if (phaseNum > 4) {
+            currentTurn += 1;
+            phaseNum = 0
+        };
+        currentPhase = phases[phaseNum];
+        state.Valkyrie.turn = currentTurn;
+        state.Valkyrie.phase = currentPhase;
+        SetupCard(currentPhase + " Phase","Turn " + currentTurn,"Neutral");
+        switch(currentPhase) {
+            case 'Command':
+                CommandPhase();
+                break;
+            case 'Sensor':
+                SensorPhase();
+                break;
+            case 'Movement':
+                MovementPhase();
+                break;
+            case 'Combat':
+                CombatPhase();
+                break;
+            case 'Repair':
+                RepairPhase();
+                break;
+        }
+        PrintCard();
     }
+
+    CommandPhase = () => {
+        _.each(ShipArray,ship => {
+            //recharge weapons as appropriate
+            _.each(ship.WeaponArray, weapon => {
+                if (weapon.status === "Red") {
+                    weapon.charge = "Red";
+                } else {
+                    if (weapon.notes.includes("Recharge")) {
+                        weapon.charge = (weapon.charge === "Orange") ? "Green":"Orange";
+                    } else {
+                        weapon.charge = "Green";
+                    }
+                }
+            })
+            //reset all power checkboxes
+////
+        })
+        outputCard.body.push("Allocate Power to each Ship");
+        outputCard.body.push("Go to Next Phase when all done");
+    }
+
+
+
 
 
 
@@ -1537,9 +1591,11 @@ const Main = (() => {
             playerIDs: [],
             players: {},
             factions: [],
-            turn: 0,
+            turn: 1,
             activeID: "",
             losLines: [],
+            phase: "Start",
+
         }
 
         
