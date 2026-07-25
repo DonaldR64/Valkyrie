@@ -74,7 +74,6 @@ const Main = (() => {
     let ShipArray = {};
     let Phases = ["Setup","Command","Sensor","Movement","Combat","Repair"];
 
-
     let outputCard = {title: "",subtitle: "",side: "",body: [],buttons: [],};
 
     const Factions = {
@@ -220,15 +219,18 @@ const Main = (() => {
 
 
     //Retrieve Values from character Sheet Attributes
-    const Attribute = (character,attributename) => {
+    const Attribute = (characterID,attributename) => {
         //Retrieve Values from character Sheet Attributes
-        let attributeobj = findObjs({type:'attribute',characterid: character.id, name: attributename})[0]
+        let attributeobj = findObjs({type:'attribute',characterid: characterID, name: attributename})[0]
         let attributevalue = "";
         if (attributeobj) {
             attributevalue = attributeobj.get('current');
         }
         return attributevalue;
     };
+
+
+
 
     const AttributeArray = (characterID) => {
         let aa = {}
@@ -1298,7 +1300,46 @@ const Main = (() => {
     }
 
     SensorPhase = () => {
+//check if any ships havent assigned power
+        //add up any ships with power to reserve1 which is sensors
+        let total = [0,0];
+        let shipList = [[],[]]
+        _.each(ShipArray,ship => {
+            let sensor = Attribute(ship.charID,"reserve1");
+            if (sensor === "1") {
+                shipList[ship.player].push(ship.name);
+                total[ship.player] += 2;
+            }
+            for (let i=1;i<4;i++) {
+                let sys = Attribute(ship.charID,"system" + i);
+                if (sys === "Advanced Sensors") {
+                    total[ship.player] += 1;
+                }
+            }
+        })
+        for (let player = 0;player++;player < 2) {
+            outputCard.body.push("[U]" + state.Valkyrie.factions[player] + "[/u]");
+            let roll1 = randomInteger(6);
+            let roll2 = randomInteger(6);
+            total[player] += roll1 + roll2;
+//a tip to show list of ships adding to total and rolls
+            outputCard.body.push("Sensor Total: " + total[player]);
+        }
 
+        outputCard.body.push("[hr]");
+        if (total[0] > total[1]) {
+            winner = 0;
+        } else if (total[1] > total[0]) {
+            winner = 1;
+        } else {
+            if (state.Valkyrie.lastWinner !== "") {
+                winner = (state.Valkyrie.lastWinner === 0) ? 1:0;
+            } else {
+                winner = (randomInteger(6) > 3) ? 1:0;
+            }
+        }
+        outputCard.body.push(state.Valkyrie.factions[winner] + " has Initiative");
+        state.Valkyrie.lastWinner = winner;
     }
 
     MovementPhase = () => {
@@ -1590,6 +1631,7 @@ const Main = (() => {
             activeID: "",
             losLines: [],
             phase: 0,
+            lastWinner: "",
 
         }
 
