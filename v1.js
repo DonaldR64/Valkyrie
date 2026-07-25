@@ -552,7 +552,6 @@ const Main = (() => {
             this.tokenIDs = [];
             this.cube = offset.toCube();
             this.label = offset.label();
-            this.offboard = false;
             HexMap[this.label] = this;
         }
 
@@ -602,18 +601,18 @@ const Main = (() => {
             let weaponArray = [];
             let letters = ["A","B","C","D","E"];
             let sysNum = 0;
-            for (w=1;w<6;w++) {
+            for (let w=1;w<6;w++) {
                 let weaponStatus = aa["weapon" + w + "status"];
-                if (weaponStatus === "Off") {continue};
-                weaponLetter = letters[sysNum];
+                let weaponName = aa["weapon" + w + "name"];
+                if (weaponStatus === "Off" || !weaponName) {continue};
+                let weaponLetter = letters[sysNum];
                 sysNum++;
-                weaponCharge = aa["weapon" + w + "charge"];
-                weaponName = aa["weapon" + w + "name"];
-                weaponType = aa["weapon" + w + "type"];
-                weaponFacing = aa["weapon" + w + 'facing'];
-                weaponRange = aa["weapon" + w + "range"].split("/").map((e) => parseInt(e));
-                weaponDice = parseInt(aa["weapon" + w + "dice"].split("d")[0]);
-                weaponNotes = aa["weapon" + w + "notes"];
+                let weaponCharge = aa["weapon" + w + "charge"];
+                let weaponType = aa["weapon" + w + "type"];
+                let weaponFacing = aa["weapon" + w + 'facing'];
+                let weaponRange = aa["weapon" + w + "range"].split("/").map((e) => parseInt(e));
+                let weaponDice = parseInt(aa["weapon" + w + "dice"].split("d")[0]);
+                let weaponNotes = aa["weapon" + w + "notes"];
                 let weapon = {
                     status: weaponStatus,
                     letter: weaponLetter,
@@ -1185,15 +1184,7 @@ const Main = (() => {
             }
         }
         //AddTerrain();    
-        //AddTokens();
-        _.each(HexMap,hex => {
-            if (hex.centre.x >= mapEdge) {
-                hex.offboard = true;
-                hex.terrain = "Offboard";
-                hex.type = "Offboard";
-            }
-        })
-
+        AddTokens();
         let elapsed = Date.now()-startTime;
         log("Hex Map Built in " + elapsed/1000 + " seconds");
     };
@@ -1570,7 +1561,7 @@ const Main = (() => {
         LoadPage();
         //RemoveLines(["Deploy","LOS"]);
         //RemoveDead();
-        if (Tag[1] === "All") {
+        if (Tag[1] && Tag[1] === "All") {
             tokens = findObjs({
                 _pageid: Campaign().get("playerpageid"),
                 _type: "graphic",
@@ -1585,7 +1576,6 @@ const Main = (() => {
                 layer: "foreground",
             });
             _.each(tokens,token => token.remove());
-    
         }
 
         BuildMap();
