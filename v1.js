@@ -1317,7 +1317,7 @@ const Main = (() => {
                 }
             }
         })
-        for (let player = 0;player++;player < 2) {
+        for (let player = 0;player<2;player++) {
             outputCard.body.push("[U]" + state.Valkyrie.factions[player] + "[/u]");
             let roll1 = randomInteger(6);
             let roll2 = randomInteger(6);
