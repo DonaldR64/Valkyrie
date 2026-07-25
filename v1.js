@@ -1306,13 +1306,33 @@ const Main = (() => {
                 }
             })
             //reset all power checkboxes
-////
+            let list = ["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"]
+            _.each(list,box => {
+                AttributeSet(ship.charID,box,"0");
+            })
         })
         outputCard.body.push("Allocate Power to each Ship");
         outputCard.body.push("Go to Next Phase when all done");
     }
 
+    SensorPhase = () => {
 
+    }
+
+    MovementPhase = () => {
+
+    }
+
+    CombatPhase = () => {
+
+    }
+
+    RepairPhase = () => {
+
+    }
+
+    
+    
 
 
 
