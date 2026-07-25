@@ -72,6 +72,8 @@ const Main = (() => {
     }
 
     let ShipArray = {};
+    let Phases = ["Setup","Command","Sensor","Movement","Combat","Repair"];
+
 
     let outputCard = {title: "",subtitle: "",side: "",body: [],buttons: [],};
 
@@ -1241,33 +1243,30 @@ const Main = (() => {
     }
 
     const NextPhase = () => {
-        let phases = ["Command","Sensor","Movement","Combat","Repair"];
         let currentPhase = state.Valkyrie.phase;
-        let phaseNum = phases[currentPhase] || -1; //start will be -1
-        phaseNum += 1;
         let currentTurn = state.Valkyrie.turn;
-        if (phaseNum > 4) {
+        currentPhase += 1;
+        if (currentPhase > 5) {
             currentTurn += 1;
-            phaseNum = 0
+            currentPhase = 1;
         };
-        currentPhase = phases[phaseNum];
         state.Valkyrie.turn = currentTurn;
         state.Valkyrie.phase = currentPhase;
-        SetupCard(currentPhase + " Phase","Turn " + currentTurn,"Neutral");
+        SetupCard(Phases[currentPhase] + " Phase","Turn " + currentTurn,"Neutral");
         switch(currentPhase) {
-            case 'Command':
+            case 1:
                 CommandPhase();
                 break;
-            case 'Sensor':
+            case 2:
                 SensorPhase();
                 break;
-            case 'Movement':
+            case 3:
                 MovementPhase();
                 break;
-            case 'Combat':
+            case 4:
                 CombatPhase();
                 break;
-            case 'Repair':
+            case 5:
                 RepairPhase();
                 break;
         }
@@ -1590,7 +1589,7 @@ const Main = (() => {
             turn: 1,
             activeID: "",
             losLines: [],
-            phase: "Start",
+            phase: 0,
 
         }
 
@@ -1972,8 +1971,9 @@ const Main = (() => {
             case '!AddAbilities':
                 AddAbilities(msg);
                 break;
-
-
+            case '!NextPhase':
+                NextPhase();
+                break;
             case '!SetForces':
                 SetForces();
                 break;
