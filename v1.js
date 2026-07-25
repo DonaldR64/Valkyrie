@@ -938,8 +938,6 @@ const Main = (() => {
                     name = keywordList[i].name;
                     text = keywordList[i].text;
                 }
-
-
                 AttributeSet(unit.charID,abName,name);
                 AttributeSet(unit.charID,abTextName,text);
             }
