@@ -1185,7 +1185,7 @@ const Main = (() => {
             }
         }
         //AddTerrain();    
-        AddTokens();
+        //AddTokens();
         _.each(HexMap,hex => {
             if (hex.centre.x >= mapEdge) {
                 hex.offboard = true;
@@ -1568,8 +1568,8 @@ const Main = (() => {
         let Tag = msg.content.split(";");
         let tokens;
         LoadPage();
-        RemoveLines(["Deploy","LOS"]);
-        RemoveDead();
+        //RemoveLines(["Deploy","LOS"]);
+        //RemoveDead();
         if (Tag[1] === "All") {
             tokens = findObjs({
                 _pageid: Campaign().get("playerpageid"),
@@ -1589,12 +1589,6 @@ const Main = (() => {
         }
 
         BuildMap();
-
-        let target = ShipArray[state.targetID];
-        if (target) {
-            target.token.remove();
-        }
-
 
         //clear arrays
         ShipArray = {};
