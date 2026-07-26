@@ -1300,7 +1300,6 @@ const Main = (() => {
     }
 
     SensorPhase = () => {
-//check if any ships havent assigned power
         //add up any ships with power to reserve1 which is sensors
         let total = [0,0];
         let shipList = [[],[]]
@@ -1324,8 +1323,8 @@ const Main = (() => {
             let tip = "Rolls: " + roll1 + " + " + roll2;
             tip += "<br>Bonus from Ships: " + total[player];
             tip += "<br>" + shipList[player].toString();
-            total[player] += roll1 + roll2;
-            tip = '[' + total[player]  + '](#" class="showtip" title="' + tip + ')';
+            let playerTotal = total[player] + roll1 + roll2;
+            tip = '[' + playerTotal  + '](#" class="showtip" title="' + tip + ')';
             outputCard.body.push("Sensor Total: " + tip);
         }
 
@@ -1346,15 +1345,20 @@ const Main = (() => {
     }
 
     MovementPhase = () => {
-
+        //Drifting Ships move
+        //Asteroids move
+        //Move Drones (launch in Combat now)
+        //Player with initiative moves half
+        //other player moves all
+        //then player with initiative moves remainder
     }
 
     CombatPhase = () => {
-
+        //starting with player with initiative, players can attack with ships, alternating
     }
 
     RepairPhase = () => {
-
+        //players take turns doing repairs on ships
     }
 
     
