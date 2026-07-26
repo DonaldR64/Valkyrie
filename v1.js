@@ -1277,6 +1277,9 @@ const Main = (() => {
     const NextPhase = () => {
         let currentPhase = state.Valkyrie.phase;
         let currentTurn = state.Valkyrie.turn;
+        if (currentPhase === 0) {
+            AddTokens();
+        }
         currentPhase += 1;
         if (currentPhase > 5) {
             currentTurn += 1;
@@ -1364,7 +1367,7 @@ const Main = (() => {
             winner = 0;
         } else if (total[1] > total[0]) {
             winner = 1;
-        } else {
+        } else if (total[0] === total[1]) {
             if (state.Valkyrie.lastWinner !== "") {
                 winner = (state.Valkyrie.lastWinner === 0) ? 1:0;
             } else {
@@ -1376,9 +1379,9 @@ const Main = (() => {
         PrintCard();
     }
 
-    const MovementPhaseA = () => {
+    const MovementPhase = () => {
+        //Drifting Ships and Asteroids Move 1 hex in last direction
         _.each(ShipArray,object => {
-            //Drifting Ships and Asteroids Move 1 hex in last direction
             if ((object.type === "Ship" && object.token.get("bar3_value") === 0) || object.type === "Asteroid") {
                 let direction = object.driftDirection;
                 let startCube = HexArray[object.cube];
@@ -1396,15 +1399,12 @@ const Main = (() => {
 
                 }
             }
-    
         })
-        MovementPhaseB();
-    }
 
-    const MovementPhaseB = () => {
+
         SetupCard("Movement Phase","Turn " + state.Valkyrie.turn,"Neutral");
         let A = state.Valkyrie.factions[state.Valkyrie.lastWinner]
-        let B = (state.Valyrie.lastWinner === 0) ? state.Valkyrie.factions[1]:state.Valkyrie.factions[0];
+        let B = (state.Valkyrie.lastWinner === 0) ? state.Valkyrie.factions[1]:state.Valkyrie.factions[0];
 
         outputCard.body.push(A + " moves Half their Fleet");
 
