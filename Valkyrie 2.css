@@ -785,6 +785,10 @@ input[type="hidden"][value="Damaged"].system3-status ~ .system3status h4{
 .namearea h3{
     color: white;
 }
+.namearea h4{
+    color: white;
+}
+
 
 .iconarea {
     grid-row: 1/-1;
