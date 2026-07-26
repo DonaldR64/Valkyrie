@@ -1321,9 +1321,12 @@ const Main = (() => {
             outputCard.body.push("[U]" + state.Valkyrie.factions[player] + "[/u]");
             let roll1 = randomInteger(6);
             let roll2 = randomInteger(6);
+            let tip = "Rolls: " + roll1 + " + " + roll2;
+            tip += "<br>Bonus from Ships: " + total[player];
+            tip += "<br>" + shipList[player].toString();
             total[player] += roll1 + roll2;
-//a tip to show list of ships adding to total and rolls
-            outputCard.body.push("Sensor Total: " + total[player]);
+            tip = '[' + total[player]  + '](#" class="showtip" title="' + tip + ')';
+            outputCard.body.push("Sensor Total: " + tip);
         }
 
         outputCard.body.push("[hr]");
