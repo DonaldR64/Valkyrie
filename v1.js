@@ -371,7 +371,7 @@ const Main = (() => {
             return new Cube(this.q + b.q, this.r + b.r, this.s + b.s);
         }
         angle(b) {
-            //angle between 2 hexes
+            //angle between 2 cubes
             let origin = this.toPoint();
             let destination = b.toPoint();
 
@@ -593,6 +593,7 @@ const Main = (() => {
                 name = this.charName;
             }
             this.name = name;
+            this.hexLabel = label;
 
             this.id = id;
             this.charID = charID;
@@ -735,6 +736,29 @@ const Main = (() => {
 
             
         }
+
+        Arc(b) {
+            let phi = Angle(HexMap[this.hexLabel].cube.angle(HexMap[b.hexLabel].cube));
+            phi = Angle(phi - this.token.get("rotation"));
+            let arc = "Unknown";
+            if (phi >= 315 || phi <= 45) {
+                arc = "Forward";
+            }
+            if (phi > 45 && phi < 135) {
+                arc = "Starboard";
+            }
+            if (phi >= 135 && phi <= 225) {
+                arc = "Aft";
+            }
+            if (phi > 225 && phi < 315) {
+                arc = "Port";
+            }
+            return arc;
+        }
+
+
+
+
 
 
 
@@ -1853,8 +1877,41 @@ const Main = (() => {
         } else {
             outputCard.body.push("[#0000ff]There is LOS[/#]");
             outputCard.body.push("[hr]");
-            _.each(shooter.weapons,weapon => {
-                //check each weapon for range and arc
+            let shooterArc = losResult.shooterArc;
+            let arc = shooterArc.charAt(0).toUpperCase();
+            let targetArc = losResult.targetArc;
+            outputCard.body.push("Target is in the " + shooterArc + " Arc");
+            outputCard.body.push("Target is being hit on its " + targetArc + " Arc"); 
+
+
+            _.each(shooter.weaponArray,weapon => {
+                let range = false;
+                let note = "";
+                if (weapon.facing.includes(arc) === true) {
+                    if (weaponRange.length === 1 && losResult.distance <= weaponRange[0]) {
+                        range = true;
+                    }
+                    if (weaponRange.length === 3) {
+                        if (losResult.distance <= weaponRange[2]) {
+                            range = true;
+                            note = "Long ";
+                        }
+                        if (losResult.distance <= weaponRange[1]) {
+                            note = "Medium ";
+                        }
+                        if (losResult.distance <= weaponRange[0]) {
+                            note = "Short ";
+                        }
+                    }
+                    if (range === false) {
+                        outputCard.body.push("[#ff0000]" + weapon.name + " has Arc but Target is out of range[/#]")
+                    } else {
+                        outputCard.body.push("[#0000ff]" + weapon.name + " has Arc and Target is within " + note + "Range[/#]");
+                    }
+                }
+
+
+
             })
             
 
@@ -1871,7 +1928,7 @@ const Main = (() => {
         let notes = [];
         let shooterHex = HexMap[shooter.hexLabel];
         let targetHex = HexMap[target.hexLabel];
-        let distance = targetHex.cube.distance(shooterHex.cube);
+        let distance = shooter.Distance(target);
       
         let finalLOS = true;
         let hexCover = false;
@@ -1897,7 +1954,6 @@ const Main = (() => {
                     if (object.type === "Asteroid") {
                         los[side] = false;
                         losReason[side] = "Asteroid";
-                        break;
                     }
                 })
             }
@@ -1918,20 +1974,14 @@ const Main = (() => {
             }
             finalLOSReason = "Blocked by " + finalLOSReason;
         }
-        if (los[0] === true && los[1] === true) {
-            if (interCover[0] === true && interCover[1] === true) {
-                interCoverFinal = true;
-            }
-        }
-
-
-
 
 
         let result = {
             los: finalLOS,
             losReason: finalLOSReason,
             distance: distance,
+            shooterArc: shooter.Arc(target),
+            targetArc: target.Arc(shooter),
         }
 
         return result;
