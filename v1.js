@@ -1298,7 +1298,7 @@ const Main = (() => {
                 MovementPhase();
                 break;
             case 4:
-                CombatPhaseA();
+                CombatPhase();
                 break;
             case 5:
                 RepairPhase();
@@ -1360,6 +1360,7 @@ const Main = (() => {
             let playerTotal = total[player] + roll1 + roll2;
             tip = '[' + playerTotal  + '](#" class="showtip" title="' + tip + ')';
             outputCard.body.push("Sensor Total: " + tip);
+            total[player] = playerTotal;
         }
 
         outputCard.body.push("[hr]");
@@ -1519,13 +1520,10 @@ const Main = (() => {
  
     const CombatPhase = () => {
         DroneMovement();
-
-
-
-
-
-        
-        //starting with player with initiative, players can attack with ships, alternating
+        SetupCard("Combat Phase","Turn " + state.Valkyrie.turn,"Neutral");
+        outputCard.body.push("Player's take turns Firing with one ship");
+        outputCard.body.push("Starting with the " + state.Valkyrie.factions[state.Valkyrie.lastWinner] + " player");
+        PrintCard();
     }
 
 
@@ -1535,7 +1533,10 @@ const Main = (() => {
 
 
     const RepairPhase = () => {
-        //players take turns doing repairs on ships
+        SetupCard("Repair Phase","Turn " + state.Valkyrie.turn,"Neutral");
+        outputCard.body.push("Player's take turns performing Repairs on one ship");
+        outputCard.body.push("Starting with the " + state.Valkyrie.factions[state.Valkyrie.lastWinner] + " player");
+        PrintCard();
     }
 
     
