@@ -2005,11 +2005,21 @@ const Main = (() => {
         let ship = ShipArray[tok.id];
         let newLabel = new Point(tok.get("left"),tok.get("top")).toCube().label();
         let prevLabel = new Point(prev.left,prev.top).toCube().label();
-
-        RemoveLines(["LOS"]);
-
-
-
+        if (ship && newLabel !== prevLabel) {
+            log(ship.name + " moving")
+            let index = HexMap[prevLabel].tokenIDs.indexOf(tok.id);
+            if (index > -1) {
+                HexMap[prevLabel].tokenIDs.splice(index,1);
+            }
+            HexMap[newLabel].tokenIDs.push(tok.id);
+            ship.hexLabel = newLabel;
+        } 
+        if (ship && tok.get("rotation") !== prev.rotation) {
+            log(ship.name + " turning")
+            let phi = Angle(tok.get("rotation"));
+            phi = Math.round(phi/60) * 60;
+            tok.set("rotation",phi);
+        }
     }
     
     const destroyGraphic = (obj) => {
