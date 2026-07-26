@@ -1888,18 +1888,18 @@ const Main = (() => {
                 let range = false;
                 let note = "";
                 if (weapon.facing.includes(arc) === true) {
-                    if (weaponRange.length === 1 && losResult.distance <= weaponRange[0]) {
+                    if (weapon.range.length === 1 && losResult.distance <= weapon.range[0]) {
                         range = true;
                     }
-                    if (weaponRange.length === 3) {
-                        if (losResult.distance <= weaponRange[2]) {
+                    if (weapon.range.length === 3) {
+                        if (losResult.distance <= weapon.range[2]) {
                             range = true;
                             note = "Long ";
                         }
-                        if (losResult.distance <= weaponRange[1]) {
+                        if (losResult.distance <= weapon.range[1]) {
                             note = "Medium ";
                         }
-                        if (losResult.distance <= weaponRange[0]) {
+                        if (losResult.distance <= weapon.range[0]) {
                             note = "Short ";
                         }
                     }
