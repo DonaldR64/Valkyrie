@@ -699,6 +699,21 @@ const Main = (() => {
             return HexMap[this.hexLabel].distance(HexMap[b.hexLabel]);
         }
 
+        MoveToken(targetHex) {
+            let index = HexMap[this.hexLabel].tokenIDs.indexOf(this.id);
+            if (index > -1) {
+                HexMap[this.hexLabel].tokenIDs.splice(index,1);
+            }
+            this.hexLabel = targetHex.label;
+            targetHex.tokenIDs.push(this.id);
+            this.token.set({
+                left: targetHex.centre.x,
+                top: targetHex.centre.y,
+            })
+        }
+
+
+
 
 
 
@@ -1262,7 +1277,6 @@ const Main = (() => {
         };
         state.Valkyrie.turn = currentTurn;
         state.Valkyrie.phase = currentPhase;
-        SetupCard(Phases[currentPhase] + " Phase","Turn " + currentTurn,"Neutral");
         switch(currentPhase) {
             case 1:
                 CommandPhase();
@@ -1271,19 +1285,19 @@ const Main = (() => {
                 SensorPhase();
                 break;
             case 3:
-                MovementPhaseA();
+                MovementPhase();
                 break;
             case 4:
-                CombatPhase();
+                CombatPhaseA();
                 break;
             case 5:
                 RepairPhase();
                 break;
         }
-        PrintCard();
     }
 
     const CommandPhase = () => {
+        SetupCard("Command Phase","Turn " + state.Valkyrie.turn,"Neutral");
         _.each(ShipArray,ship => {
             //recharge weapons as appropriate
             _.each(ship.WeaponArray, weapon => {
@@ -1305,9 +1319,11 @@ const Main = (() => {
         })
         outputCard.body.push("Allocate Power to each Ship");
         outputCard.body.push("Go to Next Phase when all done");
+        PrintCard();
     }
 
     const SensorPhase = () => {
+        SetupCard("Sensor Phase","Turn " + state.Valkyrie.turn,"Neutral");
         //add up any ships with power to reserve1 which is sensors
         let total = [0,0];
         let shipList = [[],[]]
@@ -1350,6 +1366,7 @@ const Main = (() => {
         }
         outputCard.body.push(state.Valkyrie.factions[winner] + " has Initiative");
         state.Valkyrie.lastWinner = winner;
+        PrintCard();
     }
 
     const MovementPhaseA = () => {
@@ -1374,6 +1391,23 @@ const Main = (() => {
             }
     
         })
+        MovementPhaseB();
+    }
+
+    const MovementPhaseB = () => {
+        SetupCard("Movement Phase","Turn " + state.Valkyrie.turn,"Neutral");
+        let A = state.Valkyrie.factions[state.Valkyrie.lastWinner]
+        let B = (state.Valyrie.lastWinner === 0) ? state.Valkyrie.factions[1]:state.Valkyrie.factions[0];
+
+        outputCard.body.push(A + " moves Half their Fleet");
+
+        outputCard.body.push("Then " + B);
+        outputCard.body.push("Then " + A + " moves the remainder");
+        PrintCard();
+    }
+
+
+    const DroneMovement = () => {
         //Move Drones (launched in Combat now)
         _.each(ShipArray,object => {
             if (object.type === "Drone") {
@@ -1382,34 +1416,44 @@ const Main = (() => {
                 let targetHex;
                 let distance = Infinity;
                 if (target) {
-                    targetHex = HexMap[target.hexLabel]
+                    targetHex = HexMap[target.hexLabel];
                     distance = startHex.distance(targetHex);
                 }
                 if (!target || distance > 12) {
                     //acquire new target or if none in 12 hexes, go dormant in which case no targetHex
-                    let possibleTargets = [];
+                    let sameSizeTargets = [];
+                    let otherSizeTargets = []
                     _.each(ShipArray,ship => {
                         if (ship.faction !== object.faction) {
                             let dist = obj.Distance(ship);
                             if (dist <= 12) {
                                 let info = {
-                                    id: ship.id,
-                                    dist: dist,
-                                    size: ship.size,
+                                        id: ship.id,
+                                        dist: dist,
+                                    }
+                                if (ship.size === object.targetSize) {
+                                    sameSizeTargets.push(info);
+                                } else {
+                                    otherSizeTargets.push(info);
                                 }
-                                possibleTargets.push(info);
                             }
-
-
-
                         }
                     })
-
-
-
+                    if (otherSizeTargets.length > 0) {
+                        otherSizeTargets.sort((a,b) => a.dist - b.dist); //sorted in ascending order of distance
+                        target = ShipArray[otherSizeTargets[0]];
+                    } 
+                    if (sameSizeTargets.length > 0) {
+                        sameSizeTargets.sort((a,b) => (a.dist - b.dist));
+                        target = ShipArray[sameSizeTargets[0]];
+                    }
+                    if (target) {
+                        targetHex = HexMap[target.hexLabel];
+                        distance = startHex.distance(targetHex);
+                    }
                 }
 
-
+                //no target Hex if no target, so it sits there this turn
                 if (targetHex) {
                     let lineA = startHex.cube.linedraw(targetHex);
                     let lineB = startHex.cube.linedraw2(targetHex);
@@ -1420,34 +1464,35 @@ const Main = (() => {
                         let nextHex = "";
                         let obj2;
                         if (hex1.terrain === "Empty Space" && hex1.tokenIDs.length === 0) {
-                            MoveDrone(hex1);
+                            object.MoveToken(hex1);
                             continue;
                         } else if (hex2.terrain === "Empty Space" && hex2.tokenIDs.length === 0) {
-                            MoveDrone(hex2);
+                            object.MoveToken(hex2);
                             continue;
                         } 
                         if (hex1.terrain === "Empty Space") {
+//run through ids
                             obj2 = ShipArray[hex1.tokenIDs[0]];
                             if (obj2.type !== "Asteroid") {
-                                MoveDrone(hex1);
+                                object.MoveToken(hex1);
                                 continue;
                             }
                         }
                         if (hex2.terrain === "Empty Space") {
                             obj2 = ShipArray[hex2.tokenIDs[0]];
                             if (obj2.type !== "Asteroid") {
-                                MoveDrone(hex2);
+                                object.MoveToken(hex2);
                                 continue;
                             }
                         }
                         //if gets to here, then either asteroids in 1 AND 2, or no empty space
                         if (obj2) {
                             //Collision with asteroid, use hex1 and resolve hit on asteroid
-                            MoveDrone(hex1);    
+                            object.MoveToken(hex1);    
                             object.DroneHit(obj2);
                         } else {
                             //Collision with non-empty space, use hex1 and drone is destroyed
-                            MoveDrone(hex1);
+                            object.MoveToken(hex1);
                             object.Destroyed();
                         }
                     }
@@ -1459,24 +1504,28 @@ const Main = (() => {
                 }
             }
         })
-
-        MovementPhaseB();
-    }
-
-    const MovementPhaseB = () => {
-     //Player with initiative moves half
-        //other player moves all
-        //then player with initiative moves remainder
-
-
     }
 
 
 
 
+ 
     const CombatPhase = () => {
+        DroneMovement();
+
+
+
+
+
+        
         //starting with player with initiative, players can attack with ships, alternating
     }
+
+
+
+
+
+
 
     const RepairPhase = () => {
         //players take turns doing repairs on ships
