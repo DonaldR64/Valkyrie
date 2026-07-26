@@ -1836,84 +1836,31 @@ const Main = (() => {
             return;
         }
         if (shooter.id == target.id) {
-            sendChat("","Its selecting shooter as target, may need to Move Shooter to Back");
+            sendChat("","Selected Same Token");
             return;
         }
 
-
         let shooterHex = HexMap[shooter.hexLabel]
         let targetHex = HexMap[target.hexLabel];
-
-
         SetupCard(shooter.name,"LOS",shooter.faction);
 
         let losResult = LOS(shooter,target);
-        if (losResult.notes && losResult.notes.length > 0) {
-            outputCard.body.push("Ranged Shrouding adds 3 Hexes to Distance");
-        }
-        let d = losResult.distance;
-        let m = d * 50;
-        outputCard.body.push("Distance: " + d + " Hexes (" + m + "m)");
+    
+        outputCard.body.push("Distance: " + losResult.distance + " Hexes");
         if (losResult.los === false) {
-            outputCard.body.push("No LOS to Target");
+            outputCard.body.push("[#ff0000]No LOS[/#]");
             outputCard.body.push(losResult.losReason);
         } else {
-            outputCard.body.push("There is LOS to Target");
-            if (losResult.hexCover === true) {
-                outputCard.body.push("Target Is in Cover");
-            }
-            if (losResult.interCover === true) {
-                outputCard.body.push("Target Has Intervening Cover");
-            }
-            if (losResult.building === true) {
-                outputCard.body.push("Target in Building");
-            }
-        }
-        outputCard.body.push("[hr]");
-        let weaponWith = false,weaponWithout = false;
+            outputCard.body.push("[#0000ff]There is LOS[/#]");
+            outputCard.body.push("[hr]");
+            _.each(shooter.weapons,weapon => {
+                //check each weapon for range and arc
+            })
+            
 
-        _.each(shooter.weapons,weapon => {
-            if (weapon.type !== "CCW") {
-                let range = (target.type === "Aircraft" && weapon.keywords.includes("Unstoppable") === false) ? weapon.range - 6:weapon.range;   
-                if (shooter.keywords.includes("Increased Shooting Range") || shooter.Auras().includes("Increased Shooting Range")) {
-                    range += 3;
-                }
-                if (losResult.los === false && weapon.keywords.includes("Indirect") === false) {
-                    outputCard.body.push("[#FF0000]" + weapon.name + " - no LOS[/#]");
-                    weaponWithout = true;
-                } else {
-                    if (losResult.distance > range) {
-                        outputCard.body.push("[#FF0000]" + weapon.name + " - not in Range[/#]");
-                        weaponWithout = true;
-                    } else if (losResult.los === false && weapon.keywords.includes("Indirect")) {
-                        outputCard.body.push("[#0000ff]" + weapon.name + " - Indirect and In Range[/#]");
-                        weaponWith = true;
-                    } else {
-                        outputCard.body.push("[#0000ff]" + weapon.name + " - In LOS and In Range[/#]");
-                        weaponWith = true;
-                    }
-                }
-            }
-        })
+        }
+
         
-        let pt1 = [shooterHex.centre.x,shooterHex.centre.y];
-        let pt2 = [targetHex.centre.x,targetHex.centre.y];
-        if (losResult.blockedHexLabel) {
-            pt2 = [HexMap[losResult.blockedHexLabel].centre.x,HexMap[losResult.blockedHexLabel].centre.y];
-        }
-        let set = [pt1,pt2];
-        let colour = "#000000";
-
-        if (weaponWith === true && weaponWithout === false) {
-            colour = "#00ff00";
-        } else if (weaponWith === true && weaponWithout === true) {
-            colour = "#ff0000";
-        } 
-        if (weaponWith === false && weaponWithout === false) {
-            outputCard.body.push("Only CCW Weapons");
-        }
-        DrawLine(set,colour,"LOS");
-        ButtonInfo("Remove Line","!RemoveLines2");
         PrintCard();
     }
 
@@ -1924,47 +1871,9 @@ const Main = (() => {
         let notes = [];
         let shooterHex = HexMap[shooter.hexLabel];
         let targetHex = HexMap[target.hexLabel];
-        if (shooter.type === "Titan") {
-            let cubes = shooterHex.cube.linedraw(targetHex.cube);
-            let cube = cubes[0];
-            shooterHex = HexMap[cube.label()];
-        }
-        if (target.type === "Titan") {
-            let cubes = targetHex.cube.linedraw(shooterHex.cube);
-            let cube = cubes[0];
-            targetHex = HexMap[cube.label()];
-        }
-
-
-
         let distance = targetHex.cube.distance(shooterHex.cube);
-        let shooterHeight = shooterHex.elevation;
-        let targetHeight = targetHex.elevation;
-        if (shooter.keywords.includes("Tall")) {shooterHeight += 2};
-        if (target.keywords.includes("Tall")) {targetHeight += 2};
-        if ((shooter.type === "Infantry" || shooter.type === "Hero" || shooter.type === "Light Vehicle/Small Monster") && shooterHex.building === true) {
-            shooterHeight += shooterHex.terrainHeight - buildingLevelHeight;
-        }
-        if ((target.type === "Infantry" || target.type === "Hero" || target.type === "Light Vehicle/Small Monster") && targetHex.building === true) {
-            targetHeight += targetHex.terrainHeight - buildingLevelHeight;        
-        }
-        let pt1 = new Point(0,shooterHeight);
-        let pt2 = new Point(distance,targetHeight);
-        let pt3,pt4,line1;
-
-        if (shooter.type === "Aircraft" || target.type === "Aircraft") {
-            let result = {los: true,distance: distance,hexCover: false,interCover: false,building: false};
-            return result;
-        }
-
-        if ((target.Auras().includes("Ranged Shrouding") || target.keywords.includes("Ranged Shrouding")) && distance > 3) {
-            distance += 3;
-            notes.push("Ranged Shrouding");
-        }
-
+      
         let finalLOS = true;
-        let interCoverFinal = false;
-        let finalBlockedHexLabel;
         let hexCover = false;
         let finalLOSReason = "";
  
@@ -1973,74 +1882,37 @@ const Main = (() => {
 
         let len = labels[0].length;
         let los = [true,true];
-        let interCover = [false,false];
         let losReason = ["",""];
-        let blockedHexLabel;
         for (let side=0;side<2;side++) {
             for (let i=0;i<len;i++) {
                 let interHex = HexMap[labels[side][i]];
-                //Hills
-                if (interHex.hill === true) {
-                    if (interHex.elevation > shooterHeight && interHex.elevation > targetHeight) {
+                if (interHex.terrain !== "Empty Space") {
+                    los[side] = false;
+                    losReason[side] = interHex.terrain;
+                    break;
+                }
+                let ids = interHex.tokenIDs;
+                _.each(ids,id => {
+                    let object = ShipArray[id];
+                    if (object.type === "Asteroid") {
                         los[side] = false;
-                        losReason[side] = "Hill";
-                        if (interHex.terrain.includes("Ridgeline")) {
-                            losReason[side] = "Ridgeline/Hill";
-                        }
-                        blockedHexLabel = interHex.label;
+                        losReason[side] = "Asteroid";
                         break;
                     }
-                }
-                //Intervening Units
-                if (interHex.tokenIDs.length > 0 && interHex.label !== targetHex.label) {
-                    let u2 = ShipArray[interHex.tokenIDs[0]];
-                    if (u2.type && u2.type !== "Objective" && u2.type !== "Aircraft") {
-                        let h = 1;
-                        if (u2.keywords.includes("Tall")) {h = 3};
-                        pt3 = new Point(i+1,0);
-                        pt4 = new Point(i+1,(interHex.elevation + interHex.terrainHeight + h));
-                        line1 = lineLine(pt1,pt2,pt3,pt4); //intersection
-                        if (line1) {
-                            los[side] = false;
-                            losReason[side] = u2.name;
-                            blockedHexLabel = interHex.label;
-                            break;
-                        }
-                    }
-                }
-                //Blocking Terrain or Cover Terrain
-                pt3 = new Point(i+1,0);
-                pt4 = new Point(i+1,(interHex.elevation + interHex.terrainHeight));
-                line1 = lineLine(pt1,pt2,pt3,pt4); //intersection
-                if (line1) {
-                    if (interHex.blockLOS === true && i<(len-1)) {
-                        los[side] = false;
-                        losReason[side] = interHex.terrain;
-                        blockedHexLabel = interHex.label;
-                        break;
-                    }
-                    if (interHex.cover === true && target.keywords.includes("Tall") === false) {
-                        interCover[side] = true;
-                    } 
-                    if (interHex.cover === "Infantry" && (target.type === "Infantry" || target.type === "Hero")) {
-                        interCover[side] = true;
-                    } 
-                }
-                //does edge at end give cover, and does so unless tall unit
-                if (len > 1 && i === (len-1) && target.keywords.includes("Tall") === false) {
-                    let dir = HexMap[labels[side][i-1]].cube.whatDirection(interHex.cube)
-                    let edge = HexMap[labels[side][i-1]].edges[dir];
-                    if (edge !== "Open") {
-                        interCover[side] = true;
-                    }
-                }
+                })
             }
         }
+
+
+
+
+
+
+
 
         if (los[0] === false && los[1] === false) {
             finalLOS = false;
             finalLOSReason = losReason[0];
-            finalBlockedHexLabel = blockedHexLabel;
             if (losReason[0] !== losReason[1]) {
                 finalLOSReason += " / " + losReason[1];
             }
@@ -2051,35 +1923,8 @@ const Main = (() => {
                 interCoverFinal = true;
             }
         }
-        if (los[0] === true && los[1] === false) {
-            interCoverFinal = interCover[0];
-        }
-        if (los[0] === false && los[1] === true) {
-            interCoverFinal = interCover[1];
-        }
-
-        if (targetHex.cover === true) {
-            hexCover = true;
-        }
-        if (targetHex.cover === false && targetHex.ridgeline === true) {
-            let phi = Angle(shooterHex.cube.angle(targetHex.cube));
-            for (let i=0;i<targetHex.ridgelineAngles.length;i++) {
-                let theta = targetHex.ridgelineAngles[i];
-                let theta2 = Angle(theta + 180);
-                let delta = Math.abs(theta-phi);
-                let delta2 = Math.abs(theta2 - phi);
-                if (delta > 30 && delta2 > 30) {
-                    hexCover = true;
-                    break;
-                }
-            }
-        }
 
 
-
-        if (targetHex.cover === "Infantry" && target.type === "Infantry") {
-            hexCover = true;
-        }
 
 
 
@@ -2087,11 +1932,6 @@ const Main = (() => {
             los: finalLOS,
             losReason: finalLOSReason,
             distance: distance,
-            hexCover: hexCover,
-            interCover: interCoverFinal,
-            building: targetHex.building,
-            blockedHexLabel: finalBlockedHexLabel,
-            notes: notes,
         }
 
         return result;
@@ -2179,7 +2019,6 @@ const Main = (() => {
             case '!CheckLOS':
                 CheckLOS(msg);
                 break;
-          
             case '!Roll':
                 RollDice(msg);
                 break;
