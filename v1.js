@@ -712,9 +712,16 @@ const Main = (() => {
             })
         }
 
+        DroneHit(obj2) {
+
+        }
+
+        Destroyed() {
 
 
 
+            
+        }
 
 
 
