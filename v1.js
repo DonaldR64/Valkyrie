@@ -553,6 +553,7 @@ const Main = (() => {
             this.centre = point;
             let offset = point.toOffset();
             this.offset = offset;
+            this.terrain = "Empty Space";
             this.tokenIDs = [];
             this.cube = offset.toCube();
             this.label = offset.label();
@@ -601,6 +602,9 @@ const Main = (() => {
             }
             this.player = player;
             this.token = token;
+            this.size = parseInt(aa.size);
+
+
 
             let weaponArray = [];
             let letters = ["A","B","C","D","E"];
@@ -633,8 +637,10 @@ const Main = (() => {
             this.weaponArray = weaponArray;
 
 
-
-
+            //various
+            this.driftDirection = 0; //reset when moves
+            this.targetID = ""; //used by drones
+            this.targetSize = 0;//used by drones
 
 
             ShipArray[id] = this;
@@ -689,7 +695,9 @@ const Main = (() => {
 
 
 
-
+        Distance(b) {
+            return HexMap[this.hexLabel].distance(HexMap[b.hexLabel]);
+        }
 
 
 
@@ -1263,7 +1271,7 @@ const Main = (() => {
                 SensorPhase();
                 break;
             case 3:
-                MovementPhase();
+                MovementPhaseA();
                 break;
             case 4:
                 CombatPhase();
@@ -1275,7 +1283,7 @@ const Main = (() => {
         PrintCard();
     }
 
-    CommandPhase = () => {
+    const CommandPhase = () => {
         _.each(ShipArray,ship => {
             //recharge weapons as appropriate
             _.each(ship.WeaponArray, weapon => {
@@ -1299,7 +1307,7 @@ const Main = (() => {
         outputCard.body.push("Go to Next Phase when all done");
     }
 
-    SensorPhase = () => {
+    const SensorPhase = () => {
         //add up any ships with power to reserve1 which is sensors
         let total = [0,0];
         let shipList = [[],[]]
@@ -1344,20 +1352,133 @@ const Main = (() => {
         state.Valkyrie.lastWinner = winner;
     }
 
-    MovementPhase = () => {
-        //Drifting Ships move
-        //Asteroids move
-        //Move Drones (launch in Combat now)
-        //Player with initiative moves half
-        //other player moves all
-        //then player with initiative moves remainder
+    const MovementPhaseA = () => {
+        _.each(ShipArray,object => {
+            //Drifting Ships and Asteroids Move 1 hex in last direction
+            if ((object.type === "Ship" && object.token.get("bar3_value") === 0) || object.type === "Asteroid") {
+                let direction = object.driftDirection;
+                let startCube = HexArray[object.cube];
+                let endCube = startCube.neighbour(direction);
+                let nexHexLabel = endCube.label();
+                if (HexMap[newHexLabel].tokenIDs !== "") {
+                    //Collision
+
+
+
+                }
+                if (HexMap[newHexLabel].terrain !== "Empty Space") {
+                    //Collision of some sort
+
+
+                }
+            }
+    
+        })
+        //Move Drones (launched in Combat now)
+        _.each(ShipArray,object => {
+            if (object.type === "Drone") {
+                let target = ShipArray[object.targetID];
+                let startHex = HexMap[object.hexLabel];
+                let targetHex;
+                let distance = Infinity;
+                if (target) {
+                    targetHex = HexMap[target.hexLabel]
+                    distance = startHex.distance(targetHex);
+                }
+                if (!target || distance > 12) {
+                    //acquire new target or if none in 12 hexes, go dormant in which case no targetHex
+                    let possibleTargets = [];
+                    _.each(ShipArray,ship => {
+                        if (ship.faction !== object.faction) {
+                            let dist = obj.Distance(ship);
+                            if (dist <= 12) {
+                                let info = {
+                                    id: ship.id,
+                                    dist: dist,
+                                    size: ship.size,
+                                }
+                                possibleTargets.push(info);
+                            }
+
+
+
+                        }
+                    })
+
+
+
+                }
+
+
+                if (targetHex) {
+                    let lineA = startHex.cube.linedraw(targetHex);
+                    let lineB = startHex.cube.linedraw2(targetHex);
+                    for (let i=0;i<distance;i++) {
+                        let hex1 = HexMap[lineA[i]];
+                        let hex2 = HexMap[lineB[i]];
+                        let note = "";
+                        let nextHex = "";
+                        let obj2;
+                        if (hex1.terrain === "Empty Space" && hex1.tokenIDs.length === 0) {
+                            MoveDrone(hex1);
+                            continue;
+                        } else if (hex2.terrain === "Empty Space" && hex2.tokenIDs.length === 0) {
+                            MoveDrone(hex2);
+                            continue;
+                        } 
+                        if (hex1.terrain === "Empty Space") {
+                            obj2 = ShipArray[hex1.tokenIDs[0]];
+                            if (obj2.type !== "Asteroid") {
+                                MoveDrone(hex1);
+                                continue;
+                            }
+                        }
+                        if (hex2.terrain === "Empty Space") {
+                            obj2 = ShipArray[hex2.tokenIDs[0]];
+                            if (obj2.type !== "Asteroid") {
+                                MoveDrone(hex2);
+                                continue;
+                            }
+                        }
+                        //if gets to here, then either asteroids in 1 AND 2, or no empty space
+                        if (obj2) {
+                            //Collision with asteroid, use hex1 and resolve hit on asteroid
+                            MoveDrone(hex1);    
+                            object.DroneHit(obj2);
+                        } else {
+                            //Collision with non-empty space, use hex1 and drone is destroyed
+                            MoveDrone(hex1);
+                            object.Destroyed();
+                        }
+                    }
+                    //if hasnt hit something yet, check if hit target
+                    if (distance <= 3) {
+                        //all drones speed 3
+                        object.DroneHit(target);
+                    } 
+                }
+            }
+        })
+
+        MovementPhaseB();
     }
 
-    CombatPhase = () => {
+    const MovementPhaseB = () => {
+     //Player with initiative moves half
+        //other player moves all
+        //then player with initiative moves remainder
+
+
+    }
+
+
+
+
+    const CombatPhase = () => {
         //starting with player with initiative, players can attack with ships, alternating
     }
 
-    RepairPhase = () => {
+    const RepairPhase = () => {
         //players take turns doing repairs on ships
     }
 
