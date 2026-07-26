@@ -670,13 +670,12 @@
             let powerArray = values.powerArray.split("/").map((e) => parseInt(e))
             let power = powerArray[engine] || 0;
 
-            let agile = parseInt(values.agile);
-            if (agile !== "1") {agile = 2};
+            let agile = parseInt(values.agile) === 1 ? 0:1;
             let ts = values.thrusterstatus;
             if (ts === "Damaged") {
                 agile++;
             }
-            let agileList = ["","Agile","Normal","Slow","Lumbering"];
+            let agileList = ["Agile","Normal","Slow","Lumbering"];
             let agileDisplay = agileList[agile];
 
             let speed = Math.ceil(engine * 4 / hullMax);
