@@ -19,6 +19,9 @@ const Main = (() => {
         b3: 2/3,
     }
 
+
+    const ShipTypes = ["Heavy Cruiser","Light Cruiser","Destroyer","Frigate","Scout"];
+
     const DefineHexInfo = () => {
         HexSize = (70 * pageInfo.scale)/M.f0;
         if (pageInfo.type === "hex") {
@@ -229,6 +232,10 @@ const Main = (() => {
         return attributevalue;
     };
 
+    const AttributeID = (characterID,attributename) => {
+        let attributeobj = findObjs({type:'attribute',characterid: characterID, name: attributename})[0];
+        return attributeobj.get("id");
+    }
 
 
 
@@ -603,6 +610,12 @@ const Main = (() => {
             this.player = player;
             this.token = token;
             this.size = parseInt(aa.size);
+            this.hullMax = parseInt(aa.hull_max);
+            this.engineMax = parseInt(aa.engine_max);
+            this.type = aa.type;
+            this.hull = parseInt(token.get("bar1_value"));
+            this.engine = parseInt(token.get("bar3_value"));
+            this.speed = Math.ceil(this.engineMax * 4 / this.hullMax);
 
 
 
@@ -1277,9 +1290,6 @@ const Main = (() => {
     const NextPhase = () => {
         let currentPhase = state.Valkyrie.phase;
         let currentTurn = state.Valkyrie.turn;
-        if (currentPhase === 0) {
-            AddTokens();
-        }
         currentPhase += 1;
         if (currentPhase > 5) {
             currentTurn += 1;
@@ -1630,90 +1640,45 @@ const Main = (() => {
 
 
 
-    const SetForces = () => {
-        //resets all tokens to base levels, makes sure theyre in arrays etc
-        //renames also
-        let tokens = findObjs({
-            _pageid: Campaign().get("playerpageid"),
-            _type: "graphic",
-            _subtype: "token",
-            layer: "objects",
-        });
-        let tokens2 = findObjs({
-            _pageid: Campaign().get("playerpageid"),
-            _type: "graphic",
-            _subtype: "token",
-            layer: "foreground",
-        });
-        tokens = tokens.concat(tokens2);
-        let names = {};
+    const SetFleets = () => {
+        AddTokens();
+        _.each(ShipArray,ship => {
+            if (ship.type === "Asteroid") {
+                //randomize direction
 
-        for (let i=0;i<tokens.length;i++) {
-            let token = tokens[i];
-            let ship = ShipArray[token];
-            let character = getObj("character", token.get("represents"));   
-            let name = character.get("name");
-            
-            if (!unit) {
-                unit = new Unit(token.get("id"));
-                if (!unit.faction || name.includes("Objective")) {
-                    unit.faction === "Neutral";
-                    continue;
-                }
-            }
-            let auraShape = true;
-            let ds = false;
-            if (unit.type === "Hero") {
-                let name = HeroNames(unit);
-                unit.name = name;
-                unit.token.set("name",name);
-                toFront(unit.token);
-                auraShape = false;
-                ds = true;
-            } else {
-                name = name.split("//")[0].trim();
-                if (names[name]) {
-                    names[name]++;
-                    unit.name = name + " " + names[name];
-                } else {
-                    unit.name = name;
-                    names[name] = 1;
-                }
-                unit.token.set("name",unit.name); 
-            }
 
-            let a1c = Factions[unit.faction].objColour || "#ffffff";
-
-            unit.token.set({
-                bar1_value: unit.wounds,
-                bar1_max: unit.wounds,
-                showplayers_bar1: true,
-                aura1_color: a1c,
-                aura1_radius: 0.1,
-                aura2_color: "transparent",
-                showplayers_aura1: true,
-                tooltip: "",
-                show_tooltip: true,
-                showplayers_tooltip: true,
-                showplayers_name: true,
-                statusmarkers: "",
-                aura1_square: auraShape,
-                tint_color: "transparent",
-                disableSnapping: ds,
-            })
-            if (unit.casterLevel > 0) {
-                unit.token.set({
-                    bar2_value: unit.casterLevel,
-                    bar2_max: 6,
-                    showplayers_bar2: true,
+            } 
+            if (ShipTypes.includes(ship.type)) {
+                ship.engine = ship.engineMax;
+                ship.hull = ship.hullMax;
+                let speed = Math.ceil(ship.engineMax * 4 / ship.hullMax);
+                ship.speed = speed;
+                let hullID = AttributeID(ship.charID,"hull");
+                let engineID = AttributeID(ship.charID,"engine");
+                let speedID = AttributeID(ship.charID,"speed");
+                ship.token.set({
+                    bar1_value: ship.hull,
+                    bar1_max: ship.hullMax,
+                    bar1_link: hullID,
+                    showplayers_bar1: true,
+                    aura1_color: "#00ff00",
+                    aura1_radius: 0.1,
+                    showplayers_aura1: true,
+                    showplayers_name: true,
+                    statusmarkers: "",
+                    tint_color: "transparent",
+                    bar2_value: ship.speed,
+                    bar2_link: speedID,
+                    bar3_value: ship.engine,
+                    bar3_max: ship.engineMax,
+                    bar3_link: engineID,
                 })
-            };
 
 
-            AddAbilities2(unit)
+                //AddAbilities(ship);
+            }
 
-
-        }
+        });
 
 
 
@@ -2201,8 +2166,8 @@ const Main = (() => {
             case '!NextPhase':
                 NextPhase();
                 break;
-            case '!SetForces':
-                SetForces();
+            case '!SetFleets':
+                SetFleets();
                 break;
             case '!SetupGame':
                 SetupGame(msg);
