@@ -44,7 +44,13 @@
         <div class="col">
             <h3>Stats</h3>
             <label>Size:</label><input type="number" name="attr_size">
-            <label>Agile Turning:</label><input type="checkbox" name="attr_agile" value="1">
+            <label for="attr_agile">Faction:</label>
+            <select name="attr_agile">
+                <option value="" selected disabled hidden>Choose here</option>
+                <option value=0>Agile Turning</option>
+                <option value=1>Normal Turning</option>
+                <option value=2>Slow Turning</option>
+            </select>
             <label for="attr_type">Type:</label>
             <select name="attr_type">
                 <option value="" selected disabled hidden>Choose here</option>
@@ -670,7 +676,7 @@
             let powerArray = values.powerArray.split("/").map((e) => parseInt(e))
             let power = powerArray[engine] || 0;
 
-            let agile = parseInt(values.agile) === 1 ? 0:1;
+            let agile = parseInt(values.agile);
             let ts = values.thrusterstatus;
             if (ts === "Damaged") {
                 agile++;
