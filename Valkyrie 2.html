@@ -44,7 +44,7 @@
         <div class="col">
             <h3>Stats</h3>
             <label>Size:</label><input type="number" name="attr_size">
-            <label>Agile:</label><input type="checkbox" name="attr_agile" value="1">
+            <label>Agile Turning:</label><input type="checkbox" name="attr_agile" value="1">
             <label for="attr_type">Type:</label>
             <select name="attr_type">
                 <option value="" selected disabled hidden>Choose here</option>
@@ -446,7 +446,7 @@
             <h3>Helm</h3>
             <div class="helminfo">
                 <h4>Max Current Speed: <span name="attr_speed"></span></h4>
-                <h4><span name="attr_agiledisplay"></span></h4>
+                <h4><span name="attr_agiledisplay"></span> Turning</h4>
             </div>
         </section>
 
@@ -651,7 +651,7 @@
 
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","hull","hull_max","engine","engine_max","engineTransition","powerArray","agile","forShieldArray","portShieldArray","stbdShieldArray","aftShieldArray","shieldstatus","reserveName3","reserveName4","reserveName5","reserveName6","weapon1status","weapon2status","weapon3status","sensorstatus","system1status"], function(values) {
+        getAttrs(["faction","hull","hull_max","engine","engine_max","engineTransition","powerArray","agile","forShieldArray","portShieldArray","stbdShieldArray","aftShieldArray","shieldstatus","reserveName3","reserveName4","reserveName5","reserveName6","weapon1status","weapon2status","weapon3status","sensorstatus","system1status","thrusterstatus"], function(values) {
             let engine = parseInt(values.engine) || 0;
             let engineMax = parseInt(values.engine_max) || 0;
             let engineTrans = parseInt(values.engineTransition) || 0;
@@ -670,8 +670,14 @@
             let powerArray = values.powerArray.split("/").map((e) => parseInt(e))
             let power = powerArray[engine] || 0;
 
-            let agile = values.agile;
-            let agileDisplay = agile === "1" ? "Agile":"";
+            let agile = parseInt(values.agile);
+            if (agile !== "1") {agile = 2};
+            let ts = values.thrusterstatus;
+            if (ts === "Damaged") {
+                agile++;
+            }
+            let agileList = ["","Agile","Normal","Slow","Lumbering"];
+            let agileDisplay = agileList[agile];
 
             let speed = Math.ceil(engine * 4 / hullMax);
 
