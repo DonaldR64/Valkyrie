@@ -518,7 +518,7 @@
 
             <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
             <div class="weapon1">
-                <h4><span name="attr_weapon1charge"></span></h4>
+                <h4><span name="attr_weapon1chargedisplay"></span></h4>
                 <h4>A</span></h4>
                 <h4><span name="attr_weapon1name"></span></h4>
                 <h4><span name="attr_weapon1type"></span></h4>
@@ -530,7 +530,7 @@
 
             <input type="hidden" name="attr_weapon2status" class="weapon2-status" value="Off">
             <div class="weapon2">
-                <h4><span name="attr_weapon2charge"></span></h4>
+                <h4><span name="attr_weapon2chargedisplay"></span></h4>
                 <h4>B</h4></span></h4>
                 <h4><span name="attr_weapon2name"></span></h4>
                 <h4><span name="attr_weapon2type"></span></h4>
@@ -542,7 +542,7 @@
 
             <input type="hidden" name="attr_weapon3status" class="weapon3-status" value="Off">
             <div class="weapon3">
-                <h4><span name="attr_weapon3charge"></span></h4>
+                <h4><span name="attr_weapon3chargedisplay"></span></h4>
                 <h4>C</h4></span></h4>
                 <h4><span name="attr_weapon3name"></span></h4>
                 <h4><span name="attr_weapon3type"></span></h4>
@@ -554,7 +554,7 @@
 
             <input type="hidden" name="attr_weapon4status" class="weapon4-status" value="Off">
             <div class="weapon4">
-                <h4><span name="attr_weapon4charge"></span></h4>
+                <h4><span name="attr_weapon4chargedisplay"></span></h4>
                 <h4>D</span></h4>
                 <h4><span name="attr_weapon4name"></span></h4>
                 <h4><span name="attr_weapon4type"></span></h4>
@@ -566,7 +566,7 @@
 
             <input type="hidden" name="attr_weapon5status" class="weapon5-status" value="Off">
             <div class="weapon5">
-                <h4><span name="attr_weapon5charge"></span></h4>
+                <h4><span name="attr_weapon5chargedisplay"></span></h4>
                 <h4>E</span></h4>
                 <h4><span name="attr_weapon5name"></span></h4>
                 <h4><span name="attr_weapon5type"></span></h4>
@@ -657,7 +657,7 @@
 
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","hull","hull_max","engine","engine_max","engineTransition","powerArray","agile","forShieldArray","portShieldArray","stbdShieldArray","aftShieldArray","shieldstatus","reserveName3","reserveName4","reserveName5","reserveName6","weapon1status","weapon2status","weapon3status","sensorstatus","system1status","thrusterstatus"], function(values) {
+        getAttrs(["faction","hull","hull_max","engine","engine_max","engineTransition","powerArray","agile","forShieldArray","portShieldArray","stbdShieldArray","aftShieldArray","shieldstatus","reserveName3","reserveName4","reserveName5","reserveName6","weapon1status","weapon2status","weapon3status","sensorstatus","system1status","thrusterstatus","weapon1charge","weapon2charge","weapon3charge","weapon4charge","weapon5charge"], function(values) {
             let engine = parseInt(values.engine) || 0;
             let engineMax = parseInt(values.engine_max) || 0;
             let engineTrans = parseInt(values.engineTransition) || 0;
@@ -747,6 +747,22 @@ console.log(name)
                 factionsymbol = "https://files.d20.io/images/494930908/_yxSf8Knwl4BMu3-K-GU2Q/thumb.png?1784753907";
             }
 
+            let wChargeDisplay = [];
+            for (let i=1;i<6;i++) {
+                let charge = values["weapon" + i + "charge"];
+                if (charge === "Green") {
+                    wChargeDisplay.push("🟩");
+                } else if (charge === "Yellow") {
+                    wChargeDisplay.push("🟨");
+                } else if (charge === "Red") {
+                    wChargeDisplay.push("🟥");
+                } else {
+                    wChargeDisplay.push("");
+                }
+            }
+
+
+
 
 
             setAttrs({
@@ -769,6 +785,11 @@ console.log(name)
                 r5status: reserveStatus[2],
                 r6status: reserveStatus[3],
                 factionsymbol: factionsymbol,
+                weapon1chargedisplay: wChargeDisplay[0];
+                weapon2chargedisplay: wChargeDisplay[1];
+                weapon3chargedisplay: wChargeDisplay[2];
+                weapon4chargedisplay: wChargeDisplay[3];
+                weapon5chargedisplay: wChargeDisplay[4];
             });
         });    
     }); 
