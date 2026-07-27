@@ -612,6 +612,7 @@ const Main = (() => {
             this.token = token;
             this.size = parseInt(aa.size);
             this.hullMax = parseInt(aa.hull_max);
+            this.engineTransition = parseInt(aa.engineTransition);
             this.engineMax = parseInt(aa.engine_max);
             this.type = aa.type;
             this.hull = parseInt(token.get("bar1_value"));
@@ -656,6 +657,19 @@ const Main = (() => {
                 weaponArray.push(weapon);
             }
             this.weaponArray = weaponArray;
+
+            //Systems
+            let systems = [];
+            for (let i=1;i<4;i++) {
+                let system = aa["system" + i];
+                if (system && system !== "") {
+                    systems.push(system);
+                }
+            }
+            this.systems = systems;
+
+
+
 
 
             //various
@@ -739,9 +753,73 @@ const Main = (() => {
 
         Critical() {
             let critRoll = randomInteger(6);
-            
-
-
+            let res = true;
+            if (critRoll === 1) {
+                //special systems
+                let options = [];
+                for (let i=0;i<this.systems.length;i++) {
+                    let status = Attribute(this.charID,"system" + (i+1) + "status");
+                    if (status === "Normal") {
+                        options.push(i);
+                    }
+                }
+                if (options.length === 0) {
+                    res = false;
+                } else {
+                    let rnd = randomInteger(options.length) - 1;
+                    let sysNum = options[rnd];
+                    let system = this.systems[sysNum];
+                    outputCard.body.push(system + " is Damaged");
+                    AttributeSet(this.charID,"system" + (sysNum+1) + "status","Damaged");
+                }
+            }
+            if (critRoll === 2) {
+                //maneuvering thrusters or sensors
+                let thrusterStatus = Attribute(this.charID,"thrusterstatus");
+                let sensorStatus = Attribute(this.charID,"sensorstatus");
+                if (sensorStatus !== "Damaged") {
+                    outputCard.body.push("Sensors are Damaged!");
+                    AttributeSet(this.charID,"sensorstatus","Damaged");
+                } else if (thrusterStatus !== "Damaged") {
+                    outputCard.body.push("Maneuvering Thrusters are Damaged!");
+                    AttributeSet(this.charID,"thrusterstatus","Damaged");
+                } else {
+                    res = false;
+                }
+            }
+            if (critRoll === 3 || critRoll === 4) {
+                //Weapon damaged incl. Drone, Mines
+                let options = [];
+                for (let i=0;i<weaponArray.length;i++) {
+                    let weapon = weaponArray[i];
+                    if (weapon.status === "Normal") {
+                        options.push(i);
+                    }
+                }
+                if (options.length === 0) {
+                    res = false;
+                } else {
+                    let rnd = randomInteger(options.length) - 1;
+                    let weapon = this.weaponArray[rnd];
+                    weapon.status = "Damaged";
+                    AttributeSet(this.charID,"weapon" + (i+1) + "status","Damaged");
+                    outputCard.body.push(weapon.name + " is Damaged!");
+                }
+            }
+            if (critRoll > 4) {
+                //Shield Damaged
+                let shieldStatus = Attribute(this.charID,"shieldstatus");   
+                if (shieldStatus !== "Damaged") {
+                    outputCard.body.push("Shield Emitters Damaged!");
+                    AttributeSet(this.charID,"shieldStatus","Damaged");
+                    if (this.engine < this.engineTransition) {
+                        outputCard.body.push("Shields are now Offline!");
+                    }
+                } else {
+                    res = false;
+                }
+            }
+            return res; //true if critical applied, false if no system
         }
 
         Destroyed() {
