@@ -737,12 +737,47 @@ const Main = (() => {
 
         }
 
+        Critical() {
+            let critRoll = randomInteger(6);
+            
+
+
+        }
+
         Destroyed() {
 
 
 
             
         }
+
+        Damage(roll) {
+            let result = "";
+            if (roll === 7) {
+                result = this.Critical();
+                if (result === false) {
+                    roll = 6; //reverts back to engine hit
+                }
+            }
+            if (roll === 6) {
+                if (engine > 0) {
+                    result = "Engine";
+                    engine--;
+                } else {
+                    roll = 5; //reverts to hull hit
+                }
+            }
+            if (roll < 6) {
+                result = "Hull";
+                hull--;
+                if (hull === 0) {
+                    result = "Destroyed"
+                }
+            }
+            return result;
+        }
+
+
 
         Arc(b) {
             let phi = Angle(HexMap[this.hexLabel].cube.angle(HexMap[b.hexLabel].cube));
@@ -1818,6 +1853,8 @@ const Main = (() => {
         hitTip = '[' + hits  + '](#" class="showtip" title="' + hitTip + ')';
         outputCard.body.push(weapon.name + " gets " + hitTip + " Hits");
 
+        let targetDestroyed = false;
+
         if (hits > 0) {
             //shield rolls
             let targetArc = losResult.targetArc;
@@ -1870,22 +1907,44 @@ const Main = (() => {
                 outputCard.body.push(target.name + " takes no damage!");
             } else {
                 hitRolls.length = damagingHits;
-
-
+                let flag = false;
+                let critical = false;
+                let hullHits = 0;
+                let engineHits = 0;
+                for (let i=0;i<hitRolls.length;i++) {
+                    let roll = hitRolls[i];
+                    if (roll === 6) {
+                        if (flag === true && critical === false) {
+                            critical = true;
+                            roll = 7;
+                        } else if (flag === false) {
+                            flag = true;
+                        }
+                    }
+                    let result = target.Damage(roll);
+                    if (result === "Hull") {hullHits++};
+                    if (result === "Engine") {engineHits++};
+                    if (result === "Destroyed") {
+                        hullHits++;
+                        targetDestroyed = true;
+                    };
+                }
+                if (hullHits > 0) {
+                    outputCard.body.push(target.name + " takes " + hull + " Damage");
+                }
+                if (engineHits > 0) {
+                    outputCard.body.push(target.name + " takes " + hull + " Damage");
+                }
+                if (targetDestroyed === true) {
+                    outputCard.body.push(target.name + ' is Destroyed!');
+                }
             }
-
-
-
-
-
-
-
-
-
-
         }
 
         PrintCard();
+        if (targetDestroyed === true) {
+            target.Destroyed();
+        }
     }
 
 
