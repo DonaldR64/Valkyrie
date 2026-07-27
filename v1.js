@@ -1853,9 +1853,9 @@ const Main = (() => {
                 }
                 for (let i=0;i<ship.weaponArray.length;i++) {
                     ship.weaponArray[i].status = "Normal";
-                    ship.weaponArray[i].charge = "Green";
+                    ship.weaponArray[i].charge = "&#129001;";
                     AttributeSet(ship.charID,"weapon" + (i+1) + "status","Normal");
-                    AttributeSet(ship.charID,"weapon" + (i+1) + "charge","Green");
+                    AttributeSet(ship.charID,"weapon" + (i+1) + "charge","&#129001;");
                 }
 
 
