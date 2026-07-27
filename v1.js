@@ -617,6 +617,11 @@ const Main = (() => {
             this.hull = parseInt(token.get("bar1_value"));
             this.engine = parseInt(token.get("bar3_value"));
             this.speed = Math.ceil(this.engineMax * 4 / this.hullMax);
+            for (let r=3;r<7;r++) {
+                this["reserveName" + r] = aa["reserveName" + r];
+            }
+
+
 
 
 
@@ -633,6 +638,7 @@ const Main = (() => {
                 let weaponType = aa["weapon" + w + "type"];
                 let weaponFacing = aa["weapon" + w + 'facing'];
                 let weaponRange = aa["weapon" + w + "range"].split("/").map((e) => parseInt(e));
+                let maxRange = weaponRange[weaponRange.length - 1];
                 let weaponDice = parseInt(aa["weapon" + w + "dice"].split("d")[0]);
                 let weaponNotes = aa["weapon" + w + "notes"];
                 let weapon = {
@@ -642,7 +648,8 @@ const Main = (() => {
                     name: weaponName,
                     type: weaponType,
                     facing: weaponFacing,
-                    range: weaponRange,
+                    rangeBands: weaponRange,
+                    maxRange: maxRange,
                     dice: weaponDice,
                     notes: weaponNotes,
                 }
@@ -1713,6 +1720,152 @@ const Main = (() => {
     }
 
 
+    const Fire = (msg) => {
+        let Tag = msg.content.split(";");
+        let shooter = ShipArray[Tag[1]];
+        let target = ShipArray[Tag[2]];
+        let weapon = shooter.weaponArray[Tag[3]];
+
+        if (!shooter) {
+            sendChat("","Not valid shooter");
+            return;
+        }
+        if (!target) {
+            sendChat("","Not valid target");
+            return;
+        }
+        if (shooter.id == target.id) {
+            sendChat("","Selected Same Token");
+            return;
+        }
+
+        SetupCard(shooter.name,target.name,shooter.faction);
+
+        let losResult = LOS(shooter,target);
+        let errorMsg = [];
+        if (losResult.los === false) {
+            errorMsg.push("No LOS - " + losResult.losReason);
+        }
+        let shooterArc = losResult.shooterArc;
+        let arc = shooterArc.charAt(0).toUpperCase();
+        if (weapon.facing.includes(arc) === false) {
+            errorMsg.push("Target is not in this weapon's firing Arc");
+        }
+        let maxRange = weapon.maxRange;
+        let rangeBonus = 0;
+        let damageBonus = 0;
+        for (let j=3;j<7;j++) {
+            let rname = shooter["reserveName" + j];
+            if (rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
+                rangeBonus = 1;
+            }
+            if (rname.includes("Wpn " + letter + " Damage") && Attribute(shooter.charID,"reserve" + j) === "1") {
+                damageBonus = 1;
+            }
+        }
+
+        if (losResult.distance > maxRange) {
+            errorMsg.push("Target is Out of Range");
+        } 
+        if (ErrorMsg(errorMsg)) {
+            PrintCard(); 
+            return;
+        }
+
+        //attack Rolls
+        let dice = weapon.dice;
+        let diceTip = "<br>Weapon: " + dice + "d6";
+        if (damageBonus > 0) {
+            diceTip += "<br>Power: +1d6";
+            dice++;
+        }
+        if (weapon.rangeBands.length === 3) {
+            if (losResult.distance <= (weapon.rangeBands[2] + rangeBonus)) {
+                dice--;
+                diceTip += "<br>Long Range: -1d6";
+            }
+            if (losResult.distance <= (weapon.rangeBands[0] + rangeBonus)) {
+                dice++;
+                diceTip += "<br>Short Range: +1d6";
+            }
+        }
+        let attackrolls = [];
+        for (let i=0;i<dice;i++) {
+            let roll = randomInteger(6);
+            attackrolls.push(roll);
+        }
+        attackrolls.sort().reverse();
+        let hitRolls = attackrolls.map((e) => e > 3);
+        let hits = hitRolls.length;
+        let hitTip = "Rolls: " + hitRolls.toString() + " vs 4+" + diceTip;
+        hitTip = '[' + hits  + '](#" class="showtip" title="' + hitTip + ')';
+        outputCard.body.push(weapon.name + " gets " + hitTip + " Hits");
+
+        if (hits > 0) {
+            //shield rolls
+            let shieldrolls = [];
+            let targetArc = losResult.targetArc;
+            let shieldName = targetArc.charAt(0).toLowerCase() + "Shield";
+            let shieldDice = parseInt(Attribute(target.charID,shieldName)) || 0;
+            let shieldTip = "<br>" + targetArc + " Shield: " + shieldDice + "d6";
+            let shieldBonus = 0;
+            if (targetArc === "Forward") {
+                if (Attribute(target.charID,"fwdshields1") === "1") {shieldBonus++};
+                if (Attribute(target.charID,"fwdshields2") === "1") {shieldBonus++};
+            }
+            if (targetArc === "Port") {
+                if (Attribute(target.charID,"portshields1") === "1") {shieldBonus++};
+                if (Attribute(target.charID,"portshields2") === "1") {shieldBonus++};
+            }
+            if (targetArc === "Starboard") {
+                if (Attribute(target.charID,"stbdshields1") === "1") {shieldBonus++};
+                if (Attribute(target.charID,"stbdshields2") === "1") {shieldBonus++};
+            }
+            if (targetArc === "Aft") {
+                if (Attribute(target.charID,"aftshields1") === "1") {shieldBonus++};
+                if (Attribute(target.charID,"aftshields2") === "1") {shieldBonus++};
+            }
+            if (shieldBonus > 0) {
+                shieldTip += "<br>Power: +" + shieldBonus + "d6";
+                shieldDice += shieldBonus;
+            }
+            for (let i=0;i<shieldDice;i++) {
+                let roll = randomInteger(6);
+                shieldrolls.push(roll);
+            }
+            shieldrolls.sort()
+            let absorbed = Math.max(shieldrolls.map((e) => e > 4).length,hits);
+            let damagingHits = hits - absorbed;
+
+            shieldTip = "Rolls: " + shieldrolls.toString() + " vs 5+" + shieldTip;
+            shieldTip = '[' + absorbed  + '](#" class="showtip" title="' + shieldTip + ')';
+            outputCard.body.push("Shields Absorb " + shieldTip + " hits");
+
+            if (damageHits === 0) {
+                outputCard.body.push(target.name + " takes no damage!");
+            } else {
+                hitRolls.length = damagingHits;
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+        PrintCard();
+    }
+
+
+
+
 
     const TokenInfo = (msg) => {
         let Tag = msg.content.split(";");
@@ -1863,9 +2016,6 @@ const Main = (() => {
             sendChat("","Selected Same Token");
             return;
         }
-
-        let shooterHex = HexMap[shooter.hexLabel]
-        let targetHex = HexMap[target.hexLabel];
         SetupCard(shooter.name,"LOS",shooter.faction);
 
         let losResult = LOS(shooter,target);
@@ -1882,37 +2032,44 @@ const Main = (() => {
             let targetArc = losResult.targetArc;
             outputCard.body.push("Target is in the " + shooterArc + " Arc");
             outputCard.body.push("Target is being hit on its " + targetArc + " Arc"); 
+            let letters = ["A","B","C","D","E"];
 
-
-            _.each(shooter.weaponArray,weapon => {
-                let range = false;
+            for (let i=0;i<shooter.weaponArray.length;i++) {
+                let weapon = shooter.weaponArray[i];
+                let letter = letters[i];
                 let note = "";
                 if (weapon.facing.includes(arc) === true) {
-                    if (weapon.range.length === 1 && losResult.distance <= weapon.range[0]) {
-                        range = true;
-                    }
-                    if (weapon.range.length === 3) {
-                        if (losResult.distance <= weapon.range[2]) {
-                            range = true;
-                            note = "Long ";
-                        }
-                        if (losResult.distance <= weapon.range[1]) {
-                            note = "Medium ";
-                        }
-                        if (losResult.distance <= weapon.range[0]) {
-                            note = "Short ";
+                    let maxRange = weapon.maxRange;
+                    let rangeBonus = 0;
+                    for (let j=3;j<7;j++) {
+                        let rname = shooter["reserveName" + j];
+                        if (rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
+                            rangeBonus = 1;
+                            break;
                         }
                     }
-                    if (range === false) {
-                        outputCard.body.push("[#ff0000]" + weapon.name + " has Arc but Target is out of range[/#]")
-                    } else {
+                    maxRange += rangeBonus;
+                    if (losResult.distance <= maxRange) {
+                        if (weapon.rangeBands.length === 3) {
+                            if (losResult.distance <= (weapon.rangeBands[2] + rangeBonus)) {
+                                note = "Long ";
+                            }
+                            if (losResult.distance <= (weapon.rangeBands[1] + rangeBonus)) {
+                                note = "Medium ";
+                            }
+                            if (losResult.distance <= (weapon.rangeBands[0] + rangeBonus)) {
+                                note = "Short ";
+                            }
+                        }
                         outputCard.body.push("[#0000ff]" + weapon.name + " has Arc and Target is within " + note + "Range[/#]");
+                    } else {
+                        outputCard.body.push("[#ff0000]" + weapon.name + " has Arc but Target is out of range[/#]")
                     }
                 }
 
 
 
-            })
+            }
             
 
         }
@@ -1948,23 +2105,8 @@ const Main = (() => {
                     losReason[side] = interHex.terrain;
                     break;
                 }
-                let ids = interHex.tokenIDs;
-                _.each(ids,id => {
-                    let object = ShipArray[id];
-                    if (object.type === "Asteroid") {
-                        los[side] = false;
-                        losReason[side] = "Asteroid";
-                    }
-                })
             }
         }
-
-
-
-
-
-
-
 
         if (los[0] === false && los[1] === false) {
             finalLOS = false;
@@ -2082,7 +2224,9 @@ const Main = (() => {
             case '!Roll':
                 RollDice(msg);
                 break;
-
+            case '!Fire':
+                Fire(msg);
+                break;
 
         }
     };
