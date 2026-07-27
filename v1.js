@@ -753,7 +753,7 @@ const Main = (() => {
 
         Critical() {
             let critRoll = randomInteger(6);
-            let res = true;
+            let res = "Critical";
             if (critRoll === 1) {
                 //special systems
                 let options = [];
@@ -769,7 +769,7 @@ const Main = (() => {
                     let rnd = randomInteger(options.length) - 1;
                     let sysNum = options[rnd];
                     let system = this.systems[sysNum];
-                    outputCard.body.push(system + " is Damaged");
+                    outputCard.body.push("[#ff0000]" + system + " is Damaged[/#]");
                     AttributeSet(this.charID,"system" + (sysNum+1) + "status","Damaged");
                 }
             }
@@ -778,10 +778,10 @@ const Main = (() => {
                 let thrusterStatus = Attribute(this.charID,"thrusterstatus");
                 let sensorStatus = Attribute(this.charID,"sensorstatus");
                 if (sensorStatus !== "Damaged") {
-                    outputCard.body.push("Sensors are Damaged!");
+                    outputCard.body.push("[#ff0000]Sensors are Damaged![/#]");
                     AttributeSet(this.charID,"sensorstatus","Damaged");
                 } else if (thrusterStatus !== "Damaged") {
-                    outputCard.body.push("Maneuvering Thrusters are Damaged!");
+                    outputCard.body.push("[#ff0000]Maneuvering Thrusters are Damaged![/#]");
                     AttributeSet(this.charID,"thrusterstatus","Damaged");
                 } else {
                     res = false;
@@ -790,8 +790,8 @@ const Main = (() => {
             if (critRoll === 3 || critRoll === 4) {
                 //Weapon damaged incl. Drone, Mines
                 let options = [];
-                for (let i=0;i<weaponArray.length;i++) {
-                    let weapon = weaponArray[i];
+                for (let i=0;i<this.weaponArray.length;i++) {
+                    let weapon = this.weaponArray[i];
                     if (weapon.status === "Normal") {
                         options.push(i);
                     }
@@ -802,18 +802,20 @@ const Main = (() => {
                     let rnd = randomInteger(options.length) - 1;
                     let weapon = this.weaponArray[rnd];
                     weapon.status = "Damaged";
-                    AttributeSet(this.charID,"weapon" + (i+1) + "status","Damaged");
-                    outputCard.body.push(weapon.name + " is Damaged!");
+                    AttributeSet(this.charID,"weapon" + (rnd+1) + "status","Damaged");
+                    outputCard.body.push("[#ff0000]" + weapon.name + " is Damaged![/#]");
                 }
             }
             if (critRoll > 4) {
                 //Shield Damaged
                 let shieldStatus = Attribute(this.charID,"shieldstatus");   
                 if (shieldStatus !== "Damaged") {
-                    outputCard.body.push("Shield Emitters Damaged!");
+                    outputCard.body.push("[#ff0000]Shield Emitters Damaged![/#]");
                     AttributeSet(this.charID,"shieldStatus","Damaged");
+                    this.token.set("aura1_color","#ffff00");
                     if (this.engine < this.engineTransition) {
-                        outputCard.body.push("Shields are now Offline!");
+                        outputCard.body.push("[#ff0000]Shields are now Offline![/#]");
+                        this.token.set("aura1_color","#ff0000");
                     }
                 } else {
                     res = false;
@@ -838,16 +840,33 @@ const Main = (() => {
                 }
             }
             if (roll === 6) {
+                let engine = parseInt(this.token.get("bar3_value"));
                 if (engine > 0) {
                     result = "Engine";
                     engine--;
+                    this.token.set("bar3_value",engine);
+                    if (engine === 0) {
+                        result = "EngineDrifting";
+                    }
+                    this.token.set("aura1_color","#ffff00");
+                    if (engine < this.engineTransition) {
+                        if (Attribute(this.charID,"shieldstatus") === "Damaged") {
+                            outputCard.body.push("[#ff0000]Shields are now Offline![/#]");
+                            this.token.set("aura1_color","#ff0000");
+                        } else {
+                            outputCard.body.push("[#ff0000]Shields are operating at lower levels![/#]");                       
+                            this.token.set("aura1_color","#ffff00");
+                        }
+                    }
                 } else {
                     roll = 5; //reverts to hull hit
                 }
             }
             if (roll < 6) {
+                let hull = parseInt(this.token.get("bar1_value"));
                 result = "Hull";
                 hull--;
+                this.token.set("bar1_value",hull);
                 if (hull === 0) {
                     result = "Destroyed"
                 }
@@ -1825,6 +1844,20 @@ const Main = (() => {
                     bar3_max: ship.engineMax,
                     bar3_link: engineID,
                 })
+                AttributeSet(ship.charID,"shieldstatus","Normal");
+                AttributeSet(ship.charID,"thrusterstatus","Normal");
+                AttributeSet(ship.charID,"sensorstatus","Normal");
+
+                for (let i=1;i<ship.systems.length;i++) {
+                    AttributeSet(ship.charID,"system" + i + "status","Normal");
+                }
+                for (let i=0;i<ship.weaponArray.length;i++) {
+                    ship.weaponArray[i].status = "Normal";
+                    ship.weaponArray[i].charge = "&#x1F7E9;";
+                    AttributeSet(ship.charID,"weapon" + (i+1) + "status","Normal");
+                    AttributeSet(ship.charID,"weapon" + (i+1) + "charge","&#129001;");
+                }
+
 
 
                 //AddAbilities(ship);
@@ -1932,6 +1965,7 @@ const Main = (() => {
         outputCard.body.push(weapon.name + " gets " + hitTip + " Hits");
 
         let targetDestroyed = false;
+        let targetDrifting = false;
 
         if (hits > 0) {
             //shield rolls
@@ -1986,35 +2020,35 @@ const Main = (() => {
             } else {
                 hitRolls.length = damagingHits;
                 let flag = false;
-                let critical = false;
                 let hullHits = 0;
                 let engineHits = 0;
                 for (let i=0;i<hitRolls.length;i++) {
                     let roll = hitRolls[i];
-                    if (roll === 6) {
-                        if (flag === true && critical === false) {
-                            critical = true;
-                            roll = 7;
-                        } else if (flag === false) {
-                            flag = true;
-                        }
+                    if (roll === 6 && flag === false) {
+                        //initial 6 is a Critical, subsequents will be engine hits
+                        flag = true;
+                        roll = 7;
                     }
                     let result = target.Damage(roll);
                     if (result === "Hull") {hullHits++};
-                    if (result === "Engine") {engineHits++};
+                    if (result.includes("Engine")) {engineHits++};
+                    if (result.includes("Drifting")) {targetDrifting = true;}
                     if (result === "Destroyed") {
                         hullHits++;
                         targetDestroyed = true;
                     };
                 }
                 if (hullHits > 0) {
-                    outputCard.body.push(target.name + " takes " + hull + " Damage");
+                    outputCard.body.push(target.name + " takes " + hullHits + " Damage to its Hull");
                 }
                 if (engineHits > 0) {
-                    outputCard.body.push(target.name + " takes " + hull + " Damage");
+                    outputCard.body.push(target.name + " takes " + engineHits + " Damage to its Engine");
+                }
+                if (targetDrifting === true) {
+                    outputCard.body.push("[#ff0000]" + target.name + ' is now Drifting[/#]');
                 }
                 if (targetDestroyed === true) {
-                    outputCard.body.push(target.name + ' is Destroyed!');
+                    outputCard.body.push("[#ff0000]" + target.name + ' is Destroyed![/#]');
                 }
             }
         }
