@@ -1278,6 +1278,14 @@ const Main = (() => {
             _subtype: "token",
             layer: "objects",
         });
+        let tokens2 = findObjs({
+            _pageid: Campaign().get("playerpageid"),
+            _type: "graphic",
+            _subtype: "token",
+            layer: "gmlayer",
+        });
+        tokens = tokens.concat(tokens2);
+
         let objectives = findObjs({
             _pageid: Campaign().get("playerpageid"),
             _type: "graphic",
@@ -1758,10 +1766,10 @@ const Main = (() => {
         let letter = letters[Tag[3]];
         for (let j=3;j<7;j++) {
             let rname = shooter["reserveName" + j];
-            if (rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
+            if (rname && rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
                 rangeBonus = 1;
             }
-            if (rname.includes("Wpn " + letter + " Damage") && Attribute(shooter.charID,"reserve" + j) === "1") {
+            if (rname && rname.includes("Wpn " + letter + " Damage") && Attribute(shooter.charID,"reserve" + j) === "1") {
                 damageBonus = 1;
             }
         }
@@ -1782,7 +1790,7 @@ const Main = (() => {
             dice++;
         }
         if (weapon.rangeBands.length === 3) {
-            if (losResult.distance <= (weapon.rangeBands[2] + rangeBonus)) {
+            if (losResult.distance <= (weapon.rangeBands[2] + rangeBonus) && losResult.distance > (weapon.rangeBands[1] + rangeBonus)) {
                 dice--;
                 diceTip += "<br>Long Range: -1d6";
             }
@@ -1885,7 +1893,10 @@ const Main = (() => {
         let Tag = msg.content.split(";");
         let id = Tag[1];
         let ship = ShipArray[id];
-        if (!ship) {return};
+        if (!ship) {
+            sendChat("","Not in Array");
+            return;
+        };
         let label = ship.hexLabel;
         let hex = HexMap[label];
         SetupCard(ship.name,"Info",ship.faction);
@@ -2057,7 +2068,7 @@ const Main = (() => {
                     let rangeBonus = 0;
                     for (let j=3;j<7;j++) {
                         let rname = shooter["reserveName" + j];
-                        if (rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
+                        if (rname && rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
                             rangeBonus = 1;
                             break;
                         }
