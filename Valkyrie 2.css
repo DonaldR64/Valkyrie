@@ -470,6 +470,9 @@ input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
     padding: 3px;
 }
 
+
+
+
 /* Weapon 2 */
 input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
     display: none;
