@@ -1491,17 +1491,24 @@ const Main = (() => {
         SetupCard("Command Phase","Turn " + state.Valkyrie.turn,"Neutral");
         _.each(ShipArray,ship => {
             //recharge weapons as appropriate
-            _.each(ship.WeaponArray, weapon => {
+            for (let i=0;i<ship.weaponArray.length;i++) {
+                let weapon = ship.weaponArray[i];
                 if (weapon.status === "Red") {
-                    weapon.charge = "Red";
+                    weapon.charge = "🟥";
                 } else {
                     if (weapon.notes.includes("Recharge")) {
-                        weapon.charge = (weapon.charge === "Orange") ? "Green":"Orange";
+                        if (weapon.charge === "🟥") {
+                            weapon.charge = "🟨";
+                        } else if (weapon.charge === "🟨") {
+                            weapon.charge = "🟩";
+                        }
                     } else {
-                        weapon.charge = "Green";
+                        weapon.charge = "🟩";
                     }
                 }
-            })
+                AttributeSet(ship.charID,"weapon" + (i+1) + "charge",weapon.charge);
+            }
+
             //reset all power checkboxes
             let list = ["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"]
             _.each(list,box => {
@@ -1853,9 +1860,9 @@ const Main = (() => {
                 }
                 for (let i=0;i<ship.weaponArray.length;i++) {
                     ship.weaponArray[i].status = "Normal";
-                    ship.weaponArray[i].charge = "&#129001;";
+                    ship.weaponArray[i].charge = "🟩";
                     AttributeSet(ship.charID,"weapon" + (i+1) + "status","Normal");
-                    AttributeSet(ship.charID,"weapon" + (i+1) + "charge","&#129001;");
+                    AttributeSet(ship.charID,"weapon" + (i+1) + "charge","🟩");
                 }
 
 
@@ -1878,7 +1885,8 @@ const Main = (() => {
         let Tag = msg.content.split(";");
         let shooter = ShipArray[Tag[1]];
         let target = ShipArray[Tag[2]];
-        let weapon = shooter.weaponArray[Tag[3]];
+        let weaponNum = parseInt(Tag[3])
+        let weapon = shooter.weaponArray[weaponNum - 1];
 
         if (!shooter) {
             sendChat("","Not valid shooter");
@@ -1905,7 +1913,13 @@ const Main = (() => {
         if (weapon.facing.includes(arc) === false) {
             errorMsg.push("Target is not in this weapon's firing Arc");
         }
-
+        if (weapon.charge !== "🟩") {
+            if (weapon.notes.includes("Recharge")) {
+                errorMsg.push("Weapon not fully charged");
+            } else {
+                errorMsg.push("Weapon has fired");
+            }
+        }
         
         let rangeBonus = 0;
         let damageBonus = 0;
@@ -2053,6 +2067,8 @@ const Main = (() => {
             }
         }
 
+        weapon.charge = "🟥";
+        AttributeSet(shooter.charID,"weapon" + weaponNum + "charge","🟥");
         PrintCard();
         if (targetDestroyed === true) {
             target.Destroyed();
