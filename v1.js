@@ -1759,7 +1759,8 @@ const Main = (() => {
         if (weapon.facing.includes(arc) === false) {
             errorMsg.push("Target is not in this weapon's firing Arc");
         }
-        let maxRange = weapon.maxRange;
+
+        
         let rangeBonus = 0;
         let damageBonus = 0;
         let letters = ["A","B","C","D","E"];
@@ -1773,6 +1774,8 @@ const Main = (() => {
                 damageBonus = 1;
             }
         }
+
+        let maxRange = weapon.maxRange + rangeBonus;
 
         if (losResult.distance > maxRange) {
             errorMsg.push("Target is Out of Range");
