@@ -1754,6 +1754,8 @@ const Main = (() => {
         let maxRange = weapon.maxRange;
         let rangeBonus = 0;
         let damageBonus = 0;
+        let letters = ["A","B","C","D","E"];
+        let letter = letters[Tag[3]];
         for (let j=3;j<7;j++) {
             let rname = shooter["reserveName" + j];
             if (rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
@@ -1789,59 +1791,71 @@ const Main = (() => {
                 diceTip += "<br>Short Range: +1d6";
             }
         }
-        let attackrolls = [];
+        let attackRolls = [];
+        let hitRolls = [];
         for (let i=0;i<dice;i++) {
             let roll = randomInteger(6);
-            attackrolls.push(roll);
+            attackRolls.push(roll);
+            if (roll > 3) {
+                hitRolls.push(roll);
+            }
         }
-        attackrolls.sort().reverse();
-        let hitRolls = attackrolls.map((e) => e > 3);
+        attackRolls.sort().reverse();
+        hitRolls.sort().reverse();
         let hits = hitRolls.length;
-        let hitTip = "Rolls: " + hitRolls.toString() + " vs 4+" + diceTip;
+        let hitTip = "Rolls: " + attackRolls.toString() + " vs 4+" + diceTip;
         hitTip = '[' + hits  + '](#" class="showtip" title="' + hitTip + ')';
         outputCard.body.push(weapon.name + " gets " + hitTip + " Hits");
 
         if (hits > 0) {
             //shield rolls
-            let shieldrolls = [];
             let targetArc = losResult.targetArc;
-            let shieldName = targetArc.charAt(0).toLowerCase() + "Shield";
-            let shieldDice = parseInt(Attribute(target.charID,shieldName)) || 0;
-            let shieldTip = "<br>" + targetArc + " Shield: " + shieldDice + "d6";
+            let shieldDice = 0;
             let shieldBonus = 0;
             if (targetArc === "Forward") {
+                shieldDice = parseInt(Attribute(target.charID,"fshield"));
                 if (Attribute(target.charID,"fwdshields1") === "1") {shieldBonus++};
                 if (Attribute(target.charID,"fwdshields2") === "1") {shieldBonus++};
             }
             if (targetArc === "Port") {
+                shieldDice = parseInt(Attribute(target.charID,"pshield"));
                 if (Attribute(target.charID,"portshields1") === "1") {shieldBonus++};
                 if (Attribute(target.charID,"portshields2") === "1") {shieldBonus++};
             }
             if (targetArc === "Starboard") {
+                shieldDice = parseInt(Attribute(target.charID,"sshield"));
                 if (Attribute(target.charID,"stbdshields1") === "1") {shieldBonus++};
                 if (Attribute(target.charID,"stbdshields2") === "1") {shieldBonus++};
             }
             if (targetArc === "Aft") {
+                shieldDice = parseInt(Attribute(target.charID,"ashield"));
                 if (Attribute(target.charID,"aftshields1") === "1") {shieldBonus++};
                 if (Attribute(target.charID,"aftshields2") === "1") {shieldBonus++};
             }
+
+            let shieldTip = "<br>" + targetArc + " Shield: " + shieldDice + "d6";
             if (shieldBonus > 0) {
                 shieldTip += "<br>Power: +" + shieldBonus + "d6";
                 shieldDice += shieldBonus;
             }
+            let shieldRolls = [];
+            let absorbRolls = [];
             for (let i=0;i<shieldDice;i++) {
                 let roll = randomInteger(6);
-                shieldrolls.push(roll);
+                shieldRolls.push(roll);
+                if (roll > 4) {
+                    absorbRolls.push(roll);
+                }
             }
-            shieldrolls.sort()
-            let absorbed = Math.max(shieldrolls.map((e) => e > 4).length,hits);
+            shieldRolls.sort();
+            let absorbed = Math.min(absorbRolls.length,hits);
             let damagingHits = hits - absorbed;
 
-            shieldTip = "Rolls: " + shieldrolls.toString() + " vs 5+" + shieldTip;
+            shieldTip = "Rolls: " + shieldRolls.toString() + " vs 5+" + shieldTip;
             shieldTip = '[' + absorbed  + '](#" class="showtip" title="' + shieldTip + ')';
             outputCard.body.push("Shields Absorb " + shieldTip + " hits");
 
-            if (damageHits === 0) {
+            if (damagingHits === 0) {
                 outputCard.body.push(target.name + " takes no damage!");
             } else {
                 hitRolls.length = damagingHits;
