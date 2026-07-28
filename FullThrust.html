@@ -20,154 +20,39 @@
             </select>
             <label>Top Pic URL</label><input type="text" name="attr_toppic" />
         </div>
-        <div class="col">
-            <h3>Power</h3>
-            <label>Current Engine:</label><input type="number" name="attr_engine">
-            <label>Max Engine:</label><input type="number" name="attr_engine_max">
-            <label>Engine Transition</label><input type="number" name="attr_engineTransition">
-            <label>Power Array (Add 0 to start, split with /):</label><input type="text" name="attr_powerArray">
-        </div>
-        <div class="col">
-            <h3>Hull</h3>
-            <label>Current Hull:</label><input type="number" name="attr_hull">
-            <label>Max Hull:</label><input type="number" name="attr_hull_max">   
-        </div>
-        <div class="col">
-            <h3>Shields</h3>
-            <h3>Add 0 to end, split with /</h3>
-            <label>Forward Shield Array:</label><input type="text" name="attr_forShieldArray">
-            <label>Port Shield Array:</label><input type="text" name="attr_portShieldArray">            
-            <label>Starboard Shield Array:</label><input type="text" name="attr_stbdShieldArray">
-            <label>Aft Shield Array:</label><input type="text" name="attr_aftShieldArray">
-        </div>
             
         <div class="col">
             <h3>Stats</h3>
-            <label>Size:</label><input type="number" name="attr_size">
-            <label for="attr_agile">Turning:</label>
-            <select name="attr_agile">
-                <option value="" selected disabled hidden>Choose here</option>
-                <option value=0>Agile Turning</option>
-                <option value=1>Normal Turning</option>
-                <option value=2>Slow Turning</option>
-            </select>
+            <label>Total Mass:</label><input type="number" name="attr_mass">
+            <label>Combat Points:</label><input type="number" name="attr_cpv">
             <label for="attr_type">Type:</label>
             <select name="attr_type">
                 <option value="" selected disabled hidden>Choose here</option>
-                <option value="Heavy Cruiser">Heavy Cruiser</option>
-                <option value="Light Cruiser">Light Cruiser</option>
-                <option value="Destroyer">Destroyer</option>
-                <option value="Frigate">Frigate</option>
-                <option value="Scout">Scout</option>
-
-                <option value="Drone">Drone</option>
-                <option value="Mine">Mine</option>
+                <option value="Starship">Starship</option>
                 <option value="Objective">Objective</option>
                 <option value="Asteroid">Asteroid</option>
                 <option value="System">System</option>
             </select>  
         </div>
+
         <div class="col">
             <h3>Systems</h3>
-            <label>System 1:</label><input type="text" name="attr_system1">
-            <label>System 2:</label><input type="text" name="attr_system2">
-            <label>System 3:</label><input type="text" name="attr_system3">
+            <label>Impulse Engines:</label><input type="number" name="attr_impulse">
+            <label>Current Hull:</label><input type="number" name="attr_hull">
+            <label>Max Hull:</label><input type="number" name="attr_hull_max">  
+            <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
+            <label>Shield Generator 1:</label><input type="checkbox" name="attr_shield1" value="1">            
+            <label>Shield Generator 2:</label><input type="checkbox" name="attr_shield2" value="1">   
+            <label>Shield Generator 3:</label><input type="checkbox" name="attr_shield3" value="1">   
+            <label>Fire Control 1:</label><input type="checkbox" name="attr_fc1" value="1">            
+            <label>Fire Control 2:</label><input type="checkbox" name="attr_fc2" value="1">       
+            <label>Fire Control 3:</label><input type="checkbox" name="attr_fc3" value="1">       
+            <label>Cloaking Device:</label><input type="checkbox" name="attr_cloaking" value="1">   
         </div>
+
+
+
     </div>    
-
-    <div class="2colrow">
-        <div class="col">
-            <h3>Reserve Power Options</h3>
-            <label>Sensors & Movement are Auto</label>
-            <label for="attr_reserveName3">3: Power To:</label>
-            <select name="attr_reserveName3">
-                <option value="None">None</option>
-                <option value="Wpn A Damage">Weapon A Damage</option>
-                <option value="Wpn A Range">Weapon A Range</option>
-                <option value="Wpn B Damage">Weapon B Damage</option>
-                <option value="Wpn B Range">Weapon B Range</option>
-                <option value="Wpn C Damage">Weapon C Damage</option>
-                <option value="Wpn C Range">Weapon C Range</option>
-                <option value="Cloaking Device">Cloaking Device</option>
-            </select>            
-            <label for="attr_reserveName4">4: Power To:</label>
-            <select name="attr_reserveName4">
-                <option value="None">None</option>
-                <option value="Wpn A Damage">Weapon A Damage</option>
-                <option value="Wpn A Range">Weapon A Range</option>
-                <option value="Wpn B Damage">Weapon B Damage</option>
-                <option value="Wpn B Range">Weapon B Range</option>
-                <option value="Wpn C Damage">Weapon C Damage</option>
-                <option value="Wpn C Range">Weapon C Range</option>
-            </select>     
-            <label for="attr_reserveName5">5: Power To:</label>
-            <select name="attr_reserveName5">
-                <option value="None">None</option>
-                <option value="Wpn A Damage">Weapon A Damage</option>
-                <option value="Wpn A Range">Weapon A Range</option>
-                <option value="Wpn B Damage">Weapon B Damage</option>
-                <option value="Wpn B Range">Weapon B Range</option>
-                <option value="Wpn C Damage">Weapon C Damage</option>
-                <option value="Wpn C Range">Weapon C Range</option>
-            </select>     
-            <label for="attr_reservename6">6: Power To:</label>
-            <select name="attr_reserveName6">
-                <option value="None">None</option>
-                <option value="Wpn A Damage">Weapon A Damage</option>
-                <option value="Wpn A Range">Weapon A Range</option>
-                <option value="Wpn B Damage">Weapon B Damage</option>
-                <option value="Wpn B Range">Weapon B Range</option>
-                <option value="Wpn C Damage">Weapon C Damage</option>
-                <option value="Wpn C Range">Weapon C Range</option>
-            </select>   
-        </div>
-    </div>
-
-    <div class="2colrow">
-        <h3>Toggles</h3>
-            <label for="attr_shieldstatus">Shield Status:</label>
-            <select name="attr_shieldstatus">
-                <option value="" selected disabled hidden>Choose here</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Normal">Normal</option>
-            </select>
-            <label for="attr_thrusterstatus">Thruster Status:</label>
-            <select name="attr_thrusterstatus">
-                <option value="" selected disabled hidden>Choose here</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Normal">Normal</option>
-            </select>
-            <label for="attr_sensorstatus">Sensor Status:</label>
-            <select name="attr_sensorstatus">
-                <option value="" selected disabled hidden>Choose here</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Normal">Normal</option>
-            </select>
-
-
-
-            <label for="attr_system1status"><span name="attr_system1"></span> Status:</label>
-            <select name="attr_system1status">
-                <option value="" selected disabled hidden>Choose here</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Normal">Normal</option>
-            </select>
-            <label for="attr_system2status"><span name="attr_system2"></span> Status:</label>
-            <select name="attr_system2status">
-                <option value="" selected disabled hidden>Choose here</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Normal">Normal</option>
-            </select>
-            <label for="attr_system3status"><span name="attr_system3"></span> Status:</label>
-            <select name="attr_system3status">
-                <option value="" selected disabled hidden>Choose here</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Normal">Normal</option>
-            </select>
-
-
-
-    </div>
 
 
 
@@ -181,130 +66,180 @@
             <thead>
                 <tr>
                     <th>Status</th>
-                    <th>Charge</th>
-                    <th>Name</th>
                     <th>Type</th>
                     <th>Facing</th>
-                    <th>Range</th>  
-                    <th>Dice</th>
-                    <th>Notes</th>
                 </tr>
             </thead>
             <tbody>
-               <tr>
+                <tr>
                     <td><select name="attr_weapon1status">
                         <option value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
                         <option value = "Damaged">Damaged</option>
                     </select></td>
-                    <td><select name="attr_weapon1charge">
-                        <option value = "&#128997">Red</option>
-                        <option value = "&#129000;">Yellow</option>
-                        <option value = "&#129001;">Green</option>
-                    </select></td>
-                    <td><input type="text" name="attr_weapon1name"></td>
                     <td><select name="attr_weapon1type">
-                        <option value = "Beam">Beam</option>
-                        <option value = "Torpedo">Torpedo</option>
-                        <option value = "Drone">Drone</option>
-                        <option value = "Mine">Mine</option>
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                    
                     <td><input type="text" name="attr_weapon1facing"></td>
-                    <td><input type="text" name="attr_weapon1range"></td>
-                    <td><input type="text" name="attr_weapon1dice"></td>
-                    <td><input type="text" name="attr_weapon1notes"></td>                
                 </tr>
-               <tr>
+                <tr>
                     <td><select name="attr_weapon2status">
                         <option value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
                         <option value = "Damaged">Damaged</option>
                     </select></td>
-                    <td><select name="attr_weapon2charge">
-                        <option value = "&#128997">Red</option>
-                        <option value = "&#129000;">Yellow</option>
-                        <option value = "&#129001;">Green</option>
-                    </select></td>
-                    <td><input type="text" name="attr_weapon2name"></td>
                     <td><select name="attr_weapon2type">
-                        <option value = "Beam">Beam</option>
-                        <option value = "Torpedo">Torpedo</option>
-                        <option value = "Drone">Drone</option>
-                        <option value = "Mine">Mine</option>
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                    
                     <td><input type="text" name="attr_weapon2facing"></td>
-                    <td><input type="text" name="attr_weapon2range"></td>
-                    <td><input type="text" name="attr_weapon2dice"></td>
-                    <td><input type="text" name="attr_weapon2notes"></td>                
                 </tr>
-               <tr>
+                <tr>
                     <td><select name="attr_weapon3status">
                         <option value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
                         <option value = "Damaged">Damaged</option>
                     </select></td>
-                    <td><select name="attr_weapon3charge">
-                        <option value = "&#128997">Red</option>
-                        <option value = "&#129000;">Yellow</option>
-                        <option value = "&#129001;">Green</option>
-                    </select></td>
-                    <td><input type="text" name="attr_weapon3name"></td>
                     <td><select name="attr_weapon3type">
-                        <option value = "Beam">Beam</option>
-                        <option value = "Torpedo">Torpedo</option>
-                        <option value = "Drone">Drone</option>
-                        <option value = "Mine">Mine</option>
-                    </select></td>
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
+                    </select></td>                    
                     <td><input type="text" name="attr_weapon3facing"></td>
-                    <td><input type="text" name="attr_weapon3range"></td>
-                    <td><input type="text" name="attr_weapon3dice"></td>
-                    <td><input type="text" name="attr_weapon3notes"></td>                 
                 </tr>
-               <tr>
+                <tr>
                     <td><select name="attr_weapon4status">
                         <option value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
                         <option value = "Damaged">Damaged</option>
                     </select></td>
-                    <td><select name="attr_weapon4charge">
-                        <option value = "&#128997">Red</option>
-                        <option value = "&#129000;">Yellow</option>
-                        <option value = "&#129001;">Green</option>
-                    </select></td>
-                    <td><input type="text" name="attr_weapon4name"></td>
                     <td><select name="attr_weapon4type">
-                        <option value = "Beam">Beam</option>
-                        <option value = "Torpedo">Torpedo</option>
-                        <option value = "Drone">Drone</option>
-                        <option value = "Mine">Mine</option>
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                    
                     <td><input type="text" name="attr_weapon4facing"></td>
-                    <td><input type="text" name="attr_weapon4range"></td>
-                    <td><input type="text" name="attr_weapon4dice"></td>
-                    <td><input type="text" name="attr_weapon4notes"></td>              
                 </tr>
-               <tr>
+                <tr>
                     <td><select name="attr_weapon5status">
                         <option value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
                         <option value = "Damaged">Damaged</option>
                     </select></td>
-                    <td><select name="attr_weapon5charge">
-                        <option value = "&#128997">Red</option>
-                        <option value = "&#129000;">Yellow</option>
-                        <option value = "&#129001;">Green</option>
-                    </select></td>
-                    <td><input type="text" name="attr_weapon5name"></td>
                     <td><select name="attr_weapon5type">
-                        <option value = "Beam">Beam</option>
-                        <option value = "Torpedo">Torpedo</option>
-                        <option value = "Drone">Drone</option>
-                        <option value = "Mine">Mine</option>
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                    
                     <td><input type="text" name="attr_weapon5facing"></td>
-                    <td><input type="text" name="attr_weapon5range"></td>
-                    <td><input type="text" name="attr_weapon5dice"></td>
-                    <td><input type="text" name="attr_weapon5notes"></td>               
+                </tr>
+                <tr>
+                    <td><select name="attr_weapon6status">
+                        <option value = "Off">Off</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Damaged">Damaged</option>
+                    </select></td>
+                    <td><select name="attr_weapon6type">
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
+                    </select></td>                    
+                    <td><input type="text" name="attr_weapon6facing"></td>
+                </tr>
+                <tr>
+                    <td><select name="attr_weapon7status">
+                        <option value = "Off">Off</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Damaged">Damaged</option>
+                    </select></td>
+                    <td><select name="attr_weapon7type">
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
+                    </select></td>                    
+                    <td><input type="text" name="attr_weapon7facing"></td>
+                </tr>
+                <tr>
+                    <td><select name="attr_weapon8status">
+                        <option value = "Off">Off</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Damaged">Damaged</option>
+                    </select></td>
+                    <td><select name="attr_weapon8type">
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
+                    </select></td>                    
+                    <td><input type="text" name="attr_weapon8facing"></td>
+                </tr>
+                <tr>
+                    <td><select name="attr_weapon9status">
+                        <option value = "Off">Off</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Damaged">Damaged</option>
+                    </select></td>
+                    <td><select name="attr_weapon9type">
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
+                    </select></td>                    
+                    <td><input type="text" name="attr_weapon9facing"></td>
+                </tr>
+                <tr>
+                    <td><select name="attr_weapon10status">
+                        <option value = "Off">Off</option>
+                        <option value = "Normal">Normal</option>
+                        <option value = "Damaged">Damaged</option>
+                    </select></td>
+                    <td><select name="attr_weapon10type">
+                        <option value = "Beam-1">Beam-1</option>
+                        <option value = "Beam-2">Beam-2</option>
+                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Photon Torpedo">Photon Torpedo</option>
+                        <option value = "Disruptor">Disruptor</option>
+                        <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
+                        <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
+                    </select></td>                    
+                    <td><input type="text" name="attr_weapon10facing"></td>
                 </tr>
             </tbody>
             </table>    
@@ -575,10 +510,6 @@
                 <h4><span name="attr_weapon5dice"></span></h4>
                 <h4><span name="attr_weapon5notes"></span></h4>
             </div>
-
-
-
-        
         </section>
         </main>
       </div>
@@ -603,58 +534,6 @@
     on("sheet:opened", function() {
         setAttrs({sheetTab:"ship"});
     });
-
-
-
-    on("change:fwdshields1 change:fwdshields2 change:portshields1 change:portshields2 change:stbdshields1 change:stbdshields2 change:aftshields1 change:aftshields2 change:reserve1 change:reserve2 change:reserve3 change:reserve4 change:reserve5 change:reserve6", function(eventInfo){
-        const attrib = eventInfo.sourceAttribute;
-        getAttrs(["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6","power","r1status","r3status","r4status","r5status","r6status"],function(values){
-            checked = 0;
-            let array = ["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"];
-            for (let i=0;i<array.length;i++) {
-                let v = values[array[i]];
-                if (v === "1") {checked++};
-            }
-            const attribVal = values[attrib];
-            const setObj = {};
-            let power = parseInt(values.power);
-            if (attribVal > 0 && checked > power) {
-                values[attrib] = "0"
-                setObj[attrib] = "0";
-            }
-            if (attrib === "reserve1" && values.r1status === "Damaged") {
-                values[attrib] = "0"
-                setObj[attrib] = "0";
-            }
-            if (attrib === "reserve3" && values.r3status === "Damaged") {
-                values[attrib] = "0"
-                setObj[attrib] = "0";
-            }
-            if (attrib === "reserve4" && values.r4status === "Damaged") {
-                values[attrib] = "0"
-                setObj[attrib] = "0";
-            }
-            if (attrib === "reserve5" && values.r5status === "Damaged") {
-                values[attrib] = "0"
-                setObj[attrib] = "0";
-            }
-            if (attrib === "reserve6" && values.r6status === "Damaged") {
-                values[attrib] = "0"
-                setObj[attrib] = "0";
-            }
-
-
-
-
-
-
-            setAttrs(setObj)
-        })
-    });
-
-
-
-
 
     on("change:attrs sheet:opened", function(eventInfo) { 
         getAttrs(["faction","hull","hull_max","engine","engine_max","engineTransition","powerArray","agile","forShieldArray","portShieldArray","stbdShieldArray","aftShieldArray","shieldstatus","reserveName3","reserveName4","reserveName5","reserveName6","weapon1status","weapon2status","weapon3status","sensorstatus","system1status","thrusterstatus"], function(values) {
