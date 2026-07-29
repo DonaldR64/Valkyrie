@@ -662,10 +662,10 @@ input[type="hidden"][value="Green"].hull-status ~ .hullstatus h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Green"].shield-status ~ .shieldstatus{
+input[type="hidden"][value="Green"].shield-status ~ .shieldstatus h4{
     background-color:  green;
 }
-input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus{   
+input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus h4{   
     background-color:  yellow;
 }
 input[type="hidden"][value="Red"].shield-status ~ .shieldstatus h4{   
