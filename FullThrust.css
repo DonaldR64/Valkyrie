@@ -608,11 +608,11 @@ input[type="hidden"][value="Green"].command-status ~ .commandstatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].lifesupport-status ~ .lifesupportstatus h4{
-    color: red;
+input[type="hidden"][value="Red"].lifesupport-status ~ .lifesupportstatus {
+    background-color: red;
 }
-input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus h4{
-    color: green;
+input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus {
+    background-color: green;
 }
 
 .warpcorestatus {
@@ -624,11 +624,11 @@ input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].lifesupport-status ~ .lifesupportstatus h4{
-    color: red;
+input[type="hidden"][value="Red"].lifesupport-status ~ .lifesupportstatus {
+    background-color: red;
 }
-input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus h4{
-    color: green;
+input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus {
+    background-color: green;
 }
 
 .hullstatus {
@@ -640,17 +640,17 @@ input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].hull-status ~ .hullstatus h4{
-    color: red;
+input[type="hidden"][value="Red"].hull-status ~ .hullstatus {
+    background-color: red;
 }
-input[type="hidden"][value="Orange"].hull-status ~ .hullstatus h4{
-    color: orange;
+input[type="hidden"][value="Orange"].hull-status ~ .hullstatus {
+    background-color: orange;
 }
-input[type="hidden"][value="Yellow"].hull-status ~ .hullstatus h4{
-    color: yellow;
+input[type="hidden"][value="Yellow"].hull-status ~ .hullstatus {
+    background-color: yellow;
 }
-input[type="hidden"][value="Green"].hull-status ~ .hullstatus h4{
-    color: green;
+input[type="hidden"][value="Green"].hull-status ~ .hullstatus {
+    background-color: green;
 }
 
 
@@ -663,14 +663,14 @@ input[type="hidden"][value="Green"].hull-status ~ .hullstatus h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Green"].shield-status ~ .shieldstatus h4{
+input[type="hidden"][value="Green"].shield-status ~ .shieldstatus {
     background-color:  green;
 }
-input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus h4{   
+input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus {   
     background-color:  yellow;
 }
-input[type="hidden"][value="Red"].shield-status ~ .shieldstatus h4{   
-    color:  red;
+input[type="hidden"][value="Red"].shield-status ~ .shieldstatus {   
+    background-color:  red;
 }
 
 
@@ -683,14 +683,14 @@ input[type="hidden"][value="Red"].shield-status ~ .shieldstatus h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].firecontrol-status ~ .firecontrolstatus h4{
-    color: red;
+input[type="hidden"][value="Red"].firecontrol-status ~ .firecontrolstatus {
+    background-color: red;
 }
-input[type="hidden"][value="Yellow"].firecontrol-status ~ .firecontrolstatus h4{
-    color: yellow;
+input[type="hidden"][value="Yellow"].firecontrol-status ~ .firecontrolstatus {
+    background-color: yellow;
 }
-input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus h4{
-    color: green;
+input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus {
+    background-color: green;
 }
 
 .crewstatus {
@@ -702,11 +702,11 @@ input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].crew-status ~ .crewstatus h4{
-    color: red;
+input[type="hidden"][value="Red"].crew-status ~ .crewstatus {
+    background-color: red;
 }
-input[type="hidden"][value="Green"].crew-status ~ .crewstatus h4{
-    color: green;
+input[type="hidden"][value="Green"].crew-status ~ .crewstatus {
+    background-color: green;
 }
 
 
