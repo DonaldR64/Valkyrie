@@ -146,7 +146,11 @@ section {
 }
 .ops {
   grid-area: ops;
-  background-color:  white;
+    display: grid;
+    grid-gap: 4px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(8,1fr);
+    background-color: white;
 }
 .ship {
     grid-area: ship;
