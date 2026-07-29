@@ -588,14 +588,17 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].command-status ~ .commandstatus h4{
-    color: red;
+.commandstatus h4{
+    color: white,
 }
-input[type="hidden"][value="Orange"].command-status ~ .commandstatus h4{
-    color: orange;
+input[type="hidden"][value="Red"].command-status ~ .commandstatus {
+    background-color: red;
 }
-input[type="hidden"][value="Green"].command-status ~ .commandstatus h4{
-    color: green;
+input[type="hidden"][value="Orange"].command-status ~ .commandstatus {
+    background-color: orange;
+}
+input[type="hidden"][value="Green"].command-status ~ .commandstatus {
+    background-color: green;
 }
 
 .lifesupportstatus {
