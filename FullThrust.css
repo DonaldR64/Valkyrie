@@ -192,8 +192,8 @@ section {
     grid-template-rows: 1fr;
     background-color:  red;
 } 
-input[type="hidden"][value="None"].d1-status ~ .d1status{
-    display: none;
+input[type="hidden"][value="All Systems Green"].d1-status ~ .d1status{
+    background-color: green;
 }
 
 .d2status {
