@@ -589,7 +589,7 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     padding: 3px;   
 }
 .commandstatus h4{
-    color: white,
+    color: black,
 }
 input[type="hidden"][value="Red"].command-status ~ .commandstatus {
     background-color: red;
@@ -600,6 +600,11 @@ input[type="hidden"][value="Orange"].command-status ~ .commandstatus {
 input[type="hidden"][value="Green"].command-status ~ .commandstatus {
     background-color: green;
 }
+input[type="hidden"][value="Green"].command-status ~ .commandstatus h4{
+    color: white;
+}
+
+
 
 .lifesupportstatus {
     display: grid;
