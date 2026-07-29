@@ -314,16 +314,16 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
             let commandstatus = "Green";
             if (values.command === "Destroyed") {commandstatus = "Red"};
             if (values.command.includes("Damaged")) {commandstatus = "Orange"};
 
             let lifesupportstatus = "Red";
-            if (values.lifesupport === "Normal") {lifesupportstatus = "Green"};
+            if (values.lifesupport === "Nominal") {lifesupportstatus = "Green"};
 
             let warpcorestatus = "Red";
-            if (values.warpcore === "Normal") {warpcorestatus = "Green"};
+            if (values.warpcore === "Nominal") {warpcorestatus = "Green"};
 
             let hullMax = parseInt(values.hull_max);
             let hull = parseInt(values.hull);
@@ -365,6 +365,18 @@
             let turnPts = Math.ceil(thrusters/2);
 
 
+
+            let faction = values.faction;
+            let factionsymbol = "";
+            if (faction === "Klingon") {
+                factionsymbol = "https://files.d20.io/images/494961715/XBNJxsAasyGU_WX5Ub4XyQ/thumb.png?1784771002";
+            }
+            if (faction === "Federation") {
+                factionsymbol = "https://files.d20.io/images/494930908/_yxSf8Knwl4BMu3-K-GU2Q/thumb.png?1784753907";
+            }
+
+
+
             setAttrs({
                 commandstatus: commandstatus,
                 lifesupportstatus: lifesupportstatus,
@@ -386,6 +398,7 @@
                 damaged12: damagedsystems[11],
                 thrusters: thrusters,
                 turnpts: turnPts,
+                factionsymbol: factionsymbol,
 
 
 

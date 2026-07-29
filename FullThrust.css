@@ -743,7 +743,7 @@ input[type="hidden"][value="Green"].crew-status ~ .crewstatus {
 input[type="hidden"][value="Offline"].warpdrive-status ~ .warpdrivestatus {
     background-color: red;
 }
-input[type="hidden"][value="Normal"].warpdrive-status ~ .warpdrivestatus {
+input[type="hidden"][value="Nominal"].warpdrive-status ~ .warpdrivestatus {
     background-color: green;
 }
 
@@ -762,7 +762,7 @@ input[type="hidden"][value="Offline"].impulse-status ~ .impulsestatus {
 input[type="hidden"][value="Damaged"].impulse-status ~ .impulsestatus {
     background-color: yellow;
 }
-input[type="hidden"][value="Normal"].impulse-status ~ .impulsestatus {
+input[type="hidden"][value="Nominal"].impulse-status ~ .impulsestatus {
     background-color: green;
 }
 
