@@ -204,11 +204,8 @@
 
         <section class="helm">
             <h3>Helm</h3>
-
-
-
-
-
+            <h4>Thrusters: <span name="attr_thrusters"></span></h4>
+            <h4>Turn: <span name="attr_turn"></span></h4>
         </section>
 
         <section class="ops">
@@ -316,7 +313,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems"], function(values) {
+        getAttrs(["command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
             let commandstatus = "Green";
             if (values.command === "Destroyed") {commandstatus = "Red"};
             if (values.command.includes("Damaged")) {commandstatus = "Orange"};
@@ -355,6 +352,18 @@
                 damagedsystems.push(sys);
             }
 
+            let thrusters = parseInt(values.thrusters_max);
+            let impulseStatus = values.impulse;
+            if (impulseStatus === "Damaged") {
+                thrusters = Math.floor(thrusters/2);
+            }
+            if (impulseStatus === "Offline") {
+                thrusters = 0;
+            }
+            let turn = Math.ceil(thrusters/2);
+
+
+
             setAttrs({
                 commandstatus: commandstatus,
                 lifesupportstatus: lifesupportstatus,
@@ -374,8 +383,8 @@
                 damaged10: damagedsystems[9],
                 damaged11: damagedsystems[10],
                 damaged12: damagedsystems[11],
-
-
+                thrusters: thrusters,
+                turn: turn,
 
 
 
