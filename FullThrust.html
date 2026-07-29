@@ -38,15 +38,24 @@
         <div class="col">
             <h3>Systems</h3>
             <label>Impulse Engines:</label><input type="number" name="attr_impulse">
-            <label>Current Hull:</label><input type="number" name="attr_hull">
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
-            <label>Shield Generator 1:</label><input type="checkbox" name="attr_shield1" value="1">            
-            <label>Shield Generator 2:</label><input type="checkbox" name="attr_shield2" value="1">   
-            <label>Shield Generator 3:</label><input type="checkbox" name="attr_shield3" value="1">   
-            <label>Fire Control 1:</label><input type="checkbox" name="attr_fc1" value="1">            
-            <label>Fire Control 2:</label><input type="checkbox" name="attr_fc2" value="1">       
-            <label>Fire Control 3:</label><input type="checkbox" name="attr_fc3" value="1">       
+            <label>Max Crew (Hull/20 rounded up):</label><input type="number" name="attr_crew_max">
+            <label for="attr_shieldgenerators"># of Shield Generators:</label>
+            <select name="attr_shieldgenerators_max">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>  
+            <label for="attr_firecontrol"># of Fire Control Centres:</label>
+            <select name="attr_firecontrol_max">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>    
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloaking" value="1">   
         </div>
 
@@ -69,7 +78,7 @@
                     <th>System</th>
                     <th>Name</th>
                     <th>Type</th>
-                    <th>Facing</th>
+                    <th>Facing (1-6)</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,9 +91,9 @@
                     <td>A</td>
                     <td><input type="text" name="attr_weapon1name"></td>
                     <td><select name="attr_weapon1type">
-                        <option value = "Beam-1">Beam-1</option>
-                        <option value = "Beam-2">Beam-2</option>
-                        <option value = "Beam-3">Beam-3</option> 
+                        <option value = "Class 1 Beam">Class 1 Beam</option>
+                        <option value = "Class 2 Beam">Class 2 Beam</option>
+                        <option value = "Class 3 Beam">Class 3 Beam</option> 
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor">Disruptor</option>
                         <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
@@ -141,8 +150,49 @@
         </section>
 
         <section class="ops">
-            <h3>Operations</h3>
-            
+            <h3>OPS</h3>
+
+            <input type="hidden" name="attr_commandstatus" class="command-status" value="Red">
+            <div class="commandstatus">
+                <h4>Command: <span name="attr_command"></span></h4>
+            </div>
+
+            <input type="hidden" name="attr_lifesupportstatus" class="lifesupport-status" value="Red">
+            <div class="lifesupportstatus">
+                <h4>Life Support: <span name="attr_lifesupport"></span></h4>
+            </div>
+
+            <input type="hidden" name="attr_warpcorestatus" class="warpcore-status" value="Red">
+            <div class="warpcorestatus">
+                <h4>Warp Core: <span name="attr_warpcore"></span></h4>
+            </div>
+
+            <input type="hidden" name="attr_hullstatus" class="hull-status" value="Red">
+            <div class="hullstatus">
+                <h4>Hull Integrity: <span name="attr_hull"></span> / <span name="attr_hull_max"></span></h4>
+            </div>
+
+            <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Red">
+            <div class="shieldstatus">
+                <h4>Shield Level: <span name="attr_shieldlevel"></span></h4>
+            </div>
+
+            <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Red">
+            <div class="firecontrol">
+                <h4>Fire Control: <span name="attr_firecontrol"></span> / <span name="attr_firecontrol_max"></span></h4>
+            </div>
+
+            <input type="hidden" name="attr_hullstatus" class="crew-status" value="Red">
+            <div class="crewstatus">
+                <h4>Crew Level: <span name="attr_crew"></span> / <span name="attr_crew_max"></span></h4>
+            </div>
+
+
+
+
+
+
+
         </section>
 
 
@@ -155,7 +205,6 @@
                 <div><span>System</span></div>
                 <div><span>Name</span></div>
                 <div><span>Type</span></div>
-                <div><span>Facing</span></div>
                 <div><span>Range</span></div>
                 <div><span>Damage</span></div>
             </div>
@@ -165,7 +214,6 @@
                 <h4>A</span></h4>
                 <h4><span name="attr_weapon1name"></span></h4>
                 <h4><span name="attr_weapon1type"></span></h4>
-                <h4><span name="attr_weapon1facing"></span></h4>
                 <h4><span name="attr_weapon1range"></span></h4>
                 <h4><span name="attr_weapon1damage"></span></h4>
             </div>
@@ -195,9 +243,52 @@
         setAttrs({sheetTab:"ship"});
     });
 
-    
+    on("change:attrs sheet:opened", function(eventInfo) { 
+        getAttrs(["command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max"], function(values) {
+            let commandstatus = "Green";
+            if (values.command === "Destroyed") {commandstatus = "Red"};
+            if (values.command.includes("Damaged")) {commandstatus = "Orange"};
+
+            let lifesupportstatus = "Red";
+            if (values.lifesupport === "Normal") {lifesupportstatus = "Green"};
+
+            let warpcorestatus = "Red";
+            if (values.warpcore === "Normal") {warpcorestatus = "Green"};
+
+            let hullstatus = "Green";
+            let hullMax = parseInt(values.hull_max);
+            let hull = parseInt(values.hull);
+            let adv = 4;
+            if (advancedhull === "1") {adv = 3};
+            let hullLevel = Math.ceil(hull / (hullMax/adv)) - 1;
+            let hullColours = ["Red","Orange","Yellow","Green"];
+            let hullstatus = hullColours[hullLevel];
+            //hullstatus will also affect crewstatus class
+
+            let shieldstatus = "Green";
+            let sg = parseInt(values.shieldgenerators);
+            let sgMax = parseInt(value.shieldgenerators_max);
+            if (sg < sgMax) {shieldstatus = "Yellow"};
+            if (sg === 0) {shieldstatus = "Red"};
+
+            let firecontrolstatus = "Green";
+            let fc = parseInt(values.firecontrol);
+            let fcMax = parseInt(value.firecontrol_max);
+            if (fc < fcMax) {firecontrolstatus = "Yellow"};
+            if (fc === 0) {firecontrolstatus = "Red"};
 
 
- 
+            setAttrs({
+                commandstatus: commandstatus,
+                lifesupportstatus: lifesupportstatus,
+                warpcorestatus: warpcorestatus,
+                hullstatus: hullstatus,
+                shieldstatus: shieldstatus,
+                firecontrolstatus: firecontrolstatus,
 
+
+
+            });
+        });
+    });
 </script>

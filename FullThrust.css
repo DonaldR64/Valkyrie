@@ -465,7 +465,7 @@ input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
 .weapon1 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     text-align: center;
     align-items: center;
@@ -578,7 +578,8 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
 
 
 /* Ops Sub Sections */
-.hulldamage {
+
+.commandstatus {
     display: grid;
     grid-gap: 1px;
     grid-template-columns: 1fr;
@@ -587,17 +588,17 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].hull-status ~ .hulldamage h4{
+input[type="hidden"][value="Red"].command-status ~ .commandstatus h4{
     color: red;
 }
-input[type="hidden"][value="Orange"].hull-status ~ .hulldamage h4{
+input[type="hidden"][value="Orange"].command-status ~ .commandstatus h4{
     color: orange;
 }
-input[type="hidden"][value="Green"].hull-status ~ .hulldamage h4{
+input[type="hidden"][value="Green"].command-status ~ .commandstatus h4{
     color: green;
 }
 
-.enginedamage {
+.lifesupportstatus {
     display: grid;
     grid-gap: 1px;
     grid-template-columns: 1fr;
@@ -606,19 +607,52 @@ input[type="hidden"][value="Green"].hull-status ~ .hulldamage h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].engine-status ~ .enginedamage h4{
+input[type="hidden"][value="Red"].lifesupport-status ~ .lifesupportstatus h4{
     color: red;
 }
-input[type="hidden"][value="Orange"].engine-status ~ .enginedamage h4{
-    color: orange;
-}
-input[type="hidden"][value="Green"].engine-status ~ .enginedamage h4{
+input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus h4{
     color: green;
 }
 
-.shieldstatus h4 {
+.warpcorestatus {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;   
+}
+input[type="hidden"][value="Red"].lifesupport-status ~ .lifesupportstatus h4{
+    color: red;
+}
+input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus h4{
     color: green;
 }
+
+.hullstatus {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;   
+}
+input[type="hidden"][value="Red"].hull-status ~ .hullstatus h4{
+    color: red;
+}
+input[type="hidden"][value="Orange"].hull-status ~ .hullstatus h4{
+    color: orange;
+}
+input[type="hidden"][value="Yellow"].hull-status ~ .hullstatus h4{
+    color: yellow;
+}
+input[type="hidden"][value="Green"].hull-status ~ .hullstatus h4{
+    color: green;
+}
+
+
 .shieldstatus {
     display: grid;
     grid-gap: 1px;
@@ -628,92 +662,18 @@ input[type="hidden"][value="Green"].engine-status ~ .enginedamage h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Normal"].shield-status ~ .shieldstatus{
-    background-color:  white;
+input[type="hidden"][value="Green"].shield-status ~ .shieldstatus{
+    background-color:  green;
 }
-input[type="hidden"][value="Damaged"].shield-status ~ .shieldstatus{   
-    background-color:  red;
+input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus{   
+    background-color:  yellow;
 }
-input[type="hidden"][value="Damaged"].shield-status ~ .shieldstatus h4{   
-    color:  white;
-}
-
-.thrusterstatus h4{
-    color: green;
-}
-.thrusterstatus {
-    display: grid;
-    grid-gap: 1px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    text-align: center;
-    align-items: center;
-    padding: 3px;    
-}
-input[type="hidden"][value="Normal"].thruster-status ~ .thrusterstatus{   
-    background-color:  white;
-}
-input[type="hidden"][value="Damaged"].thruster-status ~ .thrusterstatus{    
-    background-color:  red;
-}
-input[type="hidden"][value="Damaged"].thruster-status ~ .thrusterstatus h4{    
-    color:  white;
+input[type="hidden"][value="Red"].shield-status ~ .shieldstatus h4{   
+    color:  red;
 }
 
 
-.sensorstatus h4{
-    color: green;
-}
-.sensorstatus {
-    display: grid;
-    grid-gap: 1px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    text-align: center;
-    align-items: center;
-    padding: 3px;    
-}
-input[type="hidden"][value="Normal"].sensor-status ~ .sensorstatus{   
-    background-color:  white;
-}
-input[type="hidden"][value="Damaged"].sensor-status ~ .sensorstatus{    
-    background-color:  red;
-}
-input[type="hidden"][value="Damaged"].sensor-status ~ .sensorstatus h4{    
-    color:  white;
-}
-
-.system1status h4{
-    color: green
-}
-.system1status {
-    display: grid;
-    grid-gap: 1px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    text-align: center;
-    align-items: center;
-    padding: 3px; 
-}
-input[type="hidden"][value="None"].system1-status ~ .system1status{
-    display: none;
-}
-input[type="hidden"][value="Normal"].system1-status ~ .system1status{    
-    background-color:  white;
-}
-input[type="hidden"][value="Damaged"].system1-status ~ .system1status{   
-    background-color:  red;
-}
-input[type="hidden"][value="Damaged"].system1-status ~ .system1status h4{   
-    color:  white;
-}
-
-
-
-.system2status h4{
-    color: green;
-}
-.system2status {
+.firecontrolstatus {
     display: grid;
     grid-gap: 1px;
     grid-template-columns: 1fr;
@@ -722,44 +682,41 @@ input[type="hidden"][value="Damaged"].system1-status ~ .system1status h4{
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="None"].system2-status ~ .system2status{
-    display: none;
+input[type="hidden"][value="Red"].firecontrol-status ~ .firecontrolstatus h4{
+    color: red;
 }
-input[type="hidden"][value="Normal"].system2-status ~ .system2status{    
-    background-color:  white;
+input[type="hidden"][value="Yellow"].firecontrol-status ~ .firecontrolstatus h4{
+    color: yellow;
 }
-input[type="hidden"][value="Damaged"].system2-status ~ .system2status{   
-    background-color:  red;
-}
-input[type="hidden"][value="Damaged"].system2-status ~ .system2status h4{   
-    color:  white;
-}
-
-
-.system3status h4{
+input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus h4{
     color: green;
 }
-.system3status {
+
+.crewstatus {
     display: grid;
     grid-gap: 1px;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     text-align: center;
     align-items: center;
-    padding: 3px;  
+    padding: 3px;   
 }
-input[type="hidden"][value="None"].system3-status ~ .system3status{
-    display: none;
+input[type="hidden"][value="Red"].crew-status ~ .crewstatus h4{
+    color: red;
 }
-input[type="hidden"][value="Normal"].system3-status ~ .system3status{    
-    background-color:  white;
+input[type="hidden"][value="Green"].crew-status ~ .crewstatus h4{
+    color: green;
 }
-input[type="hidden"][value="Damaged"].system3-status ~ .system3status{   
-    background-color:  red;
-}
-input[type="hidden"][value="Damaged"].system3-status ~ .system3status h4{   
-    color:  white;
-}
+
+
+
+
+
+
+
+
+
+
 
 /* Top Sub Areas */
 .sidepic {
