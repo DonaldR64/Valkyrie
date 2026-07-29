@@ -345,13 +345,14 @@
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             if (fc === 0) {firecontrolstatus = "Red"};
 
-            let ds = values.damagedsystems || "None";
+            let ds = values.damagedsystems || "All Systems Green";
             ds = ds.split(",").map((e) => e.trim());
             let damagedsystems = [];
             for (let i=0;i<12;i++) {
                 let sys = ds[i] || "None";
                 damagedsystems.push(sys);
             }
+
 
             let thrusters = parseInt(values.thrusters_max);
             let impulseStatus = values.impulse;
