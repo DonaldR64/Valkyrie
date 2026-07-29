@@ -333,11 +333,13 @@
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             if (fc === 0) {firecontrolstatus = "Red"};
 
-            let damagedsystems = values.damagedsystems;
-console.log(damagedsystems)
-            damagedsystems = damagedsystems.split(",");
-
-
+            let ds = values.damagedsystems.split(",")
+console.log(ds)
+            let damagedsystems = [];
+            for (let i=0;i<12;i++) {
+                let sys = ds[0] || "None";
+                damagedsystems.push(sys.trim());
+            }
 
             setAttrs({
                 commandstatus: commandstatus,
@@ -346,18 +348,18 @@ console.log(damagedsystems)
                 hullstatus: hullstatus,
                 shieldstatus: shieldstatus,
                 firecontrolstatus: firecontrolstatus,
-                damaged1: damagedsystems[0] || "None",
-                damaged2: damagedsystems[1] || "None",
-                damaged3: damagedsystems[2] || "None",
-                damaged4: damagedsystems[3] || "None",
-                damaged5: damagedsystems[4] || "None",
-                damaged6: damagedsystems[5] || "None",
-                damaged7: damagedsystems[6] || "None",
-                damaged8: damagedsystems[7] || "None",
-                damaged9: damagedsystems[8] || "None",
-                damaged10: damagedsystems[9] || "None"
-                damaged11: damagedsystems[10] || "None",
-                damaged12: damagedsystems[11] || "None",
+                damaged1: damagedsystems[0],
+                damaged2: damagedsystems[1],
+                damaged3: damagedsystems[2],
+                damaged4: damagedsystems[3],
+                damaged5: damagedsystems[4],
+                damaged6: damagedsystems[5],
+                damaged7: damagedsystems[6],
+                damaged8: damagedsystems[7],
+                damaged9: damagedsystems[8],
+                damaged10: damagedsystems[9],
+                damaged11: damagedsystems[10],
+                damaged12: damagedsystems[11],
 
 
 
