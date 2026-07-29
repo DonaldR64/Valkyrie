@@ -144,6 +144,14 @@ section {
     grid-area: helm;
     background-color:  white;
 }
+.helm h3{
+    color: black;
+}
+.helm h4{
+    color: darkred;
+}
+
+
 .ops {
   grid-area: ops;
     display: grid;
