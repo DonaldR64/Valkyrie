@@ -42,13 +42,15 @@ main {
   height: 800px;
   grid-gap: 4px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: repeat(8,1fr);
+  grid-template-rows: repeat(10,1fr);
   grid-template-areas:  "top    top  top top"
                         "top    top  top top"
                         "ops  ship ship power"
                         "ops   ship ship power"
                         "ops ship ship power"
                         "helm ship ship power"
+                        "weapons weapons weapons weapons"
+                        "weapons weapons weapons weapons"
                         "weapons weapons weapons weapons"
                         "weapons weapons weapons weapons";
 }
