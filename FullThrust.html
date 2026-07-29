@@ -262,8 +262,7 @@
             if (advancedhull === "1") {adv = 3};
             let hullLevel = Math.ceil(hull / (hullMax/adv)) - 1;
             let hullColours = ["Red","Orange","Yellow","Green"];
-            let hullstatus = hullColours[hullLevel];
-            //hullstatus will also affect crewstatus class
+            hullstatus = hullColours[hullLevel];
 
             let shieldstatus = "Green";
             let sg = parseInt(values.shieldgenerators);
@@ -285,7 +284,6 @@
                 hullstatus: hullstatus,
                 shieldstatus: shieldstatus,
                 firecontrolstatus: firecontrolstatus,
-
 
 
             });
