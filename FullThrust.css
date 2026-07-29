@@ -589,7 +589,7 @@ input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
     padding: 3px;   
 }
 .commandstatus h4{
-    color: black,
+    color: white,
 }
 input[type="hidden"][value="Red"].command-status ~ .commandstatus {
     background-color: red;
