@@ -438,7 +438,7 @@ input[type="hidden"][value="Green"].as-status ~ .aft{
   grid-area: weaponinfo;
   display: grid;
   grid-gap: 2px;
-  grid-template-columns: 1fr 3fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   background-color: white;
   text-align: center;
@@ -463,7 +463,7 @@ input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
 .weapon1 {
     display: grid;
     grid-gap: 1px;
-  grid-template-columns: 1fr 3fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1;
     text-align: center;
     align-items: center;
