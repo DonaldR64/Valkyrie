@@ -180,7 +180,7 @@ section {
     grid-template-rows: 1fr;
     background-color:  red;
 } 
-input[type="hidden"][value=""].d1-status ~ .d1status{
+input[type="hidden"][value="None"].d1-status ~ .d1status{
     display: none;
 }
 
