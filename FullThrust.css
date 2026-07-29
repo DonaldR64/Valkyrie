@@ -184,6 +184,164 @@ input[type="hidden"][value="None"].d1-status ~ .d1status{
     display: none;
 }
 
+.d2status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d2-status ~ .d2status{
+    display: none;
+}
+
+.d3status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d3-status ~ .d3status{
+    display: none;
+}
+
+.d4status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d4-status ~ .d4status{
+    display: none;
+}
+
+.d5status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d5-status ~ .d5status{
+    display: none;
+}
+
+.d6status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d6-status ~ .d6status{
+    display: none;
+}
+
+.d7status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d7-status ~ .d7status{
+    display: none;
+}
+
+.d8status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d8-status ~ .d8status{
+    display: none;
+}
+
+.d9status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d9-status ~ .d9status{
+    display: none;
+}
+
+.d10status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d10-status ~ .d10status{
+    display: none;
+}
+
+.d11status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d11-status ~ .d11status{
+    display: none;
+}
+
+.d12status {
+    display: grid;
+    grid-gap: 1px;
+    text-align: center;
+    align-items: center;
+    padding: 3px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color:  red;
+} 
+input[type="hidden"][value="None"].d12-status ~ .d12status{
+    display: none;
+}
+
+
+
+
+
 
 /* Ship Sub Areas*/
 .toppic {
