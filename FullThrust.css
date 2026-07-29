@@ -111,7 +111,7 @@ section {
 
 .charsheet h4{
   text-align: center;
-  color: darkred;
+  color: white;
 }
 
 .charsheet h5{
@@ -596,9 +596,6 @@ input[type="hidden"][value="Orange"].command-status ~ .commandstatus {
 }
 input[type="hidden"][value="Green"].command-status ~ .commandstatus {
     background-color: green;
-}
-.commandstatus h4{
-    color: white,
 }
 
 
