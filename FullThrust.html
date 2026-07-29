@@ -354,7 +354,6 @@
             }
 
             let thrusters = parseInt(values.thrusters_max);
-console.log(thrusters)
             let impulseStatus = values.impulse;
             if (impulseStatus === "Damaged") {
                 thrusters = Math.floor(thrusters/2);
@@ -363,7 +362,6 @@ console.log(thrusters)
                 thrusters = 0;
             }
             let turnPts = Math.ceil(thrusters/2);
-console.log(turnPts)
 
 
             setAttrs({
