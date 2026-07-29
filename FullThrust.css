@@ -624,10 +624,10 @@ input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].lifesupport-status ~ .lifesupportstatus {
+input[type="hidden"][value="Red"].lifesupport-status ~ .warpcorestatus {
     background-color: red;
 }
-input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus {
+input[type="hidden"][value="Green"].lifesupport-status ~ .warpcorestatus {
     background-color: green;
 }
 
