@@ -345,7 +345,7 @@
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             if (fc === 0) {firecontrolstatus = "Red"};
 
-            let ds = values.damagedsystems || "All Systems Green";
+            let ds = values.damagedsystems || "All Systems Nominal";
             ds = ds.split(",").map((e) => e.trim());
             let damagedsystems = [];
             for (let i=0;i<12;i++) {
