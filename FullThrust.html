@@ -333,12 +333,13 @@
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             if (fc === 0) {firecontrolstatus = "Red"};
 
-            let ds = values.damagedsystems.split(",")
-console.log(ds)
+            let ds = values.damagedsystems || "None";
+            ds = ds.split(",").map((e) => e.trim());
+console.log(ds);
             let damagedsystems = [];
             for (let i=0;i<12;i++) {
-                let sys = ds[0] || "None";
-                damagedsystems.push(sys.trim());
+                let sys = ds[i] || "None";
+                damagedsystems.push(sys);
             }
 
             setAttrs({
