@@ -205,7 +205,7 @@
         <section class="helm">
             <h3>Helm</h3>
             <h4>Thrusters: <span name="attr_thrusters"></span></h4>
-            <h4>Turn: <span name="attr_turn"></span></h4>
+            <h4>Turn: <span name="attr_turnpts"></span></h4>
         </section>
 
         <section class="ops">
@@ -360,8 +360,8 @@
             if (impulseStatus === "Offline") {
                 thrusters = 0;
             }
-            let turn = Math.ceil(thrusters/2);
-console.log(turn)
+            let turnPts = Math.ceil(thrusters/2);
+console.log(turnPts)
 
 
             setAttrs({
@@ -384,7 +384,7 @@ console.log(turn)
                 damaged11: damagedsystems[10],
                 damaged12: damagedsystems[11],
                 thrusters: thrusters,
-                turn: turn,
+                turnpts: turnPts,
 
 
 
