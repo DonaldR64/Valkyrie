@@ -149,7 +149,7 @@ section {
     display: grid;
     grid-gap: 4px;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(8,1fr);
+    grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
 .ship {
@@ -723,9 +723,40 @@ input[type="hidden"][value="Green"].crew-status ~ .crewstatus {
     background-color: green;
 }
 
+.warpdrivestatus {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;   
+}
+input[type="hidden"][value="Offline"].warpdrive-status ~ .warpdrivestatus {
+    background-color: red;
+}
+input[type="hidden"][value="Normal"].warpdrive-status ~ .warpdrivestatus {
+    background-color: green;
+}
 
-
-
+.impulsestatus {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;   
+}
+input[type="hidden"][value="Offline"].impulse-status ~ .impulsestatus {
+    background-color: red;
+}
+input[type="hidden"][value="Damaged"].impulse-status ~ .impulsestatus {
+    background-color: yellow;
+}
+input[type="hidden"][value="Normal"].impulse-status ~ .impulsestatus {
+    background-color: green;
+}
 
 
 
