@@ -254,7 +254,7 @@
             </div>
             <input type="hidden" name="attr_hullstatus" class="crew-status" value="Red">
             <div class="crewstatus">
-                <h4>Crew Level: <span name="attr_crew"></span> / <span name="attr_crew_max"></span></h4>
+                <h4>Crew Level: <span name="attr_crew"></span></h4>
             </div>
         </section>
 
@@ -311,7 +311,8 @@
             let sg = parseInt(values.shieldgenerators);
             let sgMax = parseInt(values.shieldgenerators_max);
             let sgRatio = sg/sgMax * 100
-
+console.log(shields)
+console.log(sgRatio)
 
             let shieldPercent = Math.round(shields/shieldsMax * sgRatio);
             if (shieldPercent <= 50) {shieldstatus = "Yellow"};
@@ -319,7 +320,6 @@
                 shieldstatus = "Red"
                 shieldPercent = "Offline";
             };
-
 
 
             let firecontrolstatus = "Green";
