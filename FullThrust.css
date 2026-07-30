@@ -14,7 +14,7 @@
 
 .mysheet {
     width: 830;
-    height: 1030px;
+    height: 630;
 }
 .attributes {
     padding: 15px 0px 0px 15px;
@@ -39,20 +39,16 @@ input[type="hidden"][name="attr_faction"][value="Klingon"] ~ .mysheet {
 main {
   display: grid;
   width: 800px;
-  height: 1000px;
+  height: 600;
   grid-gap: 4px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: repeat(10,1fr);
+  grid-template-rows: repeat(6,1fr);
   grid-template-areas:  "top    top  top top"
                         "top    top  top top"
                         "helm  ship ship damage"
                         "ops   ship ship damage"
                         "ops   ship ship damage"
-                        "ops   ship ship damage"
-                        "weapons weapons weapons weapons"
-                        "weapons weapons weapons weapons"
-                        "weapons weapons weapons weapons"
-                        "weapons weapons weapons weapons";
+                        "ops   ship ship damage";
 }
 
 

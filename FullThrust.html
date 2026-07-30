@@ -266,28 +266,6 @@
 
         </section>
 
-
-
-        <section class="weapons">
-            <div class="weaponheader">
-                <h3>Tactical</h3>
-            </div>   
-            <div class="weaponinfo">
-                <div><span>System</span></div>
-                <div><span>Name</span></div>
-                <div><span>Type</span></div>
-                <div><span>Max Range</span></div>
-            </div>
-
-            <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
-            <div class="weapon1">
-                <h4>A</span></h4>
-                <h4><span name="attr_weapon1name"></span></h4>
-                <h4><span name="attr_weapon1type"></span></h4>
-                <h4><span name="attr_weapon1range"></span></h4>
-            </div>
-
-        </section>
         </main>
       </div>
     </div>    
@@ -313,7 +291,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","weapon1type","weapon2type","weapon3type","weapon4type","weapon5type","weapon6type","weapon7type","weapon8type","weapon9type","weapon10type"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
             let commandstatus = "Green";
             if (values.command === "Destroyed") {commandstatus = "Red"};
             if (values.command.includes("Damaged")) {commandstatus = "Orange"};
@@ -390,22 +368,7 @@
             }
 
 
-            let weaponRanges = [];
-            for (let i=1;i<11;i++) {
-                let weaponType = values["weapon" + i + "type"];
-                let range = "";
-                if (weaponType) {
-                    if (weaponType.includes("Beam")) {
-                        range = parseInt(weaponType.replace(/[^\d]/g,"")) * 12; 
-                    }
-                    if (weaponType.includes("Torpedo") || weaponType.includes("Disruptor")) {
-                        range = 30;
-                    }
-                }
-                weaponRanges.push(range);
-            }
-
-
+ 
 
 
 
@@ -440,16 +403,7 @@
                 factionsymbol: factionsymbol,
                 fcdisplay: fcDisplay,
                 sgdisplay: sgDisplay,
-                weapon1range: weaponRanges[0],
-                weapon2range: weaponRanges[1],
-                weapon3range: weaponRanges[2],
-                weapon4range: weaponRanges[3],
-                weapon5range: weaponRanges[4],
-                weapon6range: weaponRanges[5],
-                weapon7range: weaponRanges[6],
-                weapon8range: weaponRanges[7],
-                weapon9range: weaponRanges[8],
-                weapon10range: weaponRanges[9],
+
 
 
 
