@@ -160,16 +160,11 @@ section {
     grid-area: ship;
     display: grid;
     grid-gap: 4px;
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(1,1fr);
     grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
 
-.ship img{
-    max-width: 95%;
-    max-height: 95%;
-    object-fit: contain;
-}
 
 
 
