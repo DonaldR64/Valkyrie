@@ -147,6 +147,16 @@ section {
     color: darkred;
 }
 
+.core {
+  grid-area: core;
+    display: grid;
+    grid-gap: 4px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3,1fr);
+    background-color: white;
+}
+
+
 
 .ops {
   grid-area: ops;
