@@ -469,6 +469,9 @@ input[type="hidden"][value="Nominal"].impulse-status ~ .impulsestatus {
     align-items: center;
     padding: 3px;   
 }
+input[type="hidden"][value="Dark Red"].hull-status ~ .hullstatus {
+    background-color: darkred;
+}
 input[type="hidden"][value="Red"].hull-status ~ .hullstatus {
     background-color: red;
 }
