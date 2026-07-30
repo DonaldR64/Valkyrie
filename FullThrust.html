@@ -277,7 +277,6 @@
                 <div><span>Name</span></div>
                 <div><span>Type</span></div>
                 <div><span>Max Range</span></div>
-                <div><span>Base Damage</span></div>
             </div>
 
             <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
@@ -286,7 +285,6 @@
                 <h4><span name="attr_weapon1name"></span></h4>
                 <h4><span name="attr_weapon1type"></span></h4>
                 <h4><span name="attr_weapon1range"></span></h4>
-                <h4><span name="attr_weapon1damage"></span></h4>
             </div>
 
         </section>
@@ -393,44 +391,16 @@
 
 
             let weaponRanges = [];
-            let weaponDice = [];
-            let weaponDamage = [];
             for (let i=1;i<11;i++) {
                 let weaponType = values["weapon" + i + "type"];
-                let range, dice, damage;
-                if (weaponType === "Class 1 Beam") {
-                    range = 12;
-                    dice = "1d6";
-                    damage = "4,5 = 1 / 6 = 2 + d6";
+                let range;
+                if (weaponType.includes("Beam")) {
+                    range = parseInt(weaponType.replace(/[^\d]/g,"")) * 12; 
                 }
-                if (weaponType === "Class 2 Beam") {
-                    range = 12/24;
-                    dice = "2d6/1d6";
-                    damage = "4,5 = 1 / 6 = 2 + d6";
-                }
-                if (weaponType === "Class 3 Beam") {
-                    range = 12/24/36;
-                    dice = "3d6/2d6/1d6";
-                    damage = "4,5 = 1 / 6 = 2 + d6";
-                }
-                if (weaponType === "Photon Torpedo") {
+                if (weaponType.includes("Torpedo") || weaponType.includes("Disruptor")) {
                     range = 30;
-                    
                 }
-                if (weaponType === "Pulse Torpedo") {
-                    range = 30;
-                    
-                }
-                if (weaponType === "Disruptor") {
-                    range = 30;
-                    
-                }
-                if (weaponType === "Mk2. Disruptor") {
-                    range = 30;
-                    
-                }
-
-
+                weaponRanges.push(range);
             }
 
 
@@ -468,6 +438,20 @@
                 factionsymbol: factionsymbol,
                 fcdisplay: fcDisplay,
                 sgdisplay: sgDisplay,
+                weapon1range: weaponRanges[0];
+                weapon2range: weaponRanges[1];
+                weapon3range: weaponRanges[2];
+                weapon4range: weaponRanges[3];
+                weapon5range: weaponRanges[4];
+                weapon6range: weaponRanges[5];
+                weapon7range: weaponRanges[6];
+                weapon8range: weaponRanges[7];
+                weapon9range: weaponRanges[8];
+                weapon10range: weaponRanges[9];
+
+
+
+
 
             });
         });
