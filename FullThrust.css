@@ -361,8 +361,8 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 }
 .toppic img{
     flex-shrink: 0;
-    min-width: 100%;
-    min-height: 100%
+    width: auto;
+    min-height: 95%%
 }
 
 
