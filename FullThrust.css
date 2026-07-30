@@ -352,7 +352,7 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 .toppic img{
     max-width: 95%;
     max-height: 95%;
-    object-fit: contain;
+    object-fit: fill;
 }
 .tactical {
     grid-column:1/-1;
