@@ -519,12 +519,14 @@
 
             let hullMax = parseInt(values.hull_max);
             let hull = parseInt(values.hull);
-            let adv = 4;
-            if (values.advancedhull === "1") {adv = 3};
-            let hullLevel = Math.floor(hull / (hullMax/adv));
+            let levels = 4;
+            if (values.advancedhull === "1") {levels = 3};
+            let hullpercent = Math.round(hull/hullMax * 100);
+            let hullLevel = Math.floor(hullpercent * levels / 100);
             let hullColours = ["Red","Orange","Yellow","Green"];
             let hullstatus = hullColours[hullLevel];
-            let hullpercent = Math.round(hull/hullMax * 100);
+console.log(hullLevel)
+
 
             let shieldstatus = "Green";
             let shields = parseInt(values.shields);
@@ -532,8 +534,7 @@
             let sg = parseInt(values.shieldgenerators);
             let sgMax = parseInt(values.shieldgenerators_max);
             let sgRatio = sg/sgMax * 100
-console.log(shields)
-console.log(sgRatio)
+
 
             let shieldPercent = Math.round(shields/shieldsMax * sgRatio);
             if (shieldPercent <= 50) {shieldstatus = "Yellow"};
