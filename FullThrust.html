@@ -42,12 +42,12 @@
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
             <label>Max Crew (Mass/20 rounded up):</label><input type="number" name="attr_crew_max">
             <label for="attr_shieldgenerators"># of Shield Generators:</label>
-            <select name="attr_shieldgenerators_max">
-                <option value="0">0</option>
+            <select name="attr_shieldgenerator_max">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
-            </select>  
+            </select>   
+            <label>Shields (Mass/3 rounded up):</label><input type="number" name="attr_shields_max">
             <label for="attr_firecontrol"># of Fire Control Centres:</label>
             <select name="attr_firecontrol_max">
                 <option value="1">1</option>
@@ -239,7 +239,7 @@
             </div>
             <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Red">
             <div class="shieldstatus">
-                <h4>Shields: <span name="sgpercent"></span> %</h4>
+                <h4>Shields: <span name="attr_shieldpercent"></span> %</h4>
             </div>
         </section>
 
@@ -283,7 +283,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
             let commandstatus = "Green";
             if (values.command === "Destroyed") {commandstatus = "Red"};
             if (values.command.includes("Damaged")) {commandstatus = "Orange"};
@@ -306,13 +306,18 @@
 
 
             let shieldstatus = "Green";
-            let sg = parseInt(values.shields);
-            let sgMax = parseInt(values.shields_max);
-            let sgPercent = Math.round(sg/sgMax * 100);
-            if (sgPercent <= 50) {shieldstatus = "Yellow"};
-            if (sgPercent === 0) {
+            let shields = parseInt(values.shields);
+            let shieldsMax = parseInt(values.shields_max);
+            let sg = parseInt(values.shieldgenerators);
+            let sgMax = parseInt(values.shieldgenerators_max);
+            let sgRatio = sg/sgMax * 100
+
+
+            let shieldPercent = Math.round(shields/shieldsMax * sgRatio);
+            if (shieldPercent <= 50) {shieldstatus = "Yellow"};
+            if (shieldPercent === 0) {
                 shieldstatus = "Red"
-                sgPercent = "Offline";
+                shieldPercent = "Offline";
             };
 
 
@@ -395,7 +400,7 @@
                 turnpts: turnPts,
                 factionsymbol: factionsymbol,
                 fcdisplay: fcDisplay,
-                sgpercent: sgPercent,
+                shieldpercent: shieldPercent,
                 hullpercent: hullpercent,
 
 
