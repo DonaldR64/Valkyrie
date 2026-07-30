@@ -158,6 +158,10 @@ section {
 }
 .ship {
     grid-area: ship;
+    display: grid;
+    grid-gap: 4px;
+    grid-template-columns: repeat(6,1fr);
+    grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
 
@@ -354,13 +358,23 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 
 /* Ship Sub Areas*/
 .toppic {
-    background-image: url("https://files.d20.io/images/494928727/5D-S5MXOUCAVrm2NrpqxMA/thumb.jpg?1784752628");
-    background-repeat: repeat;
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .toppic img{
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 95%;
+    max-height: 95%;
     object-fit: contain;
+}
+.tactical {
+    grid-column:1/-1;
+    grid-row: 1/2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
