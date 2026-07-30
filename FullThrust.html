@@ -39,13 +39,13 @@
             <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
-            <label for="attr_shieldgenerators"># of Shield Generators:</label>
-            <select name="attr_shieldgenerator_max">
+            <label for="attr_shieldgenerators_max"># of Shield Generators:</label>
+            <select name="attr_shieldgenerators_max">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
             </select>   
-            <label for="attr_firecontrol"># of Fire Control Centres:</label>
+            <label for="attr_firecontrol_max"># of Fire Control Centres:</label>
             <select name="attr_firecontrol_max">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -531,7 +531,7 @@
             let shields = values.shields || shieldsMax;
             shields = parseInt(shields);
 
-            let sgMax = parseInt(values.shieldgenerators_max);
+            let sgMax = parseInt(values.shieldgenerators_max) || 1;
             let sg = values.shieldgenerators || sgMax;
             sg = parseInt(sgMax);
             let sgRatio = sg/sgMax * 100
@@ -644,6 +644,7 @@
                 shields: shields,
                 shields_max: shieldsMax,
                 shieldgenerators: sg,
+                shieldgenerators_max: sgMax,
                 firecontrol: fc,
                 crew: crew,
                 crew_max: crewMax,
