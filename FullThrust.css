@@ -430,10 +430,10 @@ input[type="hidden"][value="Green"].lifesupport-status ~ .warpcorestatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Offline"].warpdrive-status ~ .warpdrivestatus {
+input[type="hidden"][value="Red"].warpdrive-status ~ .warpdrivestatus {
     background-color: red;
 }
-input[type="hidden"][value="Nominal"].warpdrive-status ~ .warpdrivestatus {
+input[type="hidden"][value="Green"].warpdrive-status ~ .warpdrivestatus {
     background-color: green;
 }
 
@@ -446,16 +446,16 @@ input[type="hidden"][value="Nominal"].warpdrive-status ~ .warpdrivestatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Offline"].impulse-status ~ .impulsestatus {
+input[type="hidden"][value="Red"].impulse-status ~ .impulsestatus {
     background-color: red;
 }
-input[type="hidden"][value="Damaged"].impulse-status ~ .impulsestatus {
+input[type="hidden"][value="Yellow"].impulse-status ~ .impulsestatus {
     background-color: yellow;
 }
-input[type="hidden"][value="Damaged"].impulse-status ~ .impulsestatus h4{
+input[type="hidden"][value="Yellow"].impulse-status ~ .impulsestatus h4{
     color: black;
 }
-input[type="hidden"][value="Nominal"].impulse-status ~ .impulsestatus {
+input[type="hidden"][value="Green"].impulse-status ~ .impulsestatus {
     background-color: green;
 }
 
