@@ -521,12 +521,10 @@
             let hull = parseInt(values.hull);
             let adv = 4;
             if (values.advancedhull === "1") {adv = 3};
-            let hullLevel = Math.ceil(hull / (hullMax/adv)) - 1;
+            let hullLevel = Math.floor(hull / (hullMax/adv));
             let hullColours = ["Red","Orange","Yellow","Green"];
             let hullstatus = hullColours[hullLevel];
             let hullpercent = Math.round(hull/hullMax * 100);
-
-
 
             let shieldstatus = "Green";
             let shields = parseInt(values.shields);

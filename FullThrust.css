@@ -378,6 +378,9 @@ input[type="hidden"][value="Red"].command-status ~ .commandstatus {
 input[type="hidden"][value="Orange"].command-status ~ .commandstatus {
     background-color: orange;
 }
+input[type="hidden"][value="Orange"].command-status ~ .commandstatus h4{
+    color: black;
+}
 input[type="hidden"][value="Green"].command-status ~ .commandstatus {
     background-color: green;
 }
@@ -471,6 +474,9 @@ input[type="hidden"][value="Red"].hull-status ~ .hullstatus {
 }
 input[type="hidden"][value="Orange"].hull-status ~ .hullstatus {
     background-color: orange;
+}
+input[type="hidden"][value="Orange"].hull-status ~ .hullstatus h4{
+    color: black;
 }
 input[type="hidden"][value="Yellow"].hull-status ~ .hullstatus {
     background-color: yellow;
