@@ -182,7 +182,7 @@ section {
     display: grid;
     grid-gap: 4px;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(12,1fr);
+    grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
 
@@ -325,34 +325,6 @@ input[type="hidden"][value="None"].d9-status ~ .d9status{
     background-color:  red;
 } 
 input[type="hidden"][value="None"].d10-status ~ .d10status{
-    display: none;
-}
-
-.d11status {
-    display: grid;
-    grid-gap: 1px;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    background-color:  red;
-} 
-input[type="hidden"][value="None"].d11-status ~ .d11status{
-    display: none;
-}
-
-.d12status {
-    display: grid;
-    grid-gap: 1px;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    background-color:  red;
-} 
-input[type="hidden"][value="None"].d12-status ~ .d12status{
     display: none;
 }
 
