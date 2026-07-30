@@ -45,7 +45,7 @@ main {
   grid-template-rows: repeat(6,1fr);
   grid-template-areas:  "top    top  top top"
                         "top    top  top top"
-                        "helm  ship ship damage"
+                        "helm  ship ship core"
                         "ops   ship ship damage"
                         "ops   ship ship damage"
                         "ops   ship ship damage";
@@ -112,7 +112,7 @@ section {
 
 .charsheet h5{
   text-align: center;
-  color: darkred;
+  color: white;
 }
 
 
@@ -366,7 +366,12 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 }
 
 
-/* Ops Sub Sections */
+
+
+
+
+
+/* core Sub Sections */
 
 .commandstatus {
     display: grid;
@@ -419,6 +424,10 @@ input[type="hidden"][value="Red"].lifesupport-status ~ .warpcorestatus {
 input[type="hidden"][value="Green"].lifesupport-status ~ .warpcorestatus {
     background-color: green;
 }
+
+/* Ops Sub Sections */
+
+
 
 .hullstatus {
     display: grid;
