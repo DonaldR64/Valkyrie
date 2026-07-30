@@ -355,14 +355,11 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 .toppic {
     grid-column: 1/-1;
     grid-row: 1/-1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 .toppic img{
-    max-width: 400px;
-    max-height: 400px;
-    object-fit: fill;
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
 }
 .tactical {
     grid-column:1/-1;
