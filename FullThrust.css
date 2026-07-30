@@ -160,7 +160,7 @@ section {
     grid-area: ship;
     display: grid;
     grid-gap: 4px;
-    grid-template-columns: repeat(1,1fr);
+    grid-template-columns: 1fr;
     grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
@@ -362,7 +362,7 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
     align-items: center;
 }
 .toppic {
-    grid-row: 1/-1;
+    grid-row: 2/-1;
     grid-column: 1/-1;
     align-items: center;
     padding: 3px;
