@@ -449,6 +449,9 @@ input[type="hidden"][value="Offline"].impulse-status ~ .impulsestatus {
 input[type="hidden"][value="Damaged"].impulse-status ~ .impulsestatus {
     background-color: yellow;
 }
+input[type="hidden"][value="Damaged"].impulse-status ~ .impulsestatus h4{
+    color: black;
+}
 input[type="hidden"][value="Nominal"].impulse-status ~ .impulsestatus {
     background-color: green;
 }
@@ -472,6 +475,9 @@ input[type="hidden"][value="Orange"].hull-status ~ .hullstatus {
 input[type="hidden"][value="Yellow"].hull-status ~ .hullstatus {
     background-color: yellow;
 }
+input[type="hidden"][value="Yellow"].hull-status ~ .hullstatus h4{
+    color: black;
+}
 input[type="hidden"][value="Green"].hull-status ~ .hullstatus {
     background-color: green;
 }
@@ -491,6 +497,9 @@ input[type="hidden"][value="Green"].shield-status ~ .shieldstatus {
 }
 input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus {   
     background-color:  yellow;
+}
+input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus h4{   
+    color:  black;
 }
 input[type="hidden"][value="Red"].shield-status ~ .shieldstatus {   
     background-color:  red;
@@ -512,6 +521,9 @@ input[type="hidden"][value="Red"].firecontrol-status ~ .firecontrolstatus {
 }
 input[type="hidden"][value="Yellow"].firecontrol-status ~ .firecontrolstatus {
     background-color: yellow;
+}
+input[type="hidden"][value="Yellow"].firecontrol-status ~ .firecontrolstatus h4{
+    color: black;
 }
 input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus {
     background-color: green;
