@@ -24,7 +24,6 @@
         <div class="col">
             <h3>Stats</h3>
             <label>Total Mass:</label><input type="number" name="attr_mass">
-            <label>Combat Points:</label><input type="number" name="attr_cpv">
             <label for="attr_type">Type:</label>
             <select name="attr_type">
                 <option value="" selected disabled hidden>Choose here</option>
@@ -40,14 +39,12 @@
             <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
-            <label>Max Crew (Mass/20 rounded up):</label><input type="number" name="attr_crew_max">
             <label for="attr_shieldgenerators"># of Shield Generators:</label>
             <select name="attr_shieldgenerator_max">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
             </select>   
-            <label>Shields (Mass/3 rounded up):</label><input type="number" name="attr_shields_max">
             <label for="attr_firecontrol"># of Fire Control Centres:</label>
             <select name="attr_firecontrol_max">
                 <option value="1">1</option>
@@ -506,19 +503,23 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew"], function(values) {
             let commandstatus = "Green";
-            if (values.command === "Destroyed") {commandstatus = "Red"};
-            if (values.command.includes("Damaged")) {commandstatus = "Orange"};
+            let command = values.command || "Nominal";
+            if (command === "Destroyed") {commandstatus = "Red"};
+            if (command.includes("Damaged")) {commandstatus = "Orange"};
 
             let lifesupportstatus = "Red";
-            if (values.lifesupport === "Nominal") {lifesupportstatus = "Green"};
+            let lifesupport = values.lifesupport || "Nominal";
+            if (lifesupport === "Nominal") {lifesupportstatus = "Green"};
 
             let warpcorestatus = "Red";
-            if (values.warpcore === "Nominal") {warpcorestatus = "Green"};
+            let warpcore = values.warpcore || "Nominal";
+            if (warpcore === "Nominal") {warpcorestatus = "Green"};
 
             let hullMax = parseInt(values.hull_max);
-            let hull = parseInt(values.hull);
+            let hull = values.hull || hullMax;
+            hull = parseInt(hull);
             let levels = 4;
             if (values.advancedhull === "1") {levels = 3};
             let hullpercent = Math.round(hull/hullMax * 100);
@@ -526,14 +527,16 @@
             let hullColours = ["Dark Red","Red","Orange","Yellow","Green"];
             let hullstatus = hullColours[hullLevel];
 
-
+            let mass = parseInt(values.mass);
             let shieldstatus = "Green";
-            let shields = parseInt(values.shields);
-            let shieldsMax = parseInt(values.shields_max);
-            let sg = parseInt(values.shieldgenerators);
-            let sgMax = parseInt(values.shieldgenerators_max);
-            let sgRatio = sg/sgMax * 100
+            let shieldsMax = Math.round(mass/3);
+            let shields = values.shields || shieldsMax;
+            shields = parseInt(shields);
 
+            let sgMax = parseInt(values.shieldgenerators_max);
+            let sg = values.shieldgenerators || sgMax;
+            sg = parseInt(sgMax);
+            let sgRatio = sg/sgMax * 100
 
             let shieldPercent = Math.round(shields/shieldsMax * sgRatio);
             if (shieldPercent <= 50) {shieldstatus = "Yellow"};
@@ -544,8 +547,9 @@
 
 
             let firecontrolstatus = "Green";
-            let fc = parseInt(values.firecontrol);
             let fcMax = parseInt(values.firecontrol_max);
+            let fc = values.firecontrol || fcMax;
+            fc = parseInt(fc);
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             if (fc === 0) {
                 firecontrolstatus = "Red"
@@ -590,7 +594,8 @@
 
 
  
-
+            let crewMax = Math.ceil(mass/20);
+            let crew = values.crew || crewMax;
 
 
 
@@ -623,11 +628,15 @@
                 fcdisplay: fcDisplay,
                 shieldpercent: shieldPercent,
                 hullpercent: hullpercent,
-
-
-
-
-
+                command: command,
+                lifesupport: lifesupport,
+                hull: hull,
+                shields: shields,
+                shields_max: shieldsMax,
+                shieldgenerators: sg,
+                firecontrol: fc,
+                crew: crew,
+                crew_max: crewMax,
             });
         });
     });
