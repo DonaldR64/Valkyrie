@@ -158,10 +158,6 @@ section {
 }
 .ship {
     grid-area: ship;
-    display: grid;
-    grid-gap: 4px;
-    grid-template-columns: repeat(1,1fr);
-    grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
 
@@ -176,10 +172,7 @@ section {
     grid-template-rows: repeat(12,1fr);
     background-color: white;
 }
-.weapons {
-  grid-area: weapons;
-  background-color:  white;
-}
+
 
 /* Damage Sub Areas */
 .d1status {
@@ -353,21 +346,16 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 
 /* Ship Sub Areas*/
 .toppic {
-    grid-column: 1/-1;
-    grid-row: 1/-1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .toppic img{
     max-width: 95%;
     max-height: 95%;
     object-fit: contain;
 }
-.tactical {
-    grid-column:1/-1;
-    grid-row: 1/2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 
 /* Ops Sub Sections */
