@@ -503,7 +503,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -597,7 +597,8 @@
             let crewMax = Math.ceil(mass/20);
             let crew = values.crew || crewMax;
 
-
+            let warpdrive = values.warpdrive || "Nominal";
+            let impulse = values.impulse || "Nominal";
 
 
 
@@ -637,6 +638,10 @@
                 firecontrol: fc,
                 crew: crew,
                 crew_max: crewMax,
+                warpdrive: warpdrive,
+                impulse: impulse,
+
+
             });
         });
     });
