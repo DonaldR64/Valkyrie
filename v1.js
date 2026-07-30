@@ -1,6 +1,6 @@
 const Main = (() => {
     const version = '2026.7.22';
-    if (!state.Valkyrie) {state.Valkyrie = {}};
+    if (!state.FullThrust) {state.FullThrust = {}};
 
     const pageInfo = {};
     const rowLabels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ","BA","BB","BC","BD","BE","BF","BG","BH","BI"];
@@ -18,9 +18,6 @@ const Main = (() => {
         b2: 0,
         b3: 2/3,
     }
-
-
-    const ShipTypes = ["Heavy Cruiser","Light Cruiser","Destroyer","Frigate","Scout"];
 
     const DefineHexInfo = () => {
         HexSize = (70 * pageInfo.scale)/M.f0;
@@ -75,7 +72,6 @@ const Main = (() => {
     }
 
     let ShipArray = {};
-    let Phases = ["Setup","Command","Sensor","Movement","Combat","Repair"];
 
     let outputCard = {title: "",subtitle: "",side: "",body: [],buttons: [],};
 
@@ -599,13 +595,13 @@ const Main = (() => {
             this.charID = charID;
             let faction = aa.faction || "Neutral";
             this.faction = faction;
-            let player = (state.Valkyrie.factions.indexOf(faction));
+            let player = (state.FullThrust.factions.indexOf(faction));
             if (player === -1) {
                 if (faction === "Neutral") {
                     player = 2
                 } else {
-                    state.Valkyrie.factions.push(faction);
-                    player = state.Valkyrie.factions.length - 1;
+                    state.FullThrust.factions.push(faction);
+                    player = state.FullThrust.factions.length - 1;
                 }
             }
             this.player = player;
@@ -1053,10 +1049,10 @@ const Main = (() => {
                     key: keys[i],
                     id: id,
                 }
-                if (state.Valkyrie.limitedMacros[unit.id]) {
-                    state.Valkyrie.limitedMacros[unit.id].push(info)
+                if (state.FullThrust.limitedMacros[unit.id]) {
+                    state.FullThrust.limitedMacros[unit.id].push(info)
                 } else {
-                    state.Valkyrie.limitedMacros[unit.id] = [info];
+                    state.FullThrust.limitedMacros[unit.id] = [info];
                 }
             }
         }
@@ -1459,15 +1455,15 @@ const Main = (() => {
     }
 
     const NextPhase = () => {
-        let currentPhase = state.Valkyrie.phase;
-        let currentTurn = state.Valkyrie.turn;
+        let currentPhase = state.FullThrust.phase;
+        let currentTurn = state.FullThrust.turn;
         currentPhase += 1;
         if (currentPhase > 5) {
             currentTurn += 1;
             currentPhase = 1;
         };
-        state.Valkyrie.turn = currentTurn;
-        state.Valkyrie.phase = currentPhase;
+        state.FullThrust.turn = currentTurn;
+        state.FullThrust.phase = currentPhase;
         switch(currentPhase) {
             case 1:
                 CommandPhase();
@@ -1488,7 +1484,7 @@ const Main = (() => {
     }
 
     const CommandPhase = () => {
-        SetupCard("Command Phase","Turn " + state.Valkyrie.turn,"Neutral");
+        SetupCard("Command Phase","Turn " + state.FullThrust.turn,"Neutral");
         _.each(ShipArray,ship => {
             //recharge weapons as appropriate
             for (let i=0;i<ship.weaponArray.length;i++) {
@@ -1521,7 +1517,7 @@ const Main = (() => {
     }
 
     const SensorPhase = () => {
-        SetupCard("Sensor Phase","Turn " + state.Valkyrie.turn,"Neutral");
+        SetupCard("Sensor Phase","Turn " + state.FullThrust.turn,"Neutral");
         //add up any ships with power to reserve1 which is sensors
         let total = [0,0];
         let shipList = [[],[]]
@@ -1539,7 +1535,7 @@ const Main = (() => {
             }
         })
         for (let player = 0;player<2;player++) {
-            outputCard.body.push("[U]" + state.Valkyrie.factions[player] + "[/u]");
+            outputCard.body.push("[U]" + state.FullThrust.factions[player] + "[/u]");
             let roll1 = randomInteger(6);
             let roll2 = randomInteger(6);
             let tip = "Rolls: " + roll1 + " + " + roll2;
@@ -1557,14 +1553,14 @@ const Main = (() => {
         } else if (total[1] > total[0]) {
             winner = 1;
         } else if (total[0] === total[1]) {
-            if (state.Valkyrie.lastWinner !== "") {
-                winner = (state.Valkyrie.lastWinner === 0) ? 1:0;
+            if (state.FullThrust.lastWinner !== "") {
+                winner = (state.FullThrust.lastWinner === 0) ? 1:0;
             } else {
                 winner = (randomInteger(6) > 3) ? 1:0;
             }
         }
-        outputCard.body.push(state.Valkyrie.factions[winner] + " has Initiative");
-        state.Valkyrie.lastWinner = winner;
+        outputCard.body.push(state.FullThrust.factions[winner] + " has Initiative");
+        state.FullThrust.lastWinner = winner;
         PrintCard();
     }
 
@@ -1591,9 +1587,9 @@ const Main = (() => {
         })
 
 
-        SetupCard("Movement Phase","Turn " + state.Valkyrie.turn,"Neutral");
-        let A = state.Valkyrie.factions[state.Valkyrie.lastWinner]
-        let B = (state.Valkyrie.lastWinner === 0) ? state.Valkyrie.factions[1]:state.Valkyrie.factions[0];
+        SetupCard("Movement Phase","Turn " + state.FullThrust.turn,"Neutral");
+        let A = state.FullThrust.factions[state.FullThrust.lastWinner]
+        let B = (state.FullThrust.lastWinner === 0) ? state.FullThrust.factions[1]:state.FullThrust.factions[0];
 
         outputCard.body.push(A + " moves Half their Fleet");
 
@@ -1708,9 +1704,9 @@ const Main = (() => {
  
     const CombatPhase = () => {
         DroneMovement();
-        SetupCard("Combat Phase","Turn " + state.Valkyrie.turn,"Neutral");
+        SetupCard("Combat Phase","Turn " + state.FullThrust.turn,"Neutral");
         outputCard.body.push("Player's take turns Firing with one ship");
-        outputCard.body.push("Starting with the " + state.Valkyrie.factions[state.Valkyrie.lastWinner] + " player");
+        outputCard.body.push("Starting with the " + state.FullThrust.factions[state.FullThrust.lastWinner] + " player");
         PrintCard();
     }
 
@@ -1721,9 +1717,9 @@ const Main = (() => {
 
 
     const RepairPhase = () => {
-        SetupCard("Repair Phase","Turn " + state.Valkyrie.turn,"Neutral");
+        SetupCard("Repair Phase","Turn " + state.FullThrust.turn,"Neutral");
         outputCard.body.push("Player's take turns performing Repairs on one ship");
-        outputCard.body.push("Starting with the " + state.Valkyrie.factions[state.Valkyrie.lastWinner] + " player");
+        outputCard.body.push("Starting with the " + state.FullThrust.factions[state.FullThrust.lastWinner] + " player");
         PrintCard();
     }
 
@@ -1757,10 +1753,10 @@ const Main = (() => {
         _.each(which,lines => {
             let array;
             if (lines === "LOS") {
-                array = state.Valkyrie.losLines;
+                array = state.FullThrust.losLines;
             }
             if (lines === "Deploy") {
-                array = state.Valkyrie.deployLines;
+                array = state.FullThrust.deployLines;
             }
             if (array) {
                 for (let i=0;i<array.length;i++) {
@@ -1805,9 +1801,9 @@ const Main = (() => {
             if (line) {
                 toFront(line);
                 if (type === "LOS") {
-                    state.Valkyrie.losLines.push(line.get("id"))
+                    state.FullThrust.losLines.push(line.get("id"))
                 } else {
-                    state.Valkyrie.deployLines.push(line.get("id"));
+                    state.FullThrust.deployLines.push(line.get("id"));
                 }
             }
         }
@@ -2117,13 +2113,13 @@ const Main = (() => {
             }
         }
         if ((!id || !unit) && playerID) {
-            faction = state.Valkyrie.players[playerID];
-            player = (state.Valkyrie.factions[0] === faction) ? 0:1;
+            faction = state.FullThrust.players[playerID];
+            player = (state.FullThrust.factions[0] === faction) ? 0:1;
         }
 
-        if (!state.Valkyrie.players[playerID] || state.Valkyrie.players[playerID] === undefined) {
+        if (!state.FullThrust.players[playerID] || state.FullThrust.players[playerID] === undefined) {
             if (faction !== "Neutral") {    
-                state.Valkyrie.players[playerID] = faction;
+                state.FullThrust.players[playerID] = faction;
             } else {
                 sendChat("","Click on one of your tokens then select Roll again");
                 return;
@@ -2165,7 +2161,7 @@ const Main = (() => {
         //clear arrays
         ShipArray = {};
 
-        state.Valkyrie = {
+        state.FullThrust = {
             playerIDs: [],
             players: {},
             factions: [],
@@ -2410,7 +2406,7 @@ const Main = (() => {
             case '!Dump':
                 log(HexMap)
                 log("State");
-                log(state.Valkyrie);
+                log(state.FullThrust);
                 log("Ship");
                 log(ShipArray)
                 break;
@@ -2457,7 +2453,7 @@ const Main = (() => {
         on('destroy:graphic',destroyGraphic);
     };
     on('ready', () => {
-        log("===>Valkyrie<===");
+        log("===>FullThrust<===");
         log("===> Software Version: " + version + " <===")
         LoadPage();
         DefineHexInfo();
