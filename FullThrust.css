@@ -14,7 +14,7 @@
 
 .mysheet {
     width: 830;
-    height: 630;
+    height: 650;
 }
 .attributes {
     padding: 15px 0px 0px 15px;
@@ -39,7 +39,7 @@ input[type="hidden"][name="attr_faction"][value="Klingon"] ~ .mysheet {
 main {
   display: grid;
   width: 800px;
-  height: 600;
+  height: 620;
   grid-gap: 4px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: repeat(6,1fr);
