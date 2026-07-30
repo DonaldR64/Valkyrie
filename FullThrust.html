@@ -221,9 +221,8 @@
             </div>
         </section>
 
-
-        <section class="ops">
-            <h3>OPS</h3>
+        <section class="eng">
+            <h3>Engineering</h3>
             <input type="hidden" name="attr_warpdrive" class="warpdrive-status" value="Red">
             <div class="warpdrivestatus">
                 <h4>Warp Drive: <span name="attr_warpdrive"></span></h4>
@@ -236,30 +235,27 @@
 
             <input type="hidden" name="attr_hullstatus" class="hull-status" value="Red">
             <div class="hullstatus">
-                <h4>Hull Integrity: <span name="attr_hull"></span> / <span name="attr_hull_max"></span></h4>
+                <h4>Hull Integrity: <span name="attr_hullpercent"></span> %</h4>
             </div>
-
             <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Red">
             <div class="shieldstatus">
-                <h4>Shield Generators: <span name="attr_sgdisplay"></span></h4>
+                <h4>Shields: <span name="sgpercent"></span> %</h4>
             </div>
+        </section>
 
+
+
+
+        <section class="ops">
+            <h3>OPS</h3>
             <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Red">
             <div class="firecontrolstatus">
                 <h4>Fire Control: <span name="attr_fcdisplay"></span></h4>
             </div>
-
             <input type="hidden" name="attr_hullstatus" class="crew-status" value="Red">
             <div class="crewstatus">
                 <h4>Crew Level: <span name="attr_crew"></span> / <span name="attr_crew_max"></span></h4>
             </div>
-
-
-
-
-
-
-
         </section>
 
         </main>
@@ -305,15 +301,18 @@
             let hullLevel = Math.ceil(hull / (hullMax/adv)) - 1;
             let hullColours = ["Red","Orange","Yellow","Green"];
             let hullstatus = hullColours[hullLevel];
+            let hullpercent = Math.round(hull/hullMax * 100);
+
+
 
             let shieldstatus = "Green";
-            let sg = parseInt(values.shieldgenerators);
-            let sgMax = parseInt(values.shieldgenerators_max);
-            if (sg < sgMax) {shieldstatus = "Yellow"};
-            let sgDisplay = sg + "/" + sgMax;
-            if (sg === 0) {
+            let sg = parseInt(values.shields);
+            let sgMax = parseInt(values.shields_max);
+            let sgPercent = Math.round(sg/sgMax * 100);
+            if (sgPercent <= 50) {shieldstatus = "Yellow"};
+            if (sgPercent === 0) {
                 shieldstatus = "Red"
-                sgDisplay = "Offline";
+                sgPercent = "Offline";
             };
 
 
@@ -325,7 +324,7 @@
             if (fc === 0) {
                 firecontrolstatus = "Red"
             };
-            let fcDisplay = fc + "/" + fcMax;
+            let fcDisplay = fc;
             if (fc === 0) {
                 fcDisplay = "Offline"
                 firecontrolstatus = "Red"
@@ -396,8 +395,8 @@
                 turnpts: turnPts,
                 factionsymbol: factionsymbol,
                 fcdisplay: fcDisplay,
-                sgdisplay: sgDisplay,
-
+                sgpercent: sgPercent,
+                hullpercent: hullpercent,
 
 
 
