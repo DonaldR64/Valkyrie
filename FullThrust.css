@@ -357,13 +357,13 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
     align-items: center;
     background-image: url("https://files.d20.io/images/494928727/5D-S5MXOUCAVrm2NrpqxMA/thumb.jpg?1784752628");
     background-repeat: repeat;
+    overflow: hidden;
 }
 .toppic img{
-    max-width: auto;
-    max-height: 95%;
-    object-fit: contain;
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
 }
-
 
 
 /* Ops Sub Sections */
