@@ -14,7 +14,7 @@
 
 .mysheet {
     width: 830;
-    height: 650;
+    height: 530;
 }
 .attributes {
     padding: 15px 0px 0px 15px;
@@ -39,7 +39,7 @@ input[type="hidden"][name="attr_faction"][value="Klingon"] ~ .mysheet {
 main {
   display: grid;
   width: 800px;
-  height: 620;
+  height: 500;
   grid-gap: 4px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: repeat(6,1fr);
@@ -352,10 +352,6 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 }
 
 
-
-
-
-
 /* Ship Sub Areas*/
 .toppic {
     background-image: url("https://files.d20.io/images/494928727/5D-S5MXOUCAVrm2NrpqxMA/thumb.jpg?1784752628");
@@ -365,153 +361,6 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
     max-width: 90%;
     max-height: 90%;
     object-fit: contain;
-}
-
-
-/* Tactical Sub sections */
-
-.weaponheader {
-    background-color: white;
-}
-
-.weaponinfo{
-  grid-area: weaponinfo;
-  display: grid;
-  grid-gap: 2px;
-  grid-template-columns: 1fr 4fr 2fr 2fr;
-  grid-template-rows: 1fr;
-  background-color: white;
-  text-align: center;
-  align-items: center;
-}
-
-/* Weapon 1 */
-input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
-    display: none;
-}
-input[type="hidden"][value="Normal"].weapon1-status ~ .weapon1{
-    display: grid;
-    background-color: lightgrey;
-}
-input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
-    display: grid;
-    background-color: red;
-}
-.weapon1 h4{
-    color: black;
-}
-.weapon1 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 4fr 2fr 2fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-
-
-
-/* Weapon 2 */
-input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
-    display: none;
-}
-input[type="hidden"][value="Normal"].weapon2-status ~ .weapon2{
-    display: grid;
-    background-color: white;
-}
-input[type="hidden"][value="Damaged"].weapon2-status ~ .weapon2{
-    display: grid;
-    background-color: red;
-}
- 
-.weapon2 h4{
-    color: black;
-}
-.weapon2 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 4fr 2fr 2fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* Weapon 3 */
-input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
-    display: none;
-}
-input[type="hidden"][value="Normal"].weapon3-status ~ .weapon3{
-    display: grid;
-    background-color: lightgrey;
-}
-input[type="hidden"][value="Damaged"].weapon3-status ~ .weapon3{
-    display: grid;
-    background-color: red;
-}
-.weapon3 h4{
-    color: black;
-}
-.weapon3 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 4fr 2fr 2fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* Weapon 4 */
-input[type="hidden"][value="Off"].weapon4-status ~ .weapon4{
-    display: none;
-}
-input[type="hidden"][value="Normal"].weapon4-status ~ .weapon4{
-    display: grid;
-    background-color: white;
-}
-input[type="hidden"][value="Damaged"].weapon4-status ~ .weapon4{
-    display: grid;
-    background-color: red;
-}
-.weapon4 h4{
-    color: black;
-}
-.weapon4 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 4fr 2fr 2fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
-}
-
-/* Weapon 5 */
-input[type="hidden"][value="Off"].weapon5-status ~ .weapon5{
-    display: none;
-}
-input[type="hidden"][value="Normal"].weapon5-status ~ .weapon5{
-    display: grid;
-    background-color: lightgrey;
-}
-input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5{
-    display: grid;
-    background-color: red;
-}
-.weapon5 h4{
-    color: black;
-}
-.weapon5 {
-    display: grid;
-    grid-gap: 1px;
-  grid-template-columns: 1fr 4fr 2fr 2fr;
-    grid-template-rows: 1;
-    text-align: center;
-    align-items: center;
-    padding: 3px;
 }
 
 
