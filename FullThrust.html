@@ -393,6 +393,7 @@
             let weaponRanges = [];
             for (let i=1;i<11;i++) {
                 let weaponType = values["weapon" + i + "type"];
+                if (!weaponType) {continue}
                 let range;
                 if (weaponType.includes("Beam")) {
                     range = parseInt(weaponType.replace(/[^\d]/g,"")) * 12; 
