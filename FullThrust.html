@@ -94,6 +94,7 @@
                         <option value = "Class 1 Beam">Class 1 Beam</option>
                         <option value = "Class 2 Beam">Class 2 Beam</option>
                         <option value = "Class 3 Beam">Class 3 Beam</option> 
+                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor">Disruptor</option>
                         <option value = "Mk2. Disruptor">Mk2. Disruptor</option>
@@ -275,8 +276,8 @@
                 <div><span>System</span></div>
                 <div><span>Name</span></div>
                 <div><span>Type</span></div>
-                <div><span>Range</span></div>
-                <div><span>Damage</span></div>
+                <div><span>Max Range</span></div>
+                <div><span>Base Damage</span></div>
             </div>
 
             <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
@@ -391,6 +392,46 @@
             }
 
 
+            let weaponRanges = [];
+            let weaponDice = [];
+            let weaponDamage = [];
+            for (let i=1;i<11;i++) {
+                let weaponType = values["weapon" + i + "type"];
+                let range, dice, damage;
+                if (weaponType === "Class 1 Beam") {
+                    range = 12;
+                    dice = "1d6";
+                    damage = "4,5 = 1 / 6 = 2 + d6";
+                }
+                if (weaponType === "Class 2 Beam") {
+                    range = 12/24;
+                    dice = "2d6/1d6";
+                    damage = "4,5 = 1 / 6 = 2 + d6";
+                }
+                if (weaponType === "Class 3 Beam") {
+                    range = 12/24/36;
+                    dice = "3d6/2d6/1d6";
+                    damage = "4,5 = 1 / 6 = 2 + d6";
+                }
+                if (weaponType === "Photon Torpedo") {
+                    range = 30;
+                    
+                }
+                if (weaponType === "Pulse Torpedo") {
+                    range = 30;
+                    
+                }
+                if (weaponType === "Disruptor") {
+                    range = 30;
+                    
+                }
+                if (weaponType === "Mk2. Disruptor") {
+                    range = 30;
+                    
+                }
+
+
+            }
 
 
 
