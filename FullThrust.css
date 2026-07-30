@@ -354,16 +354,7 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
     max-height: 95%;
     object-fit: cover;
 }
-.tactical {
-    grid-column:1/-1;
-    grid-row: 1/2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .toppic {
-    grid-row: 2/-1;
-    grid-column: 1/-1;
     align-items: center;
     padding: 3px;
     margin-left: auto;
