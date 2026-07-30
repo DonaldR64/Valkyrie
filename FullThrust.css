@@ -149,7 +149,7 @@ section {
 
 
 .ops {
-    grid-area: ops;
+  grid-area: ops;
     display: grid;
     grid-gap: 4px;
     grid-template-columns: 1fr;
@@ -158,7 +158,10 @@ section {
 }
 .ship {
     grid-area: ship;
-    align-items: center;
+    display: grid;
+    grid-gap: 4px;
+    grid-template-columns: repeat(1,1fr);
+    grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
 
@@ -346,12 +349,25 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 
 
 /* Ship Sub Areas*/
-.ship img{
+.toppic {
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toppic img{
     max-width: 95%;
     max-height: 95%;
     object-fit: contain;
 }
-
+.tactical {
+    grid-column:1/-1;
+    grid-row: 1/2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 
 /* Ops Sub Sections */
