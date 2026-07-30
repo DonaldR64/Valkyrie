@@ -161,8 +161,7 @@ section {
     background-color: white;
 }
 .toppic img{
-    max-width: 90%;
-    max-height: 90%;
+    max-height: 400px;
     object-fit: contain;
 }
 
