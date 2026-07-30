@@ -158,14 +158,12 @@ section {
 }
 .ship {
     grid-area: ship;
-    background-image: url("https://files.d20.io/images/494928727/5D-S5MXOUCAVrm2NrpqxMA/thumb.jpg?1784752628");
-    background-repeat: repeat;
-
+    background-color: white;
 }
 
 .ship img{
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 95%;
+    max-height: 95%;
     object-fit: contain;
 }
 
