@@ -160,7 +160,7 @@ section {
     grid-area: ship;
     background-color: white;
 }
-.ship img{
+.toppic img{
     max-width: 90%;
     max-height: 90%;
     object-fit: contain;
