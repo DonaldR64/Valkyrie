@@ -158,10 +158,6 @@ section {
 }
 .ship {
     grid-area: ship;
-    display: grid;
-    grid-gap: 4px;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(10,1fr);
     background-color: white;
 }
 
@@ -346,22 +342,6 @@ input[type="hidden"][value="None"].d11-status ~ .d11status{
 input[type="hidden"][value="None"].d12-status ~ .d12status{
     display: none;
 }
-
-
-/* Ship Sub Areas*/
-.toppic img{
-    max-width: 95%;
-    max-height: 95%;
-    object-fit: cover;
-}
-.toppic {
-    align-items: center;
-    padding: 3px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
 
 
 
