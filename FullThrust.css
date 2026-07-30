@@ -349,13 +349,6 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
 
 
 /* Ship Sub Areas*/
-.toppic {
-    grid-column: 1/-1;
-    grid-row: 1/-1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .toppic img{
     max-width: 95%;
     max-height: 95%;
@@ -368,6 +361,19 @@ input[type="hidden"][value="None"].d12-status ~ .d12status{
     justify-content: center;
     align-items: center;
 }
+.toppic {
+    grid-row: 1/-1;
+    grid-column: 1/-1;
+    align-items: center;
+    padding: 3px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+
+
 
 
 /* Ops Sub Sections */
