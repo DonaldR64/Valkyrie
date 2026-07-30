@@ -608,7 +608,6 @@ const Main = (() => {
             this.token = token;
             this.size = parseInt(aa.size);
             this.hullMax = parseInt(aa.hull_max);
-            this.engineTransition = parseInt(aa.engineTransition);
             this.engineMax = parseInt(aa.engine_max);
             this.type = aa.type;
             this.hull = parseInt(token.get("bar1_value"));
