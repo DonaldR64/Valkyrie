@@ -158,11 +158,13 @@ section {
 }
 .ship {
     grid-area: ship;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: white;
 }
-
+.ship img{
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
 
 
 
