@@ -244,12 +244,12 @@
 
             <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Red">
             <div class="shieldstatus">
-                <h4>Shield Level: <span name="attr_shieldgenerators"></span> / <span name="attr_shieldgenerators_max"></span></h4>
+                <h4>Shield Generators: <span name="attr_sgdisplay"></span></h4>
             </div>
 
             <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Red">
             <div class="firecontrolstatus">
-                <h4>Fire Control: <span name="attr_firecontrol"></span> / <span name="attr_firecontrol_max"></span></h4>
+                <h4>Fire Control: <span name="attr_fcdisplay"></span></h4>
             </div>
 
             <input type="hidden" name="attr_hullstatus" class="crew-status" value="Red">
@@ -314,7 +314,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","weapon1type","weapon2type","weapon3type","weapon4type","weapon5type","weapon6type","weapon7type","weapon8type","weapon9type","weapon10type"], function(values) {
             let commandstatus = "Green";
             if (values.command === "Destroyed") {commandstatus = "Red"};
             if (values.command.includes("Damaged")) {commandstatus = "Orange"};
@@ -337,13 +337,28 @@
             let sg = parseInt(values.shieldgenerators);
             let sgMax = parseInt(values.shieldgenerators_max);
             if (sg < sgMax) {shieldstatus = "Yellow"};
-            if (sg === 0) {shieldstatus = "Red"};
+            let sgDisplay = sg + "/" + sgMax;
+            if (sg === 0) {
+                shieldstatus = "Red"
+                sgDisplay = "Offline";
+            };
+
+
 
             let firecontrolstatus = "Green";
             let fc = parseInt(values.firecontrol);
             let fcMax = parseInt(values.firecontrol_max);
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
-            if (fc === 0) {firecontrolstatus = "Red"};
+            if (fc === 0) {
+                firecontrolstatus = "Red"
+            };
+            let fcDisplay = fc + "/" + fcMax;
+            if (fc === 0) {
+                fcDisplay = "Offline"
+                firecontrolstatus = "Red"
+            };
+
+
 
             let ds = values.damagedsystems || "All Systems Nominal";
             ds = ds.split(",").map((e) => e.trim());
@@ -377,6 +392,17 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
             setAttrs({
                 commandstatus: commandstatus,
                 lifesupportstatus: lifesupportstatus,
@@ -399,8 +425,8 @@
                 thrusters: thrusters,
                 turnpts: turnPts,
                 factionsymbol: factionsymbol,
-
-
+                fcdisplay: fcDisplay,
+                sgdisplay: sgDisplay,
 
             });
         });
