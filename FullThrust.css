@@ -547,13 +547,27 @@ input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus {
     align-items: center;
     padding: 3px;   
 }
+input[type="hidden"][value="Dark Red"].crew-status ~ .crewstatus {
+    background-color: darkred;
+}
 input[type="hidden"][value="Red"].crew-status ~ .crewstatus {
     background-color: red;
+}
+input[type="hidden"][value="Orange"].crew-status ~ .crewstatus {
+    background-color: orange;
+}
+input[type="hidden"][value="Orange"].crew-status ~ .crewstatus h4{
+    color: black;
+}
+input[type="hidden"][value="Yellow"].crew-status ~ .crewstatus {
+    background-color: yellow;
+}
+input[type="hidden"][value="Yellow"].crew-status ~ .crewstatus h4{
+    color: black;
 }
 input[type="hidden"][value="Green"].crew-status ~ .crewstatus {
     background-color: green;
 }
-
 
 
 
