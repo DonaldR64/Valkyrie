@@ -426,6 +426,15 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 
 
 
+.pos92{
+    grid-row: 9/10;
+    grid-column: 2/3;
+}
+.pos98{
+    grid-row: 9/10;
+    grid-column: 8/9;
+}
+
 
 
 
