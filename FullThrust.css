@@ -349,13 +349,13 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 .toppic img{
     flex-shrink: 0;
     width: auto;
-    max-height: 95%;
+    max-height: 100%;
 }
 
 .wpnpic1 {
   position: absolute; 
-  top: var(--weapon1top);          
-  left: var(--weapon1left);        
+  top: 25px;          
+  left: 175px;        
   z-index: 10;         
   width: 70px;         
 }
