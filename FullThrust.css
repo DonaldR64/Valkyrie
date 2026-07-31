@@ -336,7 +336,7 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 
 /* Ship Sub Areas*/
 
-/*
+
 .toppic {
     grid-column: 1/-1;
     grid-row: 1/-1;
@@ -354,7 +354,7 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     grid-row: 2/3;
     z-index: 10;
 }
-*/
+
 
 .toppic img{
     flex-shrink: 0;
