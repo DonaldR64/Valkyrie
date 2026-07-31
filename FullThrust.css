@@ -359,10 +359,10 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 
 .wpnpic1 {
   position: absolute; 
-  top: 60px;           
-  left: 196px;          
+  top: 31px;           
+  left: 160px;          
   z-index: 10;         
-  width: 65px;         
+  width: 70px;         
 }
 
 
