@@ -459,7 +459,7 @@ input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
     display: grid;
 }
 input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1 img{
-    filter: invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
 }
 input[type="hidden"][value="Fired"].weapon1-status ~ .weapon1{
     display: grid;
