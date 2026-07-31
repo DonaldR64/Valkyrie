@@ -348,12 +348,23 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     background-image: url("https://files.d20.io/images/494928727/5D-S5MXOUCAVrm2NrpqxMA/thumb.jpg?1784752628");
     background-repeat: repeat;
     overflow: hidden;
+    position: relative;
 }
+
 .toppic img{
     flex-shrink: 0;
     width: auto;
     max-height: 95%;
 }
+
+.wpnpic1 {
+  position: absolute; 
+  top: 20px;           
+  left: 20px;          
+  z-index: 10;         
+  width: 25px;         
+}
+
 
 
 
