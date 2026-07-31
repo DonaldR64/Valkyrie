@@ -376,11 +376,11 @@ input[type="hidden"][value="Normal"].weapon1-status ~ .weapon1{
 }
 input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
     display: grid;
-    color: black;
+    background-color: black;
 }
 input[type="hidden"][value="Fired"].weapon1-status ~ .weapon1{
     display: grid;
-    color:  rgb(255 0 0 / 0.5);
+    background-color: red;
 }
 
 
@@ -390,6 +390,7 @@ input[type="hidden"][value="Fired"].weapon1-status ~ .weapon1{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
+    mix-blend-mode: multiply;
 }
 
 

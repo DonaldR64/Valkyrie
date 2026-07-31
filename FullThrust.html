@@ -426,7 +426,7 @@
 
             <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
             <div class="weapon1">
-                <img name="attr_weapon1pic"/>
+                <img name="attr_weapon1display"/>
             </div>
 
         </section>    
@@ -517,7 +517,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon1pic",'weapon1status'], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
