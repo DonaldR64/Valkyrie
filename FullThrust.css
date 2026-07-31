@@ -348,6 +348,13 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 }
 
 
+.pos15 {
+    grid-column: 5/6;
+    grid-row: 1/2;
+}
+
+
+
 .pos25 {
     grid-column: 5/6;
     grid-row: 2/3;
