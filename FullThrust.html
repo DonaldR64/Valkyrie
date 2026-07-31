@@ -145,6 +145,7 @@
                         <option value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
                         <option value = "Damaged">Damaged</option>
+                        <option value = "Fired">Fired</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon2name"></td>
                     <td><select name="attr_weapon2type">
@@ -1044,61 +1045,13 @@
                 firecontrolstatus = "Red"
             };
 
-            let wpn1Loc = values.weapon1location;
-            if (wpn1Loc) {
-                $20(`div[class = "weapon1"]`).addClass(wpn1Loc);
+            for (let i=1;i<13;i++) {
+                let wpnLoc = values["weapon" + i + "location"];
+                if (wpnLoc) {
+                    let cl = "weapon" + i;
+                    $20(`div[class = cl]`).addClass(wpnLoc);
+                }
             }
-            let wpn2Loc = values.weapon2location;
-            if (wpn2Loc) {
-                $20(`div[class = "weapon2"]`).addClass(wpn2Loc);
-            }
-            let wpn3Loc = values.weapon3location;
-            if (wpn2Loc) {
-                $20(`div[class = "weapon3"]`).addClass(wpn3Loc);
-            }
-            let wpn4Loc = values.weapon4location;
-            if (wpn4Loc) {
-                $20(`div[class = "weapon4"]`).addClass(wpn4Loc);
-            }
-            let wpn5Loc = values.weapon5location;
-            if (wpn5Loc) {
-                $20(`div[class = "weapon5"]`).addClass(wpn5Loc);
-            }
-            let wpn6Loc = values.weapon6location;
-            if (wpn6Loc) {
-                $20(`div[class = "weapon6"]`).addClass(wpn6Loc);
-            }
-            let wpn7Loc = values.weapon7location;
-            if (wpn7Loc) {
-                $20(`div[class = "weapon7"]`).addClass(wpn7Loc);
-            }
-            let wpn8Loc = values.weapon8location;
-            if (wpn8Loc) {
-                $20(`div[class = "weapon8"]`).addClass(wpn8Loc);
-            }
-            let wpn9Loc = values.weapon9location;
-            if (wpn9Loc) {
-                $20(`div[class = "weapon9"]`).addClass(wpn9Loc);
-            }
-            let wpn10Loc = values.weapon10location;
-            if (wpn10Loc) {
-                $20(`div[class = "weapon10"]`).addClass(wpn10Loc);
-            }
-            let wpn11Loc = values.weapon11location;
-            if (wpn11Loc) {
-                $20(`div[class = "weapon11"]`).addClass(wpn11Loc);
-            }
-            let wpn12Loc = values.weapon12location;
-            if (wpn12Loc) {
-                $20(`div[class = "weapon12"]`).addClass(wpn12Loc);
-            }
-
-
-
-
-
-
-
 
 
             let ds = values.damagedsystems || "All Systems Nominal";
