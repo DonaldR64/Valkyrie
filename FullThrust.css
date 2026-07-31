@@ -351,12 +351,13 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     width: auto;
     max-height: 100%;
 }
-
+/*
 .wpnpic1 {
     grid-column: 5/6;
     grid-row: 2/3;
     z-index: 10;
 }
+*/
 
 .wpnpic1 img{
     flex-shrink: 0;
