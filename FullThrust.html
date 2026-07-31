@@ -215,6 +215,24 @@
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon4facing"></td>
+                    <td><select name="attr_weapon4location">
+                        <option value = "pos25">Row 2 Column 5</option> 
+
+                        <option value = "pos35">Row 3 Column 5</option>
+
+                        <option value = "pos42">Row 4 Column 2</option>
+                        <option value = "pos43">Row 4 Column 3</option>
+
+                        <option value = "pos48">Row 4 Column 8</option>
+                        <option value = "pos49">Row 4 Column 9</option>
+
+
+
+
+
+
+                    </select></td>
+                    <td><input type="text" name="attr_weapon4pic"></td>
                 </tr>
 
                 <tr>
@@ -478,6 +496,25 @@
             <div class="weapon1">
                 <img name="attr_weapon1pic"/>
             </div>
+            <input type="hidden" name="attr_weapon2status" class="weapon2-status" value="Off">
+            <div class="weapon2">
+                <img name="attr_weapon2pic"/>
+            </div>
+            <input type="hidden" name="attr_weapon3status" class="weapon3-status" value="Off">
+            <div class="weapon3">
+                <img name="attr_weapon3pic"/>
+            </div>
+            <input type="hidden" name="attr_weapon4status" class="weapon4-status" value="Off">
+            <div class="weapon4">
+                <img name="attr_weapon4pic"/>
+            </div>
+
+
+
+
+
+
+
 
         </section>    
 
@@ -567,7 +604,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon1pic",'weapon1status'], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon2location","weapon3location","weapon4location",], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -625,8 +662,26 @@
             };
 
             let wpn1Loc = values.weapon1location;
-console.log(wpn1Loc)
-            $20(`div[class = "weapon1"]`).addClass(wpn1Loc);
+            if (wpn1Loc) {
+                $20(`div[class = "weapon1"]`).addClass(wpn1Loc);
+            }
+            let wpn2Loc = values.weapon2location;
+            if (wpn2Loc) {
+                $20(`div[class = "weapon2"]`).addClass(wpn2Loc);
+            }
+            let wpn3Loc = values.weapon3location;
+            if (wpn2Loc) {
+                $20(`div[class = "weapon3"]`).addClass(wpn3Loc);
+            }
+            let wpn4Loc = values.weapon4location;
+            if (wpn4Loc) {
+                $20(`div[class = "weapon4"]`).addClass(wpn4Loc);
+            }
+
+
+
+
+
 
 
 

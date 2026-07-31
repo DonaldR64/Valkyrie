@@ -408,18 +408,86 @@ input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1{
 }
 input[type="hidden"][value="Fired"].weapon1-status ~ .weapon1{
     display: grid;
-    background-color: palevioletred;
+    background-color: red;
 }
-
-
-
-
 .weapon1 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
     mix-blend-mode: multiply;
 }
+
+/* Weapon 2 */
+input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
+    display: none;
+}
+input[type="hidden"][value="Normal"].weapon2-status ~ .weapon2{
+    display: grid;
+    background-color: white;
+}
+input[type="hidden"][value="Damaged"].weapon2-status ~ .weapon2{
+    display: grid;
+    background-color: black;
+}
+input[type="hidden"][value="Fired"].weapon2-status ~ .weapon2{
+    display: grid;
+    background-color: red;
+}
+.weapon2 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+
+/* Weapon 3 */
+input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
+    display: none;
+}
+input[type="hidden"][value="Normal"].weapon3-status ~ .weapon3{
+    display: grid;
+    background-color: white;
+}
+input[type="hidden"][value="Damaged"].weapon3-status ~ .weapon3{
+    display: grid;
+    background-color: black;
+}
+input[type="hidden"][value="Fired"].weapon3-status ~ .weapon3{
+    display: grid;
+    background-color: red;
+}
+.weapon3 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+
+/* Weapon 4 */
+input[type="hidden"][value="Off"].weapon4-status ~ .weapon4{
+    display: none;
+}
+input[type="hidden"][value="Normal"].weapon4-status ~ .weapon4{
+    display: grid;
+    background-color: white;
+}
+input[type="hidden"][value="Damaged"].weapon4-status ~ .weapon4{
+    display: grid;
+    background-color: black;
+}
+input[type="hidden"][value="Fired"].weapon4-status ~ .weapon4{
+    display: grid;
+    background-color: red;
+}
+.weapon4 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+
+
+
 
 
 
