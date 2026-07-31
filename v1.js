@@ -237,6 +237,10 @@ const Main = (() => {
 
 
 
+
+
+
+
     const AttributeArray = (characterID) => {
         let aa = {}
         let attributes = findObjs({_type:'attribute',_characterid: characterID});
@@ -619,11 +623,20 @@ const Main = (() => {
                 if (weaponStatus === "Off" || !weaponName) {continue};
                 let weaponType = aa["weapon" + w + "type"];
                 let weaponFacing = aa["weapon" + w + 'facing'].split("/").map((e) => parseInt(e));
+                let maxRange;
+                let projectiles = ["Pulse Torpedo","Photon Torpedo","Disruptor","Advanced Disruptor","Plasma Bolt Launcher"]
+                if (weaponType === "Class 1 Phaser") {maxRange = 6};
+                if (weaponType === "Class 2 Phaser") {maxRange = 12};
+                if (weaponType === "Class 3 Phaser") {maxRange = 18};
+                if (projectiles.includes(weaponType)) {
+                    maxRange = 15;
+                }
                 let weapon = {
                     status: weaponStatus,
                     name: weaponName,
                     type: weaponType,
                     facing: weaponFacing,
+                    maxRange: maxRange,
                 }
                 weaponArray.push(weapon);
             }
@@ -1621,14 +1634,7 @@ const Main = (() => {
                 let type = weapon.type;
                 let facing = weapon.facing; //will be an array of facing #s
                 let inArc = facing.some(item => shooterArcs.includes(item));
-log(weapon.name)
-log(type)
-log(facing)
-log(inArc)
-
-
-
-                if (inArc === true) {
+                if (losResult.distance <= weapon.maxRange && inArc === true) {
                     none = false;
                     if (weaponTypes[type]) {
                         weaponTypes[type]++;
