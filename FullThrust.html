@@ -87,6 +87,7 @@
                         <option value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
                         <option value = "Damaged">Damaged</option>
+                        <option value = "Fired">Fired</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon1name"></td>
                     <td><select name="attr_weapon1type">
@@ -100,6 +101,10 @@
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon1facing"></td>
+                    <td><select name="attr_weapon1location">
+                        <option value = "pos25">Row 2 Column 5</option>
+                    </select></td>
+                    <td><input type="text" name="attr_weapon1pic"></td>
                 </tr>
 
                 <tr>
@@ -420,7 +425,7 @@
             </div>
 
             <div class = "wpn1pic">
-                <img src="https://files.d20.io/images/495913655/792d_sCjiKcwjQWb3JkGfg/thumb.png?1785514538"/>
+                <img name="weapon1pic"/>
             </div>
         
         </section>    
@@ -511,7 +516,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1pic","weapon1status","weapon1location"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -568,6 +573,17 @@
                 firecontrolstatus = "Red"
             };
 
+            let wpn1pic = values.weapon1pic;
+            let wpn1status = values.weapon1status;
+            if (wpn1status === "Damaged") {
+                wpn1pic = "https://files.d20.io/images/495867339/0YTwLmknLMa7GjbDcQeXYg/thumb.png?1785461895";
+            } else if (wpn1status === "Fired") {
+                wpn1pic = "https://files.d20.io/images/495931930/BgsJJkLdBDFRNgvcMAD0GQ/thumb.png?1785525410";
+            }
+            let wpn1Loc = values.weapon1location;
+            $20(`div[class = "wpn1pic"]`).addClass(wpn1Loc);
+
+
 
 
             let ds = values.damagedsystems || "All Systems Nominal";
@@ -619,10 +635,6 @@
             if (impulse === "Offline") {
                 impulsestatus = "Red";
             }
-
-            let wpn1Loc = "pos53";
-
-            $20(`div[class = "wpn1pic"]`).addClass(wpn1Loc);
 
 
             setAttrs({

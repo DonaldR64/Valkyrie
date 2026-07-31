@@ -349,12 +349,12 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 }
 
 
-.pos52 {
+.pos25 {
     grid-column: 5/6;
     grid-row: 2/3;
     z-index: 10;
 }
-.pos53 {
+.pos35{
     grid-column: 5/6;
     grid-row: 3/4;
     z-index: 10;
@@ -372,7 +372,7 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 .wpnpic1 img{
     flex-shrink: 0;
     width: 40px;
-    max-height: 40px;
+    height: 40px;
 }
 
 
