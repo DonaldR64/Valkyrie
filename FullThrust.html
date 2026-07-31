@@ -4,6 +4,21 @@
     <button type="action" name="act_ship" >Ship</button>
 </div>
 
+<style>
+    :root {
+    --weapon1left: 160px;
+    --weapon1top: 30px;
+}
+
+
+
+
+
+
+</style>
+
+
+
 <div class="sheet-input">
     <div class="2colrow">
         <div class="col">
@@ -616,7 +631,8 @@
             }
 
 
-
+            let weapon1Top = "30px";
+            let weapon1Left = "160px";
 
 
 
@@ -658,6 +674,12 @@
                 warpdrivestatus: warpdrivestatus,
                 impulse: impulse,
                 impulsestatus: impulsestatus,
+                weapon1top: weapon1Top,                
+                weapon1left: weapon1Left,
+
+
+
+
 
             });
         });

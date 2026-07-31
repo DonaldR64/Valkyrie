@@ -30,14 +30,6 @@ input[type="hidden"][name="attr_faction"][value="Klingon"] ~ .mysheet {
     background-color: black;
 }
 
-  
-:root {
-    --weapon1left: 160px;
-    --weapon1top: 30px;
-}
-
-
-
 
 main {
   display: grid;
