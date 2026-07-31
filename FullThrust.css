@@ -382,7 +382,36 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 }
 
 
+.pos62{
+    grid-row: 6/7;
+    grid-column: 2/3;
+}
+.pos63{
+    grid-row: 6/7;
+    grid-column: 3/4;
+}
+.pos64{
+    grid-row: 6/7;
+    grid-column: 4/5;
+}
 
+
+
+
+
+.pos67{
+    grid-row: 6/7;
+    grid-column: 7/8;
+}
+.pos68{
+    grid-row: 6/7;
+    grid-column: 8/9;
+}
+
+.pos75{
+    grid-row: 7/8;
+    grid-column: 5/6;
+}
 
 
 
