@@ -19,6 +19,8 @@ const Main = (() => {
         b3: 2/3,
     }
 
+    const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
+
     const DefineHexInfo = () => {
         HexSize = (70 * pageInfo.scale)/M.f0;
         if (pageInfo.type === "hex") {
@@ -606,71 +608,41 @@ const Main = (() => {
             }
             this.player = player;
             this.token = token;
-            this.size = parseInt(aa.size);
-            this.hullMax = parseInt(aa.hull_max);
-            this.engineMax = parseInt(aa.engine_max);
             this.type = aa.type;
-            this.hull = parseInt(token.get("bar1_value"));
-            this.engine = parseInt(token.get("bar3_value"));
-            this.speed = Math.ceil(this.engineMax * 4 / this.hullMax);
-            for (let r=3;r<7;r++) {
-                this["reserveName" + r] = aa["reserveName" + r];
-            }
-
-
-
 
 
             let weaponArray = [];
-            let letters = ["A","B","C","D","E"];
             let sysNum = 0;
-            for (let w=1;w<6;w++) {
+            for (let w=1;w<13;w++) {
                 let weaponStatus = aa["weapon" + w + "status"];
                 let weaponName = aa["weapon" + w + "name"];
                 if (weaponStatus === "Off" || !weaponName) {continue};
-                let weaponLetter = letters[sysNum];
-                sysNum++;
-                let weaponCharge = aa["weapon" + w + "charge"];
                 let weaponType = aa["weapon" + w + "type"];
-                let weaponFacing = aa["weapon" + w + 'facing'];
-                let weaponRange = aa["weapon" + w + "range"].split("/").map((e) => parseInt(e));
-                let maxRange = weaponRange[weaponRange.length - 1];
-                let weaponDice = parseInt(aa["weapon" + w + "dice"].split("d")[0]);
-                let weaponNotes = aa["weapon" + w + "notes"];
+                let weaponFacing = aa["weapon" + w + 'facing'].split("/").map((e) => parseInt(e));
                 let weapon = {
                     status: weaponStatus,
-                    letter: weaponLetter,
-                    charge: weaponCharge,
                     name: weaponName,
                     type: weaponType,
                     facing: weaponFacing,
-                    rangeBands: weaponRange,
-                    maxRange: maxRange,
-                    dice: weaponDice,
-                    notes: weaponNotes,
                 }
                 weaponArray.push(weapon);
             }
             this.weaponArray = weaponArray;
+            this.hull = parseInt(token.get("bar1_value"));
+            this.hullMax = parseInt(token.get("bar1_max"));
 
-            //Systems
-            let systems = [];
-            for (let i=1;i<4;i++) {
-                let system = aa["system" + i];
-                if (system && system !== "") {
-                    systems.push(system);
-                }
-            }
-            this.systems = systems;
+            this.shields = parseInt(token.get("bar3_value"));
+            this.shieldsMax = parseInt(token.get("bar3_max"));
 
+            this.firecontrol = parseInt(aa.firecontrol) || 0;
+            this.firecontrolMax = parseInt(aa.firecontrol_max) || 0;
 
+            this.thrusters = parseInt(aa.thrusters);
+        
 
+            this.crew = parseInt(aa.crew);
+            this.crewMax = parseInt(aa.crew_max);
 
-
-            //various
-            this.driftDirection = 0; //reset when moves
-            this.targetID = ""; //used by drones
-            this.targetSize = 0;//used by drones
 
 
             ShipArray[id] = this;
@@ -683,140 +655,8 @@ const Main = (() => {
         }
 
 
-        /* Shields here as a function ? - update variables so sheet stays current also
-
-            this.shieldStatus = aa.shieldStatus;
-            let shieldLevel = 0;
-            if (this.shieldStatus === "Damaged") {
-                shieldLevel = 1;
-            }
-            if (this.engineStatus !== "Green") {
-                shieldLevel = Math.min(shieldLevel + 1, 2);
-            }
-            this.shieldLevel = shieldLevel;
-            this.forShieldArray = aa.forShieldArray.split("/").map((e)=> parseInt(e));
-            this.forShield = this.forShieldArray[shieldLevel] || 0;
-            this.portShieldArray = aa.portShieldArray.split("/").map((e)=> parseInt(e));
-            portShield = this.portShieldArray[shieldLevel] || 0;
-            this.stbdShieldArray = values.stbdShieldArray.split("/").map((e)=> parseInt(e));
-            let stbdShield = this.stbdShieldArray[shieldLevel] || 0;
-            this.aftShieldArray = values.aftShieldArray.split("/").map((e)=> parseInt(e));
-            let aftShield = this.aftShieldArray[shieldLevel] || 0;
-
-        Engines ?
-            this.engine = parseInt(token.get("bar1_value"));
-            this.engineMax = aa.engine_max;
-            this.engineTransition = parseInt(aa.engineTransition);
-            this.engineStatus = (engine >= engineTransition) ? "Green":(engine > 0) ? "Yellow":"Red";
-
-            let hull = parseInt(token.get("bar2_value"));
-            this.hullMax = parseInt(aa.hull_max) || 0;
-            let hullStatus = "Red";
-            if (hull > 1) {hullStatus = "Orange"};
-            if (hull > 3) {hullStatus = "Yellow"};
-            if (hull === hullMax) {hullStatus = "Green"};
-            this.hullStatus = hullStatus;
-
-            this.agile = (aa.agile === "1") ? true:false;
-            this.speed = Math.ceil(this.engine * 4 / this.hullMax);
-
-
-        */
-
-
-
         Distance(b) {
             return HexMap[this.hexLabel].distance(HexMap[b.hexLabel]);
-        }
-
-        MoveToken(targetHex) {
-            let index = HexMap[this.hexLabel].tokenIDs.indexOf(this.id);
-            if (index > -1) {
-                HexMap[this.hexLabel].tokenIDs.splice(index,1);
-            }
-            this.hexLabel = targetHex.label;
-            targetHex.tokenIDs.push(this.id);
-            this.token.set({
-                left: targetHex.centre.x,
-                top: targetHex.centre.y,
-            })
-        }
-
-        DroneHit(obj2) {
-
-        }
-
-        Critical() {
-            let critRoll = randomInteger(6);
-            let res = "Critical";
-            if (critRoll === 1) {
-                //special systems
-                let options = [];
-                for (let i=0;i<this.systems.length;i++) {
-                    let status = Attribute(this.charID,"system" + (i+1) + "status");
-                    if (status === "Normal") {
-                        options.push(i);
-                    }
-                }
-                if (options.length === 0) {
-                    res = false;
-                } else {
-                    let rnd = randomInteger(options.length) - 1;
-                    let sysNum = options[rnd];
-                    let system = this.systems[sysNum];
-                    outputCard.body.push("[#ff0000]" + system + " is Damaged[/#]");
-                    AttributeSet(this.charID,"system" + (sysNum+1) + "status","Damaged");
-                }
-            }
-            if (critRoll === 2) {
-                //maneuvering thrusters or sensors
-                let thrusterStatus = Attribute(this.charID,"thrusterstatus");
-                let sensorStatus = Attribute(this.charID,"sensorstatus");
-                if (sensorStatus !== "Damaged") {
-                    outputCard.body.push("[#ff0000]Sensors are Damaged![/#]");
-                    AttributeSet(this.charID,"sensorstatus","Damaged");
-                } else if (thrusterStatus !== "Damaged") {
-                    outputCard.body.push("[#ff0000]Maneuvering Thrusters are Damaged![/#]");
-                    AttributeSet(this.charID,"thrusterstatus","Damaged");
-                } else {
-                    res = false;
-                }
-            }
-            if (critRoll === 3 || critRoll === 4) {
-                //Weapon damaged incl. Drone, Mines
-                let options = [];
-                for (let i=0;i<this.weaponArray.length;i++) {
-                    let weapon = this.weaponArray[i];
-                    if (weapon.status === "Normal") {
-                        options.push(i);
-                    }
-                }
-                if (options.length === 0) {
-                    res = false;
-                } else {
-                    let rnd = randomInteger(options.length) - 1;
-                    let weapon = this.weaponArray[rnd];
-                    weapon.status = "Damaged";
-                    AttributeSet(this.charID,"weapon" + (rnd+1) + "status","Damaged");
-                    outputCard.body.push("[#ff0000]" + weapon.name + " is Damaged![/#]");
-                }
-            }
-            if (critRoll > 4) {
-                //Shield Damaged
-                let shieldStatus = Attribute(this.charID,"shieldstatus");   
-                if (shieldStatus !== "Damaged") {
-                    outputCard.body.push("[#ff0000]Shield Emitters Damaged![/#]");
-                    AttributeSet(this.charID,"shieldStatus","Damaged");
-                    this.token.set("aura1_color","#ffff00");
-                    if (this.engine < this.engineTransition) {
-                        outputCard.body.push("[#ff0000]Shields are now Offline![/#]");
-                        this.token.set("aura1_color","#ff0000");
-                    }
-                } else {
-                    res = false;
-                }
-            }
-            return res; //true if critical applied, false if no system
         }
 
         Destroyed() {
@@ -826,68 +666,32 @@ const Main = (() => {
             
         }
 
-        Damage(roll) {
-            let result = "";
-            if (roll === 7) {
-                result = this.Critical();
-                if (result === false) {
-                    roll = 6; //reverts back to engine hit
-                }
-            }
-            if (roll === 6) {
-                let engine = parseInt(this.token.get("bar3_value"));
-                if (engine > 0) {
-                    result = "Engine";
-                    engine--;
-                    this.token.set("bar3_value",engine);
-                    if (engine === 0) {
-                        result = "EngineDrifting";
-                    }
-                    this.token.set("aura1_color","#ffff00");
-                    if (engine < this.engineTransition) {
-                        if (Attribute(this.charID,"shieldstatus") === "Damaged") {
-                            outputCard.body.push("[#ff0000]Shields are now Offline![/#]");
-                            this.token.set("aura1_color","#ff0000");
-                        } else {
-                            outputCard.body.push("[#ff0000]Shields are operating at lower levels![/#]");                       
-                            this.token.set("aura1_color","#ffff00");
-                        }
-                    }
-                } else {
-                    roll = 5; //reverts to hull hit
-                }
-            }
-            if (roll < 6) {
-                let hull = parseInt(this.token.get("bar1_value"));
-                result = "Hull";
-                hull--;
-                this.token.set("bar1_value",hull);
-                if (hull === 0) {
-                    result = "Destroyed"
-                }
-            }
-            return result;
-        }
 
 
 
-        Arc(b) {
+        Arcs(b) {
             let phi = Angle(HexMap[this.hexLabel].cube.angle(HexMap[b.hexLabel].cube));
             phi = Angle(phi - this.token.get("rotation"));
-            let arc = "Unknown";
-            if (phi >= 315 || phi <= 45) {
-                arc = "Forward";
+            let arcs = []; //as may straddle 2 arcs
+            if (phi >= 330 || phi <= 30) {
+                arcs.push(1);
             }
-            if (phi > 45 && phi < 135) {
-                arc = "Starboard";
+            if (phi >= 30 && phi <= 90) {
+                arcs.push(2);
             }
-            if (phi >= 135 && phi <= 225) {
-                arc = "Aft";
+            if (phi >= 90 && phi <= 150) {
+                arcs.push(3);
             }
-            if (phi > 225 && phi < 315) {
-                arc = "Port";
+            if (phi >= 150 && phi <= 210) {
+                arcs.push(4);
             }
-            return arc;
+            if (phi >= 210 && phi <= 270) {
+                arcs.push(5);
+            }
+            if (phi >= 270 && phi <= 330) {
+                arcs.push(6);
+            }
+            return arcs;
         }
 
 
@@ -1405,27 +1209,14 @@ const Main = (() => {
             _subtype: "token",
             layer: "objects",
         });
-        let tokens2 = findObjs({
-            _pageid: Campaign().get("playerpageid"),
-            _type: "graphic",
-            _subtype: "token",
-            layer: "gmlayer",
-        });
-        tokens = tokens.concat(tokens2);
 
-        let objectives = findObjs({
-            _pageid: Campaign().get("playerpageid"),
-            _type: "graphic",
-            _subtype: "token",
-            layer: "foreground",
-        });
-        let c = tokens.length + objectives.length;
+        let c = tokens.length;
         let s = (c===1) ? '':'s';    
         
         tokens.forEach((token) => {
             let character = getObj("character", token.get("represents"));   
             if (character) {
-                let unit = new Ship(token.get("id"));
+                let ship = new Ship(token.get("id"));
             }
         });
 
@@ -1451,275 +1242,6 @@ const Main = (() => {
     const StartGame = () => {
   
 
-    }
-
-    const NextPhase = () => {
-        let currentPhase = state.FullThrust.phase;
-        let currentTurn = state.FullThrust.turn;
-        currentPhase += 1;
-        if (currentPhase > 5) {
-            currentTurn += 1;
-            currentPhase = 1;
-        };
-        state.FullThrust.turn = currentTurn;
-        state.FullThrust.phase = currentPhase;
-        switch(currentPhase) {
-            case 1:
-                CommandPhase();
-                break;
-            case 2:
-                SensorPhase();
-                break;
-            case 3:
-                MovementPhase();
-                break;
-            case 4:
-                CombatPhase();
-                break;
-            case 5:
-                RepairPhase();
-                break;
-        }
-    }
-
-    const CommandPhase = () => {
-        SetupCard("Command Phase","Turn " + state.FullThrust.turn,"Neutral");
-        _.each(ShipArray,ship => {
-            //recharge weapons as appropriate
-            for (let i=0;i<ship.weaponArray.length;i++) {
-                let weapon = ship.weaponArray[i];
-                if (weapon.status === "Red") {
-                    weapon.charge = "🟥";
-                } else {
-                    if (weapon.notes.includes("Recharge")) {
-                        if (weapon.charge === "🟥") {
-                            weapon.charge = "🟨";
-                        } else if (weapon.charge === "🟨") {
-                            weapon.charge = "🟩";
-                        }
-                    } else {
-                        weapon.charge = "🟩";
-                    }
-                }
-                AttributeSet(ship.charID,"weapon" + (i+1) + "charge",weapon.charge);
-            }
-
-            //reset all power checkboxes
-            let list = ["fwdshields1","fwdshields2","portshields1","portshields2","stbdshields1","stbdshields2","aftshields1","aftshields2","reserve1","reserve2","reserve3","reserve4","reserve5","reserve6"]
-            _.each(list,box => {
-                AttributeSet(ship.charID,box,"0");
-            })
-        })
-        outputCard.body.push("Allocate Power to each Ship");
-        outputCard.body.push("Go to Next Phase when all done");
-        PrintCard();
-    }
-
-    const SensorPhase = () => {
-        SetupCard("Sensor Phase","Turn " + state.FullThrust.turn,"Neutral");
-        //add up any ships with power to reserve1 which is sensors
-        let total = [0,0];
-        let shipList = [[],[]]
-        _.each(ShipArray,ship => {
-            let sensor = Attribute(ship.charID,"reserve1");
-            if (sensor === "1") {
-                shipList[ship.player].push(ship.name);
-                total[ship.player] += 2;
-            }
-            for (let i=1;i<4;i++) {
-                let sys = Attribute(ship.charID,"system" + i);
-                if (sys === "Advanced Sensors") {
-                    total[ship.player] += 1;
-                }
-            }
-        })
-        for (let player = 0;player<2;player++) {
-            outputCard.body.push("[U]" + state.FullThrust.factions[player] + "[/u]");
-            let roll1 = randomInteger(6);
-            let roll2 = randomInteger(6);
-            let tip = "Rolls: " + roll1 + " + " + roll2;
-            tip += "<br>Bonus from Ships: " + total[player];
-            tip += "<br>" + shipList[player].toString();
-            let playerTotal = total[player] + roll1 + roll2;
-            tip = '[' + playerTotal  + '](#" class="showtip" title="' + tip + ')';
-            outputCard.body.push("Sensor Total: " + tip);
-            total[player] = playerTotal;
-        }
-
-        outputCard.body.push("[hr]");
-        if (total[0] > total[1]) {
-            winner = 0;
-        } else if (total[1] > total[0]) {
-            winner = 1;
-        } else if (total[0] === total[1]) {
-            if (state.FullThrust.lastWinner !== "") {
-                winner = (state.FullThrust.lastWinner === 0) ? 1:0;
-            } else {
-                winner = (randomInteger(6) > 3) ? 1:0;
-            }
-        }
-        outputCard.body.push(state.FullThrust.factions[winner] + " has Initiative");
-        state.FullThrust.lastWinner = winner;
-        PrintCard();
-    }
-
-    const MovementPhase = () => {
-        //Drifting Ships and Asteroids Move 1 hex in last direction
-        _.each(ShipArray,object => {
-            if ((object.type === "Ship" && object.token.get("bar3_value") === 0) || object.type === "Asteroid") {
-                let direction = object.driftDirection;
-                let startCube = HexArray[object.cube];
-                let endCube = startCube.neighbour(direction);
-                let nexHexLabel = endCube.label();
-                if (HexMap[newHexLabel].tokenIDs !== "") {
-                    //Collision
-
-
-
-                }
-                if (HexMap[newHexLabel].terrain !== "Empty Space") {
-                    //Collision of some sort
-
-
-                }
-            }
-        })
-
-
-        SetupCard("Movement Phase","Turn " + state.FullThrust.turn,"Neutral");
-        let A = state.FullThrust.factions[state.FullThrust.lastWinner]
-        let B = (state.FullThrust.lastWinner === 0) ? state.FullThrust.factions[1]:state.FullThrust.factions[0];
-
-        outputCard.body.push(A + " moves Half their Fleet");
-
-        outputCard.body.push("Then " + B);
-        outputCard.body.push("Then " + A + " moves the remainder");
-        PrintCard();
-    }
-
-
-    const DroneMovement = () => {
-        //Move Drones (launched in Combat now)
-        _.each(ShipArray,object => {
-            if (object.type === "Drone") {
-                let target = ShipArray[object.targetID];
-                let startHex = HexMap[object.hexLabel];
-                let targetHex;
-                let distance = Infinity;
-                if (target) {
-                    targetHex = HexMap[target.hexLabel];
-                    distance = startHex.distance(targetHex);
-                }
-                if (!target || distance > 12) {
-                    //acquire new target or if none in 12 hexes, go dormant in which case no targetHex
-                    let sameSizeTargets = [];
-                    let otherSizeTargets = []
-                    _.each(ShipArray,ship => {
-                        if (ship.faction !== object.faction) {
-                            let dist = obj.Distance(ship);
-                            if (dist <= 12) {
-                                let info = {
-                                        id: ship.id,
-                                        dist: dist,
-                                    }
-                                if (ship.size === object.targetSize) {
-                                    sameSizeTargets.push(info);
-                                } else {
-                                    otherSizeTargets.push(info);
-                                }
-                            }
-                        }
-                    })
-                    if (otherSizeTargets.length > 0) {
-                        otherSizeTargets.sort((a,b) => a.dist - b.dist); //sorted in ascending order of distance
-                        target = ShipArray[otherSizeTargets[0]];
-                    } 
-                    if (sameSizeTargets.length > 0) {
-                        sameSizeTargets.sort((a,b) => (a.dist - b.dist));
-                        target = ShipArray[sameSizeTargets[0]];
-                    }
-                    if (target) {
-                        targetHex = HexMap[target.hexLabel];
-                        distance = startHex.distance(targetHex);
-                    }
-                }
-
-                //no target Hex if no target, so it sits there this turn
-                if (targetHex) {
-                    let lineA = startHex.cube.linedraw(targetHex);
-                    let lineB = startHex.cube.linedraw2(targetHex);
-                    for (let i=0;i<distance;i++) {
-                        let hex1 = HexMap[lineA[i]];
-                        let hex2 = HexMap[lineB[i]];
-                        let note = "";
-                        let nextHex = "";
-                        let obj2;
-                        if (hex1.terrain === "Empty Space" && hex1.tokenIDs.length === 0) {
-                            object.MoveToken(hex1);
-                            continue;
-                        } else if (hex2.terrain === "Empty Space" && hex2.tokenIDs.length === 0) {
-                            object.MoveToken(hex2);
-                            continue;
-                        } 
-                        if (hex1.terrain === "Empty Space") {
-//run through ids
-                            obj2 = ShipArray[hex1.tokenIDs[0]];
-                            if (obj2.type !== "Asteroid") {
-                                object.MoveToken(hex1);
-                                continue;
-                            }
-                        }
-                        if (hex2.terrain === "Empty Space") {
-                            obj2 = ShipArray[hex2.tokenIDs[0]];
-                            if (obj2.type !== "Asteroid") {
-                                object.MoveToken(hex2);
-                                continue;
-                            }
-                        }
-                        //if gets to here, then either asteroids in 1 AND 2, or no empty space
-                        if (obj2) {
-                            //Collision with asteroid, use hex1 and resolve hit on asteroid
-                            object.MoveToken(hex1);    
-                            object.DroneHit(obj2);
-                        } else {
-                            //Collision with non-empty space, use hex1 and drone is destroyed
-                            object.MoveToken(hex1);
-                            object.Destroyed();
-                        }
-                    }
-                    //if hasnt hit something yet, check if hit target
-                    if (distance <= 3) {
-                        //all drones speed 3
-                        object.DroneHit(target);
-                    } 
-                }
-            }
-        })
-    }
-
-
-
-
- 
-    const CombatPhase = () => {
-        DroneMovement();
-        SetupCard("Combat Phase","Turn " + state.FullThrust.turn,"Neutral");
-        outputCard.body.push("Player's take turns Firing with one ship");
-        outputCard.body.push("Starting with the " + state.FullThrust.factions[state.FullThrust.lastWinner] + " player");
-        PrintCard();
-    }
-
-
-
-
-
-
-
-    const RepairPhase = () => {
-        SetupCard("Repair Phase","Turn " + state.FullThrust.turn,"Neutral");
-        outputCard.body.push("Player's take turns performing Repairs on one ship");
-        outputCard.body.push("Starting with the " + state.FullThrust.factions[state.FullThrust.lastWinner] + " player");
-        PrintCard();
     }
 
     
@@ -1821,43 +1343,39 @@ const Main = (() => {
 
 
             } 
-            if (ShipTypes.includes(ship.type)) {
-                ship.engine = ship.engineMax;
+            if (ship.type === "Starship") {
                 ship.hull = ship.hullMax;
-                let speed = Math.ceil(ship.engineMax * 4 / ship.hullMax);
+                ship.shields = ship.shieldsMax;
+                ship.firecontrol = ship.firecontrolMax;
+                AttributeSet(ship.charID,"firecontrol",ship.firecontrol);
+                ship.crew = ship.crewMax;
+                AttributeSet(ship.charID,"crew",ship.crew);
+
                 ship.speed = speed;
                 let hullID = AttributeID(ship.charID,"hull");
-                let engineID = AttributeID(ship.charID,"engine");
-                let speedID = AttributeID(ship.charID,"speed");
+                let shieldID = AttributeID(ship.charID,"shields");
+
                 ship.token.set({
                     bar1_value: ship.hull,
                     bar1_max: ship.hullMax,
                     bar1_link: hullID,
                     showplayers_bar1: true,
+                    showplayers_bar2: true,
+                    showplayers_bar3: true,
                     aura1_color: "#00ff00",
-                    aura1_radius: 0.1,
+                    aura1_radius: 0.25,
                     showplayers_aura1: true,
                     showplayers_name: true,
                     statusmarkers: "",
                     tint_color: "transparent",
-                    bar2_value: ship.speed,
-                    bar2_link: speedID,
                     bar3_value: ship.engine,
                     bar3_max: ship.engineMax,
-                    bar3_link: engineID,
+                    bar3_link: shieldID,
                 })
-                AttributeSet(ship.charID,"shieldstatus","Normal");
-                AttributeSet(ship.charID,"thrusterstatus","Normal");
-                AttributeSet(ship.charID,"sensorstatus","Normal");
 
-                for (let i=1;i<ship.systems.length;i++) {
-                    AttributeSet(ship.charID,"system" + i + "status","Normal");
-                }
                 for (let i=0;i<ship.weaponArray.length;i++) {
                     ship.weaponArray[i].status = "Normal";
-                    ship.weaponArray[i].charge = "🟩";
                     AttributeSet(ship.charID,"weapon" + (i+1) + "status","Normal");
-                    AttributeSet(ship.charID,"weapon" + (i+1) + "charge","🟩");
                 }
 
 
@@ -1903,171 +1421,14 @@ const Main = (() => {
         if (losResult.los === false) {
             errorMsg.push("No LOS - " + losResult.losReason);
         }
-        let shooterArc = losResult.shooterArc;
-        let arc = shooterArc.charAt(0).toUpperCase();
-        if (weapon.facing.includes(arc) === false) {
-            errorMsg.push("Target is not in this weapon's firing Arc");
-        }
-        if (weapon.charge !== "🟩") {
-            if (weapon.notes.includes("Recharge")) {
-                errorMsg.push("Weapon not fully charged");
-            } else {
-                errorMsg.push("Weapon has fired");
-            }
-        }
+        let shooterArcs = losResult.shooterArcs;
+
+
+
+
+
         
-        let rangeBonus = 0;
-        let damageBonus = 0;
-        let letters = ["A","B","C","D","E"];
-        let letter = letters[Tag[3]];
-        for (let j=3;j<7;j++) {
-            let rname = shooter["reserveName" + j];
-            if (rname && rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
-                rangeBonus = 1;
-            }
-            if (rname && rname.includes("Wpn " + letter + " Damage") && Attribute(shooter.charID,"reserve" + j) === "1") {
-                damageBonus = 1;
-            }
-        }
 
-        let maxRange = weapon.maxRange + rangeBonus;
-
-        if (losResult.distance > maxRange) {
-            errorMsg.push("Target is Out of Range");
-        } 
-        if (ErrorMsg(errorMsg)) {
-            PrintCard(); 
-            return;
-        }
-
-        //attack Rolls
-        let dice = weapon.dice;
-        let diceTip = "<br>Weapon: " + dice + "d6";
-        if (damageBonus > 0) {
-            diceTip += "<br>Power: +1d6";
-            dice++;
-        }
-        if (weapon.rangeBands.length === 3) {
-            if (losResult.distance <= (weapon.rangeBands[2] + rangeBonus) && losResult.distance > (weapon.rangeBands[1] + rangeBonus)) {
-                dice--;
-                diceTip += "<br>Long Range: -1d6";
-            }
-            if (losResult.distance <= (weapon.rangeBands[0] + rangeBonus)) {
-                dice++;
-                diceTip += "<br>Short Range: +1d6";
-            }
-        }
-        let attackRolls = [];
-        let hitRolls = [];
-        for (let i=0;i<dice;i++) {
-            let roll = randomInteger(6);
-            attackRolls.push(roll);
-            if (roll > 3) {
-                hitRolls.push(roll);
-            }
-        }
-        attackRolls.sort().reverse();
-        hitRolls.sort().reverse();
-        let hits = hitRolls.length;
-        let hitTip = "Rolls: " + attackRolls.toString() + " vs 4+" + diceTip;
-        hitTip = '[' + hits  + '](#" class="showtip" title="' + hitTip + ')';
-        outputCard.body.push(weapon.name + " gets " + hitTip + " Hits");
-
-        let targetDestroyed = false;
-        let targetDrifting = false;
-
-        if (hits > 0) {
-            //shield rolls
-            let targetArc = losResult.targetArc;
-            let shieldDice = 0;
-            let shieldBonus = 0;
-            if (targetArc === "Forward") {
-                shieldDice = parseInt(Attribute(target.charID,"fshield"));
-                if (Attribute(target.charID,"fwdshields1") === "1") {shieldBonus++};
-                if (Attribute(target.charID,"fwdshields2") === "1") {shieldBonus++};
-            }
-            if (targetArc === "Port") {
-                shieldDice = parseInt(Attribute(target.charID,"pshield"));
-                if (Attribute(target.charID,"portshields1") === "1") {shieldBonus++};
-                if (Attribute(target.charID,"portshields2") === "1") {shieldBonus++};
-            }
-            if (targetArc === "Starboard") {
-                shieldDice = parseInt(Attribute(target.charID,"sshield"));
-                if (Attribute(target.charID,"stbdshields1") === "1") {shieldBonus++};
-                if (Attribute(target.charID,"stbdshields2") === "1") {shieldBonus++};
-            }
-            if (targetArc === "Aft") {
-                shieldDice = parseInt(Attribute(target.charID,"ashield"));
-                if (Attribute(target.charID,"aftshields1") === "1") {shieldBonus++};
-                if (Attribute(target.charID,"aftshields2") === "1") {shieldBonus++};
-            }
-
-            let shieldTip = "<br>" + targetArc + " Shield: " + shieldDice + "d6";
-            if (shieldBonus > 0) {
-                shieldTip += "<br>Power: +" + shieldBonus + "d6";
-                shieldDice += shieldBonus;
-            }
-            let shieldRolls = [];
-            let absorbRolls = [];
-            for (let i=0;i<shieldDice;i++) {
-                let roll = randomInteger(6);
-                shieldRolls.push(roll);
-                if (roll > 4) {
-                    absorbRolls.push(roll);
-                }
-            }
-            shieldRolls.sort();
-            let absorbed = Math.min(absorbRolls.length,hits);
-            let damagingHits = hits - absorbed;
-
-            shieldTip = "Rolls: " + shieldRolls.toString() + " vs 5+" + shieldTip;
-            shieldTip = '[' + absorbed  + '](#" class="showtip" title="' + shieldTip + ')';
-            outputCard.body.push("Shields Absorb " + shieldTip + " hits");
-
-            if (damagingHits === 0) {
-                outputCard.body.push(target.name + " takes no damage!");
-            } else {
-                hitRolls.length = damagingHits;
-                let flag = false;
-                let hullHits = 0;
-                let engineHits = 0;
-                for (let i=0;i<hitRolls.length;i++) {
-                    let roll = hitRolls[i];
-                    if (roll === 6 && flag === false) {
-                        //initial 6 is a Critical, subsequents will be engine hits
-                        flag = true;
-                        roll = 7;
-                    }
-                    let result = target.Damage(roll);
-                    if (result === "Hull") {hullHits++};
-                    if (result.includes("Engine")) {engineHits++};
-                    if (result.includes("Drifting")) {targetDrifting = true;}
-                    if (result === "Destroyed") {
-                        hullHits++;
-                        targetDestroyed = true;
-                    };
-                }
-                if (hullHits > 0) {
-                    outputCard.body.push(target.name + " takes " + hullHits + " Damage to its Hull");
-                }
-                if (engineHits > 0) {
-                    outputCard.body.push(target.name + " takes " + engineHits + " Damage to its Engine");
-                }
-                if (targetDrifting === true) {
-                    outputCard.body.push("[#ff0000]" + target.name + ' is now Drifting[/#]');
-                }
-                if (targetDestroyed === true) {
-                    outputCard.body.push("[#ff0000]" + target.name + ' is Destroyed![/#]');
-                }
-            }
-        }
-
-        weapon.charge = "🟥";
-        AttributeSet(shooter.charID,"weapon" + weaponNum + "charge","🟥");
-        PrintCard();
-        if (targetDestroyed === true) {
-            target.Destroyed();
-        }
     }
 
 
@@ -2165,10 +1526,8 @@ const Main = (() => {
             players: {},
             factions: [],
             turn: 1,
-            activeID: "",
             losLines: [],
             phase: 0,
-            lastWinner: "",
 
         }
 
@@ -2207,6 +1566,19 @@ const Main = (() => {
         }
         return;
     }
+
+    const NextTurn = () => {
+
+
+
+
+
+
+    }
+
+
+
+
    
 
     const CheckLOS = (msg) => {
@@ -2237,50 +1609,45 @@ const Main = (() => {
         } else {
             outputCard.body.push("[#0000ff]There is LOS[/#]");
             outputCard.body.push("[hr]");
-            let shooterArc = losResult.shooterArc;
-            let arc = shooterArc.charAt(0).toUpperCase();
-            let targetArc = losResult.targetArc;
-            outputCard.body.push("Target is in the " + shooterArc + " Arc");
-            outputCard.body.push("Target is being hit on its " + targetArc + " Arc"); 
-            let letters = ["A","B","C","D","E"];
-
+            let shooterArcs = losResult.shooterArcs;
+            let arcs = shooterArcs.map((e) => ArcNames[e]);
+            arcs = arcs.toString().replace(","," & ");
+            let s = (shooterArcs.length === 1) ? "":"s";
+            outputCard.body.push("The Target is in the " + arcs + " Arc" +s);
+            let weaponTypes = {};
+            let none = true;
             for (let i=0;i<shooter.weaponArray.length;i++) {
                 let weapon = shooter.weaponArray[i];
-                let letter = letters[i];
-                let note = "";
-                if (weapon.facing.includes(arc) === true) {
-                    let maxRange = weapon.maxRange;
-                    let rangeBonus = 0;
-                    for (let j=3;j<7;j++) {
-                        let rname = shooter["reserveName" + j];
-                        if (rname && rname.includes("Wpn " + letter + " Range") && Attribute(shooter.charID,"reserve" + j) === "1") {
-                            rangeBonus = 1;
-                            break;
-                        }
-                    }
-                    maxRange += rangeBonus;
-                    if (losResult.distance <= maxRange) {
-                        if (weapon.rangeBands.length === 3) {
-                            if (losResult.distance <= (weapon.rangeBands[2] + rangeBonus)) {
-                                note = "Long ";
-                            }
-                            if (losResult.distance <= (weapon.rangeBands[1] + rangeBonus)) {
-                                note = "Medium ";
-                            }
-                            if (losResult.distance <= (weapon.rangeBands[0] + rangeBonus)) {
-                                note = "Short ";
-                            }
-                        }
-                        outputCard.body.push("[#0000ff]" + weapon.name + " has Arc and Target is within " + note + "Range[/#]");
+                let type = weapon.type;
+                let facing = weapon.facing; //will be an array of facing #s
+                let inArc = facing.some(item => shooterArcs.includes(item));
+log(weapon.name)
+log(type)
+log(facing)
+log(inArc)
+
+
+
+                if (inArc === true) {
+                    none = false;
+                    if (weaponTypes[type]) {
+                        weaponTypes[type]++;
                     } else {
-                        outputCard.body.push("[#ff0000]" + weapon.name + " has Arc but Target is out of range[/#]")
+                        weaponTypes[type] = 1;
                     }
                 }
-
-
-
             }
-            
+            if (none === true) {
+                outputCard.body.push("No Weapons in Range or Arc");
+            } else {
+                let keys = Object.keys(weaponTypes);
+                for (let i=0;i<keys.length;i++) {
+                    let type = keys[i];
+                    let number = weaponTypes[type];
+                    let verb = (number === 1) ? " has ":" have ";
+                    outputCard.body.push(number + " " + type + verb + "Range/Arc");
+                }
+            }
 
         }
 
@@ -2332,8 +1699,8 @@ const Main = (() => {
             los: finalLOS,
             losReason: finalLOSReason,
             distance: distance,
-            shooterArc: shooter.Arc(target),
-            targetArc: target.Arc(shooter),
+            shooterArcs: shooter.Arcs(target),
+            targetArcs: target.Arcs(shooter),
         }
 
         return result;
@@ -2369,7 +1736,7 @@ const Main = (() => {
         if (ship && tok.get("rotation") !== prev.rotation) {
             log(ship.name + " turning")
             let phi = Angle(tok.get("rotation"));
-            phi = Math.round(phi/60) * 60;
+            phi = Math.round(phi/30) * 30;
             tok.set("rotation",phi);
         }
     }
@@ -2415,8 +1782,8 @@ const Main = (() => {
             case '!AddAbilities':
                 AddAbilities(msg);
                 break;
-            case '!NextPhase':
-                NextPhase();
+            case '!NextTurn':
+                NextTurn();
                 break;
             case '!SetFleets':
                 SetFleets();
