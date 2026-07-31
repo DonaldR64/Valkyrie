@@ -31,7 +31,10 @@ input[type="hidden"][name="attr_faction"][value="Klingon"] ~ .mysheet {
 }
 
   
-
+:root {
+    --weapon1left: 160px;
+    --weapon1top: 30px;
+}
 
 
 
@@ -359,8 +362,8 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 
 .wpnpic1 {
   position: absolute; 
-  top: 31px;           
-  left: 160px;          
+  top: var(--weapon1top);          
+  left: var(--weapon1left);        
   z-index: 10;         
   width: 70px;         
 }
