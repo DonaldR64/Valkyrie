@@ -354,6 +354,13 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     grid-row: 2/3;
     z-index: 10;
 }
+.pos53 {
+    grid-column: 5/6;
+    grid-row: 3/4;
+    z-index: 10;
+}
+
+
 
 
 .toppic img{
