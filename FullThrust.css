@@ -408,6 +408,16 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     grid-column: 8/9;
 }
 
+
+
+.pos73{
+    grid-row: 7/8;
+    grid-column: 3/4;
+}
+.pos74{
+    grid-row: 7/8;
+    grid-column: 4/5;
+}
 .pos75{
     grid-row: 7/8;
     grid-column: 5/6;
