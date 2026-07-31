@@ -173,8 +173,8 @@ section {
     grid-area: ship;
     display: grid;
     grid-gap: 4px;
-    grid-template-columns: repeat(6,1fr);
-    grid-template-rows: repeat(6,1fr);
+    grid-template-columns: repeat(9,1fr);
+    grid-template-rows: repeat(11,1fr);
     background-color: white;
     position: relative;
 }
@@ -353,14 +353,17 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
 }
 
 .wpnpic1 {
-  position: absolute; 
-  top: 25px;          
-  left: 170px;        
-  z-index: 10;         
-  width: 70px;         
+    grid-column: 5/6;
+    grid-row: 6/7;
+    
+
 }
 
-
+.toppic img{
+    flex-shrink: 0;
+    width: 40px;
+    max-height: 40px;
+}
 
 
 
