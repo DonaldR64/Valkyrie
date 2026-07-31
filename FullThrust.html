@@ -424,10 +424,11 @@
                 <img name="attr_toppic"/>
             </div>
 
-            <div class = "wpn1pic">
-                <img name="weapon1pic"/>
+            <input type="hidden" name="attr_weapon1status" class="weapon1-status" value="Off">
+            <div class="weapon1">
+                <img name="weapon1display"/>
             </div>
-        
+
         </section>    
 
         <section class="helm">
@@ -516,7 +517,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1pic","weapon1status","weapon1location"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1status","weapon1location"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -573,15 +574,8 @@
                 firecontrolstatus = "Red"
             };
 
-            let wpn1pic = values.weapon1pic;
-            let wpn1status = values.weapon1status;
-            if (wpn1status === "Damaged") {
-                wpn1pic = "https://files.d20.io/images/495867339/0YTwLmknLMa7GjbDcQeXYg/thumb.png?1785461895";
-            } else if (wpn1status === "Fired") {
-                wpn1pic = "https://files.d20.io/images/495931930/BgsJJkLdBDFRNgvcMAD0GQ/thumb.png?1785525410";
-            }
             let wpn1Loc = values.weapon1location;
-            $20(`div[class = "wpn1pic"]`).addClass(wpn1Loc);
+            $20(`div[class = "weapon1"]`).addClass(wpn1Loc);
 
 
 
@@ -675,7 +669,7 @@
                 warpdrivestatus: warpdrivestatus,
                 impulse: impulse,
                 impulsestatus: impulsestatus,
-
+                wpn1display: wpn1pic,
 
 
 

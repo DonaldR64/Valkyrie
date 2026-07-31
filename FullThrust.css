@@ -369,7 +369,15 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     max-height: 100%;
 }
 
-.wpnpic1 img{
+/* Weapon 1 */
+input[type="hidden"][value="Off"].weapon1-status ~ .weapon1{
+    display: none;
+}
+input[type="hidden"][value="Normal"].weapon1-status ~ .weapon1{
+    display: grid;
+}
+
+.weapon1 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
