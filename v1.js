@@ -617,9 +617,9 @@ const Main = (() => {
             this.token = token;
             this.type = aa.type;
 
+            this.hullMax = parseInt(aa.hull_max) || 0;
 
             let weaponArray = [];
-            let sysNum = 0;
             for (let w=1;w<13;w++) {
                 let weaponStatus = aa["weapon" + w + "status"];
                 let weaponName = aa["weapon" + w + "name"];
@@ -643,22 +643,9 @@ const Main = (() => {
                 weaponArray.push(weapon);
             }
             this.weaponArray = weaponArray;
-            this.hull = parseInt(token.get("bar1_value"));
-            this.hullMax = parseInt(token.get("bar1_max"));
-
-            this.shields = parseInt(token.get("bar3_value"));
-            this.shieldsMax = parseInt(token.get("bar3_max"));
-
-            this.firecontrol = parseInt(aa.firecontrol) || 0;
-            this.firecontrolMax = parseInt(aa.firecontrol_max) || 0;
-
-            this.thrusters = parseInt(aa.thrusters);
-        
-
-            this.crew = parseInt(aa.crew);
-            this.crewMax = parseInt(aa.crew_max);
-
-
+            this.hull = parseInt(token.get("bar1_value")) || 0;
+            this.shields = parseInt(token.get("bar3_value")) || 0;
+            this.shieldsMax = parseInt(token.get("bar3_max")) || 0;
 
             ShipArray[id] = this;
             let index = HexMap[label].tokenIDs.indexOf(id);
@@ -1363,9 +1350,19 @@ const Main = (() => {
                 //bars on token
                 ship.hull = ship.hullMax;
                 AttributeSet(ship.charID,"hull",ship.hull);
-                ship.shields = ship.shieldsMax;
+
+                let shieldType = Attribute(ship.charID,"shieldtype");
+                let shieldNum = 3
+                if (shieldType === "Inferior") {shieldNum = 4};
+                if (shieldType === "Advanced") {shieldNum = 2};
+                let shieldsMax = Math.round(parseInt(Attribute(ship.charID,"mass"))/shieldNum);
+                ship.shields = shieldsMax;
+                ship.shieldsMax = shieldsMax;
                 AttributeSet(ship.charID,"shields",ship.shields);
-                
+                AttributeSet(ship.charID,"shield_max",ship.shieldsMax);
+
+            
+
                 //uses Attributes only
                 let nominalAttributes = ["command","lifesupport","warpcore","sensors","impulse","warpdrive"]
                 for (let i=0;i<nominalAttributes.length;i++) {
@@ -1387,8 +1384,8 @@ const Main = (() => {
                     bar1_max: ship.hullMax,
                     bar1_link: hullID,
 
-                    bar3_value: ship.engine,
-                    bar3_max: ship.engineMax,
+                    bar3_value: shieldsMax,
+                    bar3_max: shieldsMax,
                     bar3_link: shieldID,
 
                     showplayers_bar1: true,
