@@ -359,8 +359,18 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     grid-column: 5/6;
     grid-row: 2/3;
 }
+
+
+.pos32{
+    grid-column: 2/3;
+    grid-row: 3/4;
+}
 .pos35{
     grid-column: 5/6;
+    grid-row: 3/4;
+}
+.pos38{
+    grid-column: 8/9;
     grid-row: 3/4;
 }
 
@@ -473,17 +483,15 @@ input[type="hidden"][value="Fired"].weapon1-status ~ .weapon1 img{
 input[type="hidden"][value="Off"].weapon2-status ~ .weapon2{
     display: none;
 }
-input[type="hidden"][value="Normal"].weapon2-status ~ .weapon2{
+input[type="hidden"]:not[value="Off"].weapon2-status ~ .weapon2{
     display: grid;
-    background-color: white;
 }
-input[type="hidden"][value="Damaged"].weapon2-status ~ .weapon2{
-    display: grid;
-    background-color: black;
+input[type="hidden"][value="Damaged"].weapon2-status ~ .weapon2 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
 }
-input[type="hidden"][value="Fired"].weapon2-status ~ .weapon2{
-    display: grid;
-    background-color: red;
+input[type="hidden"][value="Fired"].weapon2-status ~ .weapon2 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
 }
 .weapon2 img{
     flex-shrink: 0;
@@ -496,17 +504,15 @@ input[type="hidden"][value="Fired"].weapon2-status ~ .weapon2{
 input[type="hidden"][value="Off"].weapon3-status ~ .weapon3{
     display: none;
 }
-input[type="hidden"][value="Normal"].weapon3-status ~ .weapon3{
+input[type="hidden"]:not[value="Off"].weapon3-status ~ .weapon3{
     display: grid;
-    background-color: white;
 }
-input[type="hidden"][value="Damaged"].weapon3-status ~ .weapon3{
-    display: grid;
-    background-color: black;
+input[type="hidden"][value="Damaged"].weapon3-status ~ .weapon3 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
 }
-input[type="hidden"][value="Fired"].weapon3-status ~ .weapon3{
-    display: grid;
-    background-color: red;
+input[type="hidden"][value="Fired"].weapon3-status ~ .weapon3 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
 }
 .weapon3 img{
     flex-shrink: 0;
@@ -519,17 +525,15 @@ input[type="hidden"][value="Fired"].weapon3-status ~ .weapon3{
 input[type="hidden"][value="Off"].weapon4-status ~ .weapon4{
     display: none;
 }
-input[type="hidden"][value="Normal"].weapon4-status ~ .weapon4{
+input[type="hidden"]:not[value="Off"].weapon4-status ~ .weapon4{
     display: grid;
-    background-color: white;
 }
-input[type="hidden"][value="Damaged"].weapon4-status ~ .weapon4{
-    display: grid;
-    background-color: black;
+input[type="hidden"][value="Damaged"].weapon4-status ~ .weapon4 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
 }
-input[type="hidden"][value="Fired"].weapon4-status ~ .weapon4{
-    display: grid;
-    background-color: red;
+input[type="hidden"][value="Fired"].weapon4-status ~ .weapon4 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
 }
 .weapon4 img{
     flex-shrink: 0;
@@ -538,6 +542,166 @@ input[type="hidden"][value="Fired"].weapon4-status ~ .weapon4{
     mix-blend-mode: multiply;
 }
 
+/* Weapon 5 */
+input[type="hidden"][value="Off"].weapon5-status ~ .weapon5{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon5-status ~ .weapon5{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon5-status ~ .weapon5 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon5-status ~ .weapon5 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon5 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+/* Weapon 6 */
+input[type="hidden"][value="Off"].weapon6-status ~ .weapon6{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon6-status ~ .weapon6{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon6-status ~ .weapon6 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon6-status ~ .weapon6 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon6 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+/* Weapon 7 */
+input[type="hidden"][value="Off"].weapon7-status ~ .weapon7{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon7-status ~ .weapon7{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon7-status ~ .weapon7 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon7-status ~ .weapon7 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon7 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+/* Weapon 8 */
+input[type="hidden"][value="Off"].weapon8-status ~ .weapon8{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon8-status ~ .weapon8{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon8-status ~ .weapon8 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon8-status ~ .weapon8 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon8 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+/* Weapon 9 */
+input[type="hidden"][value="Off"].weapon9-status ~ .weapon9{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon9-status ~ .weapon9{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon9-status ~ .weapon9 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon9-status ~ .weapon9 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon9 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+/* Weapon 10 */
+input[type="hidden"][value="Off"].weapon10-status ~ .weapon10{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon10-status ~ .weapon10{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon10-status ~ .weapon10 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon10-status ~ .weapon10 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon10 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+/* Weapon 11 */
+input[type="hidden"][value="Off"].weapon11-status ~ .weapon11{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon11-status ~ .weapon11{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon11-status ~ .weapon11 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon11-status ~ .weapon11 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon11 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
+/* Weapon 12 */
+input[type="hidden"][value="Off"].weapon12-status ~ .weapon12{
+    display: none;
+}
+input[type="hidden"]:not[value="Off"].weapon12-status ~ .weapon12{
+    display: grid;
+}
+input[type="hidden"][value="Damaged"].weapon12-status ~ .weapon12 img{
+    filter: brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(1%) hue-rotate(47deg) brightness(104%) contrast(101%);
+
+}
+input[type="hidden"][value="Fired"].weapon12-status ~ .weapon12 img{
+    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+}
+.weapon12 img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    mix-blend-mode: multiply;
+}
 
 
 
