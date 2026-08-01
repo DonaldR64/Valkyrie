@@ -1365,11 +1365,10 @@ log(rolls.toString())
                 let roll = randomInteger(6);
                 rolls.push(roll);
                 if (roll >= toHit) {
-                    if (weaponType === "Disruptor") {
+                    if (weaponType.includes("Disruptor")) {
                         damage += 2;
                     }                    
                     if (weaponType === "Disruptor Mk.2") {
-                        damage += 2;
                         let roll = randomInteger(6);
                         if (roll > 4) {
                             damage += 2;
