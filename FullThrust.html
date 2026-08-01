@@ -655,10 +655,10 @@
                 shieldPercent = "Offline";
             };
 
-            let sensorstatus = values.sensorstatus || "Green";
-            let sensordisplay = "Nominal";
-            if (sensorstatus === "Red") {
-                sensordisplay = "Offline";
+            let sensors = values.sensors || "Nominal";
+            let sensorstatus = "Green";
+            if (sensors === "Offline") {
+                sensorstatus = "Red";
             }
 
 
@@ -737,14 +737,20 @@
 
 
             let thrusters = parseInt(values.thrusters_max);
-            let impulseStatus = values.impulse;
-            if (impulseStatus === "Damaged") {
+            let impulse = values.impulse || "Nominal";
+            let impulsestatus = "Green";
+            if (impulse === "Damaged") {
                 thrusters = Math.floor(thrusters/2);
+                impulsestatus = "Yellow";
             }
-            if (impulseStatus === "Offline") {
+            if (impulse === "Offline") {
                 thrusters = 0;
+                impulsestatus = "Red";
             }
             let turnPts = thrusters;
+
+
+
 
 
 
@@ -809,14 +815,13 @@
                 shields_max: shieldsMax,
                 shieldgenerators: sg,
                 shieldgenerators_max: sgMax,
-                firecontrol: fc,
                 crew: crew,
                 crew_max: crewMax,
                 warpdrive: warpdrive,
                 warpdrivestatus: warpdrivestatus,
                 impulse: impulse,
                 impulsestatus: impulsestatus,
-                sensordisplay: sensordisplay,
+                sensorstatus: sensorstatus,
 
 
             });

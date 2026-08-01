@@ -1359,14 +1359,26 @@ const Main = (() => {
 
             } 
             if (ship.type === "Starship") {
-                ship.hull = ship.hullMax;
-                ship.shields = ship.shieldsMax;
-                ship.firecontrol = ship.firecontrolMax;
-                AttributeSet(ship.charID,"firecontrol",ship.firecontrol);
-                ship.crew = ship.crewMax;
-                AttributeSet(ship.charID,"crew",ship.crew);
 
-                ship.speed = speed;
+                //bars on token
+                ship.hull = ship.hullMax;
+                AttributeSet(ship.charID,"hull",ship.hull);
+                ship.shields = ship.shieldsMax;
+                AttributeSet(ship.charID,"shields",ship.shields);
+                
+                //uses Attributes only
+                let nominalAttributes = ["command","lifesupport","warpcore","sensors","impulse","warpdrive"]
+                for (let i=0;i<nominalAttributes.length;i++) {
+                    AttributeSet(ship.charID,nominalAttributes[i],"Nominal");
+                }
+                AttributeSet(ship.charID,"shieldgenerators",Attribute(ship.charID,"shieldgenerators_max"));
+                AttributeSet(ship.charID,"firecontrol",Attribute(ship.charID,"firecontrol_max"));
+                let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
+                AttributeSet(ship.charID,"crew",crew);
+
+
+                AttributeSet(ship.charID,"damagedsystems","");
+
                 let hullID = AttributeID(ship.charID,"hull");
                 let shieldID = AttributeID(ship.charID,"shields");
 
@@ -1374,18 +1386,19 @@ const Main = (() => {
                     bar1_value: ship.hull,
                     bar1_max: ship.hullMax,
                     bar1_link: hullID,
+
+                    bar3_value: ship.engine,
+                    bar3_max: ship.engineMax,
+                    bar3_link: shieldID,
+
                     showplayers_bar1: true,
                     showplayers_bar2: true,
-                    showplayers_bar3: true,
                     aura1_color: "#00ff00",
                     aura1_radius: 0.25,
                     showplayers_aura1: true,
                     showplayers_name: true,
                     statusmarkers: "",
                     tint_color: "transparent",
-                    bar3_value: ship.engine,
-                    bar3_max: ship.engineMax,
-                    bar3_link: shieldID,
                 })
 
                 for (let i=0;i<ship.weaponArray.length;i++) {
