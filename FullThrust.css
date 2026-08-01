@@ -864,13 +864,12 @@ input[type="hidden"][value="Red"].shield-status ~ .shieldstatus {
     text-align: center;
     align-items: center;
     padding: 3px;   
+    background-color: green;
 }
 input[type="hidden"][value="Red"].sensor-status ~ .sensorstatus {
     background-color: red;
 }
-input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus {
-    background-color: green;
-}
+
 
 
 
