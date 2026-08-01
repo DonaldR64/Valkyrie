@@ -722,6 +722,40 @@ const Main = (() => {
         }
 
         HullDamage(damage) {
+            let hull = parseInt(this.token.get("bar1_value"));
+            let hullMax = parseInt(this.token.get("bar1_max"));
+            hull = Math.max(0,(hull - damage));
+            if (hull > 0) {
+                let levels = 4;
+                if (Attribute(this.charID,"advancedhull") === 1) {
+                    levels = 3;
+                }
+                let startingLevel = Math.ceil(hull/hullMax * levels);
+
+                let finishLevel = Math.ceil(hull/hullMax * levels);
+                let delta = startingLevel - finishLevel;
+                this.token.set("bar1_value",hull);
+
+                let crew = parseInt(Attribute(this.charID,"crew"));
+                let crewMax = parseInt(Attribute(this.charID,"crew_max"));
+                let crewIntervals = Math.floor(hullMax/crewMax);
+
+
+                if (delta > 0) {
+                    this.ThresholdDamage(delta - 1);
+                }
+
+
+
+
+
+            } else {
+                this.Destroyed();
+            }
+        }
+
+        ThresholdDamage(bonus) {
+            //bonus is if delta > 1, adds to rolls
 
 
 
@@ -729,8 +763,6 @@ const Main = (() => {
 
 
         }
-
-
 
 
 

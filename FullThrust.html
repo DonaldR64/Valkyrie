@@ -621,9 +621,10 @@
             let levels = 4;
             if (values.advancedhull === "1") {levels = 3};
             let hullpercent = Math.round(hull/hullMax * 100);
-            let hullLevel = Math.floor(hullpercent * levels / 100);
+            let hullLevel = Math.ceil(hull/hullMax * levels);
             let hullColours = ["Dark Red","Red","Orange","Yellow","Green"];
             let hullstatus = hullColours[hullLevel];
+            if (levels === 3 && hullLevel === 2) {hullstatus = "Red"};
 
             let mass = parseInt(values.mass);
             let shieldstatus = "Green";
