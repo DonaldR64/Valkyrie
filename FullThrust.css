@@ -499,7 +499,6 @@ input[type="hidden"][value="Fired"].weapon2-status ~ .weapon2 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 
 /* Weapon 3 */
@@ -520,7 +519,6 @@ input[type="hidden"][value="Fired"].weapon3-status ~ .weapon3 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 
 /* Weapon 4 */
@@ -541,7 +539,6 @@ input[type="hidden"][value="Fired"].weapon4-status ~ .weapon4 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 
 /* Weapon 5 */
@@ -562,7 +559,6 @@ input[type="hidden"][value="Fired"].weapon5-status ~ .weapon5 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 /* Weapon 6 */
 input[type="hidden"][value="Off"].weapon6-status ~ .weapon6{
@@ -582,7 +578,6 @@ input[type="hidden"][value="Fired"].weapon6-status ~ .weapon6 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 /* Weapon 7 */
 input[type="hidden"][value="Off"].weapon7-status ~ .weapon7{
@@ -602,7 +597,6 @@ input[type="hidden"][value="Fired"].weapon7-status ~ .weapon7 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 /* Weapon 8 */
 input[type="hidden"][value="Off"].weapon8-status ~ .weapon8{
@@ -622,7 +616,6 @@ input[type="hidden"][value="Fired"].weapon8-status ~ .weapon8 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 /* Weapon 9 */
 input[type="hidden"][value="Off"].weapon9-status ~ .weapon9{
@@ -642,7 +635,6 @@ input[type="hidden"][value="Fired"].weapon9-status ~ .weapon9 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 /* Weapon 10 */
 input[type="hidden"][value="Off"].weapon10-status ~ .weapon10{
@@ -662,7 +654,6 @@ input[type="hidden"][value="Fired"].weapon10-status ~ .weapon10 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 /* Weapon 11 */
 input[type="hidden"][value="Off"].weapon11-status ~ .weapon11{
@@ -682,7 +673,6 @@ input[type="hidden"][value="Fired"].weapon11-status ~ .weapon11 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 /* Weapon 12 */
 input[type="hidden"][value="Off"].weapon12-status ~ .weapon12{
@@ -702,7 +692,6 @@ input[type="hidden"][value="Fired"].weapon12-status ~ .weapon12 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    mix-blend-mode: multiply;
 }
 
 
