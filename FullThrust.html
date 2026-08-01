@@ -45,9 +45,16 @@
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
             <label for="attr_shieldgenerators_max"># of Shield Generators:</label>
             <select name="attr_shieldgenerators_max">
+                <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
+            </select>   
+            <label for="attr_shieldtype">Shields Type:</label>
+            <select name="attr_shieldtype">
+                <option value="Normal">Normal</option>
+                <option value="Inferior">Inferior</option>
+                <option value="Advanced">Advanced</option>
             </select>   
             <label for="attr_firecontrol_max"># of Fire Control Centres:</label>
             <select name="attr_firecontrol_max">
@@ -591,7 +598,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location",], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","shieldtype"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -617,11 +624,22 @@
 
             let mass = parseInt(values.mass);
             let shieldstatus = "Green";
-            let shieldsMax = Math.round(mass/3);
+            let shieldType = values.shieldtype || "Normal";
+            if (shieldType === "Normal") {
+                shieldNum = 3;
+            }
+            if (shieldType === "Inferior") {
+                shieldNum = 4;
+            }
+            if (shieldType === "Advanced") {
+                shieldNum = 2;
+            }
+        
+            let shieldsMax = Math.round(mass/shieldNum);
             let shields = values.shields || shieldsMax;
             shields = parseInt(shields);
 
-            let sgMax = parseInt(values.shieldgenerators_max) || 1;
+            let sgMax = parseInt(values.shieldgenerators_max) || 0;
             let sg = values.shieldgenerators || sgMax;
             sg = parseInt(sgMax);
             let sgRatio = sg/sgMax * 100
