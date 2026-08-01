@@ -644,8 +644,8 @@ const Main = (() => {
             }
             this.weaponArray = weaponArray;
             this.hull = parseInt(token.get("bar1_value")) || 0;
-            this.shields = parseInt(token.get("bar3_value")) || 0;
-            this.shieldsMax = parseInt(token.get("bar3_max")) || 0;
+            this.shields = parseInt(token.get("bar2_value")) || 0;
+            this.shieldsMax = parseInt(token.get("bar2_max")) || 0;
 
             ShipArray[id] = this;
             let index = HexMap[label].tokenIDs.indexOf(id);
@@ -1384,9 +1384,9 @@ const Main = (() => {
                     bar1_max: ship.hullMax,
                     bar1_link: hullID,
 
-                    bar3_value: shieldsMax,
-                    bar3_max: shieldsMax,
-                    bar3_link: shieldID,
+                    bar2_value: shieldsMax,
+                    bar2_max: shieldsMax,
+                    bar2_link: shieldID,
 
                     showplayers_bar1: true,
                     showplayers_bar2: true,
