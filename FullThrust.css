@@ -468,10 +468,10 @@ input[type="hidden"]:not[value="Off"].weapon1-status ~ .weapon1{
     display: grid;
 }
 input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1 img{
-    filter: invert(11%) sepia(97%) saturate(5808%) hue-rotate(0deg) brightness(101%) contrast(114%);
+    filter: invert(100%) sepia(0%) saturate(999%) hue-rotate(232deg) brightness(119%) contrast(100%);
 }
 input[type="hidden"][value="Fired"].weapon1-status ~ .weapon1 img{
-    filter: invert(83%) sepia(52%) saturate(1982%) hue-rotate(298deg) brightness(89%) contrast(103%);
+    filter: invert(11%) sepia(97%) saturate(5808%) hue-rotate(0deg) brightness(101%) contrast(114%);
 }
 
 
