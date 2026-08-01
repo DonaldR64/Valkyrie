@@ -563,6 +563,10 @@
 
         <section class="ops">
             <h3>OPS</h3>
+            <input type="hidden" name="attr_sensorstatus" class="sensor-status" value="Red">
+            <div class="sensorstatus">
+                <h4>Sensors: <span name="attr_sensordisplay"></span></h4>
+            </div>
             <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Red">
             <div class="firecontrolstatus">
                 <h4>Fire Control: <span name="attr_fcdisplay"></span></h4>
@@ -598,7 +602,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","shieldtype"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","shieldtype","sensorstatus"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -650,6 +654,13 @@
                 shieldstatus = "Red"
                 shieldPercent = "Offline";
             };
+
+            let sensorstatus = values.sensorstatus || "Green";
+            let sensordisplay = "Nominal";
+            if (sensorstatus === "Red") {
+                sensordisplay = "Offline";
+            }
+
 
 
             let firecontrolstatus = "Green";
@@ -805,7 +816,7 @@
                 warpdrivestatus: warpdrivestatus,
                 impulse: impulse,
                 impulsestatus: impulsestatus,
-
+                sensordisplay: sensordisplay,
 
 
 
