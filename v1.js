@@ -209,8 +209,8 @@ const Main = (() => {
     }
 
 
-    const KeyNum = (unit,keyword) => {
-        let key = unit.keywords.split(",");
+    const KeyNum = (ship,keyword) => {
+        let key = ship.keywords.split(",");
         let num = 1;
         _.each(key,word => {
             if (word.includes(keyword)) {
@@ -763,7 +763,7 @@ const Main = (() => {
         
     const AddAbilities2 = (ship) => {
         let abilityName,action;
-        let abilArray = findObjs({_type: "ability", _characterid: unit.charID});
+        let abilArray = findObjs({_type: "ability", _characterid: ship.charID});
         //clear old abilities
         for(let a=0;a<abilArray.length;a++) {
             abilArray[a].remove();
@@ -776,7 +776,7 @@ const Main = (() => {
             }
         })
         _.each(types,type => {
-            let abilityName = type;
+            let abilityName = "Fire: " + type + "s";
             let action = "!Fire;@{selected|token_id};@{target|token_id};" + type;
             AddAbility(abilityName,action,ship.charID);
         })
@@ -1187,11 +1187,17 @@ const Main = (() => {
                 if (shieldType === "Inferior") {shieldNum = 4};
                 if (shieldType === "Advanced") {shieldNum = 2};
                 let shieldsMax = Math.round(parseInt(Attribute(ship.charID,"mass"))/shieldNum);
+                if (parseInt(Attribute(ship.charID,"shieldgenerators")) === 0) {
+                    shieldsMax = 0;
+                }
                 ship.shields = shieldsMax;
                 ship.shieldsMax = shieldsMax;
                 AttributeSet(ship.charID,"shields",ship.shields);
                 AttributeSet(ship.charID,"shield_max",ship.shieldsMax);
-
+                let shieldColour = "#00ff00";
+                if (shieldsMax === 0) {
+                    shieldColour = "transparent";
+                }
             
 
                 //uses Attributes only
@@ -1221,7 +1227,7 @@ const Main = (() => {
 
                     showplayers_bar1: true,
                     showplayers_bar2: true,
-                    aura1_color: "#00ff00",
+                    aura1_color: shieldColour,
                     aura1_radius: 0.25,
                     showplayers_aura1: true,
                     showplayers_name: true,
@@ -1425,7 +1431,7 @@ log("To Hit Rolls: " + rolls.toString())
         PlaySound("Dice");
         let roll = randomInteger(6);
         let playerID = msg.playerid;
-        let id,unit,player;
+        let id,ship,player;
         if (msg.selected) {
             id = msg.selected[0]._id;
         }
@@ -1435,13 +1441,13 @@ log("To Hit Rolls: " + rolls.toString())
             return;
         }
         if (id) {
-            unit = ShipArray[id];
-            if (unit) {
-                faction = unit.faction;
-                player = unit.player;
+            ship = ShipArray[id];
+            if (ship) {
+                faction = ship.faction;
+                player = ship.player;
             }
         }
-        if ((!id || !unit) && playerID) {
+        if ((!id || !ship) && playerID) {
             faction = state.FullThrust.players[playerID];
             player = (state.FullThrust.factions[0] === faction) ? 0:1;
         }
