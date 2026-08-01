@@ -709,7 +709,7 @@ const Main = (() => {
             shields = shields - shieldDamage;
             this.token.set("bar2_value",shields);
             let shieldstatus = "#00ff00";
-            let shieldPercent = Math.round(shields/shieldsMax);
+            let shieldPercent = Math.round(shields/shieldsMax * 100);
             if (shieldPercent <= 75) {shieldstatus = "#ffff00"};
             if (shieldPercent <= 50) {shieldstatus = "#FFA500"};
             if (shieldPercent <= 25) {shieldstatus = "#ff0000"};
@@ -1389,7 +1389,6 @@ const Main = (() => {
                 }
             }
 log(rolls.toString())
-            outputCard.body.push(damage + " Damage is Done");
             let fxObj =  findObjs({type: "custfx", name: "Beam2"})[0];
             let pt1 = HexMap[shooter.hexLabel].centre;
             let pt2 = HexMap[target.hexLabel].centre;

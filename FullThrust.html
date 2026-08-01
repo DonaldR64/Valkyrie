@@ -645,7 +645,7 @@
             sg = parseInt(sgMax);
             if (sg === 0) {shields = 0};
 
-            let shieldPercent = Math.round(shields/shieldsMax) * 100;
+            let shieldPercent = Math.round(shields/shieldsMax * 100);
             if (shieldPercent <= 75) {shieldstatus = "Yellow"};
             if (shieldPercent <= 50) {shieldstatus = "Orange"};
             if (shieldPercent <= 25) {shieldstatus = "Red"};
