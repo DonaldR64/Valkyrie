@@ -656,21 +656,6 @@ const Main = (() => {
 
         }
 
-
-        Distance(b) {
-            return HexMap[this.hexLabel].distance(HexMap[b.hexLabel]);
-        }
-
-        Destroyed() {
-
-
-
-            
-        }
-
-
-
-
         Arcs(b) {
             let phi = Angle(HexMap[this.hexLabel].cube.angle(HexMap[b.hexLabel].cube));
             phi = Angle(phi - this.token.get("rotation"));
@@ -696,8 +681,57 @@ const Main = (() => {
             return arcs;
         }
 
+        Damage(damage) {
+            let shields = parseInt(this.token.get("bar2_value"));
+            let shieldsMax = parseInt(this.token.get("bar2_max"));
+            let shieldDamage = 0;
+            if (shields > 0) {
+                if (shields > Math.floor(shieldsMax/2)) {
+                    shieldDamage = Math.min(shields,damage);
+                } else {
+                    outputCard.body.push("Shields are Buckling!");
+                    shieldDamage = Math.min(shields,Math.round(damage/2));
+                }
+            }
+            let hullDamage = Math.max(0,(damage - shieldDamage));
+
+            if (shieldDamage > 0 && hullDamage === 0) {
+                outputCard.body.push("Shields Absorb all the Damage");
+            }
+            if (shieldDamage > 0 && hullDamage > 0) {
+                outputCard.body.push("Shields Absorb " + shieldDamage + " Damage");
+                outputCard.body.push("The remaining " + hullDamage + " Damage is on the Hull");
+            }
+            if (shieldDamage === 0) {
+                outputCard.body.push("All the Damage is taken on the Hull")
+            }
+
+            shields = shields - shieldDamage;
+            this.token.set("bar2_value",shields);
+
+            this.HullDamage(hullDamage);
+        }
+
+        HullDamage(damage) {
 
 
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        Distance(b) {
+            return HexMap[this.hexLabel].distance(HexMap[b.hexLabel]);
+        }
 
 
 
@@ -1384,21 +1418,19 @@ log(rolls.toString())
             }
 log("To Hit Rolls: " + rolls.toString())
 
-            if (damage > 0) {
-                outputCard.body.push(damage + " Damage is Done");
-                target.Damage(damage);
-            } else {
-                let s = (weaponNum === 1) ? "":"s";
-                let adverb = (weaponNum === 1) ? " Misses":" Miss";
-                outputCard.body.push("The " + weaponType + s + adverb) 
-            }
-
             let pt1 = HexMap[shooter.hexLabel].centre;
             let pt2 = HexMap[target.hexLabel].centre;
             spawnFxBetweenPoints(pt1, pt2,"missile-fire",Campaign().get("playerpageid"));
         }
 
-
+        if (damage > 0) {
+            outputCard.body.push(damage + " Damage is Done");
+            target.Damage(damage);
+        } else {
+            let s = (weaponNum === 1) ? "":"s";
+            let adverb = (weaponNum === 1) ? " Misses":" Miss";
+            outputCard.body.push("The " + weaponType + s + adverb) 
+        }
 
         PrintCard();
 
