@@ -708,7 +708,16 @@ const Main = (() => {
 
             shields = shields - shieldDamage;
             this.token.set("bar2_value",shields);
-
+            let shieldstatus = "#00ff00";
+            let shieldPercent = Math.round(shields/shieldsMax);
+            if (shieldPercent <= 75) {shieldstatus = "#ffff00"};
+            if (shieldPercent <= 50) {shieldstatus = "#FFA500"};
+            if (shieldPercent <= 25) {shieldstatus = "#ff0000"};
+            if (shieldPercent === 0) {
+                outputCard.body.push("Shields are Down!");
+                shieldstatus = "transparent";
+            };
+            this.token.set("aura1_color",shieldstatus);
             this.HullDamage(hullDamage);
         }
 

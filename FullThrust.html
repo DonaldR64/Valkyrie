@@ -643,14 +643,22 @@
             let sgMax = parseInt(values.shieldgenerators_max) || 0;
             let sg = values.shieldgenerators || sgMax;
             sg = parseInt(sgMax);
-            let sgRatio = sg/sgMax * 100
+            if (sg === 0) {shields = 0};
 
-            let shieldPercent = Math.round(shields/shieldsMax * sgRatio);
-            if (shieldPercent <= 50) {shieldstatus = "Yellow"};
+            let shieldPercent = Math.round(shields/shieldsMax) * 100;
+            if (shieldPercent <= 75) {shieldstatus = "Yellow"};
+            if (shieldPercent <= 50) {shieldstatus = "Orange"};
+            if (shieldPercent <= 25) {shieldstatus = "Red"};
             if (shieldPercent === 0) {
-                shieldstatus = "Red"
-                shieldPercent = "Offline";
+                shieldstatus = "Down"
+                shieldPercent = "Down";
             };
+            if (sgMax === 0) {
+                shieldstatus = "Down";
+                shieldPercent = "No Shields";
+            }
+
+
 
             let sensors = values.sensors || "Nominal";
             let sensorstatus = "Green";

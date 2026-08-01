@@ -840,15 +840,22 @@ input[type="hidden"][value="Green"].hull-status ~ .hullstatus {
     text-align: center;
     align-items: center;
     padding: 3px;   
-}
-input[type="hidden"][value="Green"].shield-status ~ .shieldstatus {
     background-color:  green;
+}
+input[type="hidden"][value="Down"].shield-status ~ .shieldstatus {
+    background-color:  red;
 }
 input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus {   
     background-color:  yellow;
 }
 input[type="hidden"][value="Yellow"].shield-status ~ .shieldstatus h4{   
     color:  black;
+}
+input[type="hidden"][value="Orange"].shield-status ~ .shieldstatus {
+    background-color: orange;
+}
+input[type="hidden"][value="Orange"].shield-status ~ .shieldstatus h4{
+    color: black;
 }
 input[type="hidden"][value="Red"].shield-status ~ .shieldstatus {   
     background-color:  red;
