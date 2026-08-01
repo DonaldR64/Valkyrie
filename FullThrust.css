@@ -347,6 +347,8 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     overflow: hidden;
 }
 
+/* Box Positions for Weapon Pics */
+/* row then column,  there are 11 rows, 9 columns possible
 
 .pos15 {
     grid-column: 5/6;
