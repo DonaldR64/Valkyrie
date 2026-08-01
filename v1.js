@@ -20,7 +20,7 @@ const Main = (() => {
     }
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
-    const Projectiles = ["Pulse Torpedo","Photon Torpedo","Disruptor","Advanced Disruptor"]
+    const Projectiles = ["Pulse Torpedo","Photon Torpedo","Disruptor","Disruptor Mk.2"]
 
 
 
@@ -1296,6 +1296,7 @@ const Main = (() => {
 
 
         let s = (weaponNum === 1) ? "":"s";
+        let s2 = (weaponNum === 1) ? "s":"";
 
         if (weaponNum === 0) {
             errorMsg.push("No Weapons of this Class with Range/Arc/Power");
@@ -1307,11 +1308,8 @@ const Main = (() => {
         }
 
 
-        outputCard.body.push(weaponNum + " " + weaponType + s + " fire at the Target");
+        outputCard.body.push(weaponNum + " " + weaponType + s + " fire" + s2 + " at the Target");
         let damage = 0;
-        let targetShields = parseInt(target.token.get("bar3_value"));
-
-
 
         if (weaponType.includes("Phaser")) {
             //to hit and damage are same roll
@@ -1370,7 +1368,7 @@ log(rolls.toString())
                     if (weaponType === "Disruptor") {
                         damage += 2;
                     }                    
-                    if (weaponType === "Advanced Disruptor") {
+                    if (weaponType === "Disruptor Mk.2") {
                         damage += 2;
                         let roll = randomInteger(6);
                         if (roll > 4) {
@@ -1389,6 +1387,7 @@ log("To Hit Rolls: " + rolls.toString())
 
             if (damage > 0) {
                 outputCard.body.push(damage + " Damage is Done");
+                target.Damage(damage);
             } else {
                 let s = (weaponNum === 1) ? "":"s";
                 let adverb = (weaponNum === 1) ? " Misses":" Miss";
