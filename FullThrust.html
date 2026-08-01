@@ -661,8 +661,6 @@
                 sensorstatus = "Red";
             }
 
-
-
             let firecontrolstatus = "Green";
             let fcMax = parseInt(values.firecontrol_max);
             let fc = values.firecontrol || fcMax;
@@ -749,11 +747,6 @@
             }
             let turnPts = thrusters;
 
-
-
-
-
-
             let faction = values.faction;
             let factionsymbol = "";
             if (faction === "Klingon") {
@@ -773,16 +766,6 @@
             if (warpdrive === "Offline") {
                 warpdrivestatus = "Red"
             }
-
-            let impulse = values.impulse || "Nominal";
-            let impulsestatus = "Green";
-            if (impulse === "Damaged") {
-                impulsestatus = "Yellow";
-            }
-            if (impulse === "Offline") {
-                impulsestatus = "Red";
-            }
-
 
             setAttrs({
                 commandstatus: commandstatus,
