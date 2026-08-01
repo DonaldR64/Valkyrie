@@ -754,204 +754,35 @@ const Main = (() => {
     const AddAbilities = (msg) => {
         if (!msg.selected) {return};
         let id = msg.selected[0]._id;
-        let unit = ShipArray[id];  
-        if (!unit) {
-            unit = new Unit(id);
+        let ship = ShipArray[id];  
+        if (!ship) {
+            ship = new Ship(id);
         }
-        AddAbilities2(unit)
+        AddAbilities2(ship)
     }
         
-    const AddAbilities2 = (unit,unit2 = false) => {
-        let keywordList = unit.keywords;
+    const AddAbilities2 = (ship) => {
         let abilityName,action;
         let abilArray = findObjs({_type: "ability", _characterid: unit.charID});
         //clear old abilities
         for(let a=0;a<abilArray.length;a++) {
             abilArray[a].remove();
         } 
-        
-        let types = {
-            "Rifle": [],
-            "Pistol": [],
-            "Heavy": [],
-            "Heavy2": [],
-            "Heavy3": [],
-            "Mod": [],
-            "Sniper": [],
-            "Bomb": [],
-            "Limited": [],
-            "Limited2": [],
-            "Limited3": [], 
-            "CCW": [],
-        }
-
-        let sampled = unit;
-        if (unit2 !== false) {
-            sampled = unit2
-        }
-
-        for (let i=0;i<sampled.weapons.length;i++) {
-            let weapon = sampled.weapons[i];
-            let name = weapon.name;
-            if (weapon.type === " " || weapon.name === " ") {continue}
-            if (weapon.keywords.includes("Limited")) {
-                name += " (Limited)";
+        //Weapon Types
+        let types = [];
+        _.each(ship.weaponArray, weapon => {
+            if (types.includes(weapon.type) === false) {
+                types.push(weapon.type);
             }
-            if (unit2 !== false && weapon.type === "CCW" && weapon.keywords.includes("Destructive") === false) {
-                continue;
-            }
-            if (unit2 !== false && weapon.ap === 0) {
-                continue;
-            }
-            keywordList = keywordList.concat(weapon.keywords)
-            types[weapon.type].push(name); 
-        }
-        
-        let keys = Object.keys(types);
-        let weaponNum = 1;
-
-
-        for (let i=0;i<keys.length;i++) {
-            let names = types[keys[i]];
-            if (names.length === 0) {continue};
-            let fx = "";
-            let ccwTag = "";
-            for (let j=0;j<sampled.weapons.length;j++) {
-                if (keys[i] === "CCW") {
-                    ccwTag = " [CCW]";
-                    fx = "/fx bubbling-blood @{target|token_id}";
-                    break;
-                } else if (names[0].includes(sampled.weapons[j].name) && sampled.weapons[j].fx) {
-                    let fxList = ["breath","beam","missile","rocket"];
-                    let s = sampled.weapons[j].fx;
-                    if (fxList.some(keyword => sampled.weapons[j].fx.includes(keyword))) {
-                        fx = "/fx " + sampled.weapons[j].fx + " @{selected|token_id} @{target|token_id}";
-                    } else {
-                        fx = "/fx " + sampled.weapons[j].fx + " @{target|token_id}";
-                    }
-                    break;
-                }
-            }
-            names = names.toString();
-            if (names.charAt(0) === ",") {names = names.replace(",","")};
-            names = names.replaceAll(",","+");
-            abilityName = weaponNum + ccwTag + ": " + names;
-            weaponNum += 1;
-            action = "!Attack;@{selected|token_id};@{target|token_id};" + keys[i];
-            action += '\n' + fx;
-
-            if (unit2 !== false) {
-                action = action.replaceAll("@{selected|token_id}",unit2.id);
-                action = action.replaceAll("@{target|token_id}",unit.id);
-            }
-
-            let id = AddAbility(abilityName,action,unit.charID);
-
-//limited on targets ?
-
-            if (keys[i].includes("Limited")) {
-                let info = {
-                    key: keys[i],
-                    id: id,
-                }
-                if (state.FullThrust.limitedMacros[unit.id]) {
-                    state.FullThrust.limitedMacros[unit.id].push(info)
-                } else {
-                    state.FullThrust.limitedMacros[unit.id] = [info];
-                }
-            }
-        }
-
-        if (unit2 === false) {
-            //activation 
-            let orders = ";?{Order|Hold|Advance|Charge/Rush|Rally|Overwatch}";
-            if (unit.type === "Aircraft") {orders = ";Advance"};
-            if (unit.keywords.includes("Artillery") || unit.keywords.includes("Immobile")) {orders = ";Hold|Rally|Overwatch"}
-
-            action = "!Activate;@{selected|token_id}" + orders;
-            AddAbility("Activate",action,unit.charID);
-
-
-        //special ability macros
-            let specials = [{name: "Dangerous Terrain Debuff", targets: 1, range: 9},{name: "Mend", targets: 1, range: 2},{name: "Piercing Shooting Mark", targets: 1, range: 9},{name: "Precision Spotter", targets: 1, range: 18},{name: "Steadfast Buff", targets: 1, range: 6},{name: "Rending Mark", targets: 1, range: 9},{name: "Bane in Melee Buff", targets: 1, range: 6},{name: "Speed Feat", targets: 1, range: 0},{name: "Speed Feat Aura", targets: 2, range: 0}];
-
-            _.each(specials,special => {
-                let t = "";
-                if (unit.keywords.includes(special.name)) {
-                    if (special.targets === "Self") {
-                        t = ";@{selected|token_id}";
-                    } else {
-                        if (special.targets === 1) {
-                            t = ";@{target|token_id}";
-                        } else {
-                            for (let i=1;i<=special.targets;i++) {
-                                t += ";@{target|Target " + i + "|token_id}";
-                            }
-                        }
-                    }
-                    abilityName = unit.flavours[special.name];
-                    action = "!Special;" + special.name + ";" + special.range + ";@{selected|token_id}" + t;
-                    AddAbility(abilityName,action,unit.charID);
-                }
-            })
-
-
-            //morale
-            AddAbility("Morale","!Morale;" + unit.id,unit.charID);
-            //Dangerous
-            AddAbility("Dangerous","!DangerousTest",unit.charID);
-
-            if (unit.casterLevel > 0) {
-                action = "!CastSpell";
-                AddAbility("Cast Spell",action,unit.charID);
-            }
-
-            //ambush
-            if (unit.keywords.includes("Ambush")) {
-                action = "!AmbushAura";
-                AddAbility("Show Ambush Distance",action,unit.charID);
-            }
-
-            //place target
-            if (weaponNum > 1) {
-                AddAbility("Target Terrain","!PlaceTarget",unit.charID);
-            }
-
-            //LOS
-            if (unit.type !== "Terrain" && unit.type !== "Objective") {
-                AddAbility("LOS","!CheckLOS;@{selected|token_id};@{target|token_id}",unit.charID);
-            }
+        })
+        _.each(types,type => {
+            let abilityName = type;
+            let action = "!Fire;@{selected|token_id};@{target|token_id};" + type;
+            AddAbility(abilityName,action,ship.charID);
+        })
 
 
 
-            //keywords list 
-            keywordList = [...new Set(keywordList)];
-            keywordList = keywordList.filter(Boolean);
-            keywordList = keywordList.map((e) => {
-                if (e.includes("(")) {
-                    e = e.split("(")[0] + "(X)";
-                }
-                let item = {
-                    name: e,
-                    text: Keywords[e] || "Not in Database",
-                }
-                return item;
-            })
-            
-            keywordList = keywordList.sort((a,b) => a.name.localeCompare(b.name))
-            for (let i=0;i<12;i++) {
-                let abName = "spec" + i + "Name";
-                let abTextName = "spec" + i + "Text";
-                let name = " ";
-                let text = " ";
-                if (i < keywordList.length) {
-                    name = keywordList[i].name;
-                    text = keywordList[i].text;
-                }
-                AttributeSet(unit.charID,abName,name);
-                AttributeSet(unit.charID,abTextName,text);
-            }
-        }
     }
 
 
@@ -1403,9 +1234,7 @@ const Main = (() => {
                     AttributeSet(ship.charID,"weapon" + (i+1) + "status","Normal");
                 }
 
-
-
-                //AddAbilities(ship);
+                AddAbilities2(ship);
             }
 
         });
@@ -1413,7 +1242,7 @@ const Main = (() => {
 
 
 
-
+        sendChat("","Fleets Added")
 
 
     }
