@@ -479,6 +479,7 @@ input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
+    filter: invert(61%) sepia(64%) saturate(4815%) hue-rotate(86deg) brightness(121%) contrast(125%);
 }
 
 /* Weapon 2 */
