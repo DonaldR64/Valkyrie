@@ -802,6 +802,7 @@ log("Needed for TD: " + needed);
                     this.token.set(SM.ooc,roll2);
                     AttributeSet(this.charID,"command","Damaged");
                 }
+                damagedSystems.push("Command");
             }
             //lifesupport
             let lifesupport = Attribute(this.charID,"lifesupport");
@@ -812,6 +813,7 @@ log("Needed for TD: " + needed);
                 outputCard.body.push("If not repaired before then, the crew will abandon ship");    
                 AttributeSet(this.charID,"lifesupport","Failing");
                 this.token.set(SM.nolife,roll2);
+                damagedSystems.push("Life Support");
             }
             //warpcore
             roll = randomInteger(6);
@@ -833,6 +835,7 @@ log("Needed for TD: " + needed);
                     AttributeSet(this.charID,"warpcore","Damaged");
                     this.token.set(SM.warp,1);
                 }
+                damagedSystems.push("Warp Core");
             }
 
             //impulse
@@ -852,6 +855,7 @@ log("Needed for TD: " + needed);
                     } else {
                         outputCard.body.push("Thrusters and Turn are Halved");
                     }
+                    damagedSystems.push("Impulse Engines");
                 }
             }
 
@@ -884,6 +888,7 @@ log("Needed for TD: " + needed);
                                 outputCard.body.push("Weapons cannot fire");
                             }
                         }
+                        damagedSystems.push(system);
                     }
                 }
             }
@@ -904,6 +909,7 @@ log("Needed for TD: " + needed);
                         AttributeSet(this.charID,attribute,"Offline");
                         outputCard.body.push(system + " have been Damaged and knocked Offline");
                     }
+                    damagedSystems.push(system);
                 }
             }
 
@@ -918,12 +924,12 @@ log("Needed for TD: " + needed);
                     outputCard.body.push(title + " is Offline");
                     weapon.status = "Damaged";
                     AttributeSet("weapon" + weapon.number + "status","Damaged");
-                    damagedsystems.push(weaponName + " " + weaponType);
+                    damagedSystems.push(weaponName + " " + weaponType);
                 }
             }
 
 
-
+            AttributeSet(this.charID,"damagedsystems",damagedSystems);
 
 
 
