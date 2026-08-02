@@ -115,7 +115,10 @@ const Main = (() => {
 
 
     const SM = {
-
+        ooc: "status_red", //ooc - change
+        nolife: "status_green", //life support - change
+        warp: "status_blue", //warp core critical
+        nopower: "status_brown", //no power, drifting
     }
 
 
@@ -637,6 +640,7 @@ const Main = (() => {
                     maxRange = 15;
                 }
                 let weapon = {
+                    number: w,
                     status: weaponStatus,
                     name: weaponName,
                     type: weaponType,
@@ -769,15 +773,158 @@ log("new Crew: " +newCrew)
 
 
             } else {
-                this.Destroyed();
+                this.Destroyed("Damaged");
             }
         }
 
-        ThresholdDamage(level,bonus) {
-            //bonus is if delta > 1, adds to rolls
-            let needed = level + bonus;
+        ThresholdDamage(startingLevel,finishLevel) {
+            let damagedSystems = Attribute(this.charID,"damagedsystems");
+            let needed = finishLevel + (finishLevel - 1 - startingLevel);
 log("Needed for TD: " + needed);
+            let roll, roll2;
+
+
+
+
+            //command
+            roll = randomInteger(6);
+            roll2 = randomInteger(6);
+            let command = Attribute(this.charID,"command");
+            if (roll < needed && command === "Nominal") {
+                if (roll2 === 6) {
+                    outputCard.body.push("The Command Bridge was Destroyed!");
+                    outputCard.body.push("The Ship is Out of Control until this is Repaired");
+                    this.token.set(SM.ooc,true);
+                    AttributeSet(this.charID,"command","Destroyed");
+                } else {
+                    outputCard.body.push("The Command Bridge was Damaged!");
+                    outputCard.body.push("The Ship is Out of Control for " + roll2 + " turns or until Repaired");
+                    this.token.set(SM.ooc,roll2);
+                    AttributeSet(this.charID,"command","Damaged");
+                }
+            }
+            //lifesupport
+            let lifesupport = Attribute(this.charID,"lifesupport");
+            roll = randomInteger(6);
+            roll2 = randomInteger(6);
+            if (roll < needed && lifesupport === "Nominal") {
+                outputCard.body.push("Lifesupport was hit, and will fail in " + roll2 + " turns")
+                outputCard.body.push("If not repaired before then, the crew will abandon ship");    
+                AttributeSet(this.charID,"lifesupport","Failing");
+                this.token.set(SM.nolife,roll2);
+            }
+            //warpcore
+            roll = randomInteger(6);
+            roll2 = randomInteger(6);
+            let warpcore = Attribute(this.charID,"warpcore");
+            if (roll < needed && warpcore === "Nominal") {
+                if (roll2 === 6) {
+                    outputCard.body.push("The Warp Core was damaged and went Critical!");
+                    this.Destroyed("WarpCore");
+                    return;
+                } else if (roll2 === 5) {
+                    outputCard.body.push("The Warp Core was damaged but the Chief Engineer was able to Jettison it before it went Critical");
+                    outputCard.body.push("The Ship will drift, unable to take part in the rest of the battle");
+                    AttributeSet(this.charID,"warpcore","Gone");
+                    this.token.set(SM.nopower,true);
+                } else {
+                    outputCard.body.push("The Warp Core was damaged");
+                    outputCard.body.push("If not repaired, there is an increasing chance each turn it will go critical and explode");
+                    AttributeSet(this.charID,"warpcore","Damaged");
+                    this.token.set(SM.warp,1);
+                }
+            }
+
+            //impulse
+            let impulse = Attribute(this.charID,"impulse");
+            if (impulse !== "Offline") {
+                let roll = randomInteger(6);
+                let result = "Damaged";
+                if (roll <= needed) {
+                    if (impulse === "Damaged") {
+                        result = "Offline";
+                    } 
+                    AttributeSet(this.charID,"impulse",result);
+                    outputCard.body.push("Impulse Engines were Hit and are now " + result);
+                    if (result === "Offline") {
+                        outputCard.body.push("The Ship will Drift until repaired");
+                        this.token.set(SM.nopower,true);
+                    } else {
+                        outputCard.body.push("Thrusters and Turn are Halved");
+                    }
+                }
+            }
+
+
+            //systems with #s
+            let systems = {
+                "Shield Generator": "shieldgenerator",
+                "Fire Control": "firecontrol",
+
+            }
+            let keys = Object.keys(systems);
+            for (let i=0;i<keys.length;i++) {
+                let system = keys[i];
+                let attribute = systems[system];
+                let current = parseInt(Attribute(this.charID,attribute));
+                if (current > 0) {
+                    current--;
+                    roll = randomInteger(6);
+                    if (roll <= needed) {
+                        AttributeSet(this.charID,attribute,current);
+                        outputCard.body.push("A " + system + " has been Damaged");
+                        if (current === 0) {
+                            if (system === "Shield Generator") {
+                                outputCard.body.push("Shields are now Offline");
+                                AttributeSet(this.charID,"shields",0);
+                                this.token.set("bar2_value",0);
+                                this.token.set("aura1_color","transparent");
+                            }
+                            if (system === "Fire Control") {
+                                outputCard.body.push("Weapons cannot fire");
+                            }
+                        }
+                    }
+                }
+            }
             
+            //systems with Nominal vs Offline
+            systems = {
+                "Sensors": "sensors",
+                "Warp Drive": "warpdrive",
+            }
+            let keys = Object.keys(systems);
+            for (let i=0;i<keys.length;i++) {
+                let system = keys[i];
+                let attribute = systems[system];
+                let current = parseInt(Attribute(this.charID,attribute));
+                if (current === "Nominal") {
+                    roll = randomInteger(6);
+                    if (roll <= needed) {
+                        AttributeSet(this.charID,attribute,"Offline");
+                        outputCard.body.push(system + " have been Damaged and knocked Offline");
+                    }
+                }
+            }
+
+
+            //Weapons
+            for (let i=0;i<this.weaponArray.length;i++) {
+                let weapon = this.weaponArray[i];
+                let status = Attribute(this.charID,"weapon" + weapon.number + "status");
+                let roll = randomInteger(6);
+                if (roll <= needed && status === "Normal") {
+                    let title = weaponName + " " + weaponType;
+                    outputCard.body.push(title + " is Offline");
+                    weapon.status = "Damaged";
+                    AttributeSet("weapon" + weapon.number + "status","Damaged");
+                    damagedsystems.push(weaponName + " " + weaponType);
+                }
+            }
+
+
+
+
 
 
 
