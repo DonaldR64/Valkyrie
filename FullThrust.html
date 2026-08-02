@@ -539,19 +539,19 @@
 
         <section class="eng">
             <h3>Engineering</h3>
-            <input type="hidden" name="attr_warpdrivestatus" class="warpdrive-status" value="Red">
+            <input type="hidden" name="attr_warpdrivestatus" class="warpdrive-status" value="Green">
             <div class="warpdrivestatus">
                 <h4>Warp Drive: <span name="attr_warpdrive"></span></h4>
             </div>
-            <input type="hidden" name="attr_impulsestatus" class="impulse-status" value="Red">
+            <input type="hidden" name="attr_impulsestatus" class="impulse-status" value="Green">
             <div class="impulsestatus">
                 <h4>Impulse Engines: <span name="attr_impulse"></span></h4>
             </div>
-            <input type="hidden" name="attr_hullstatus" class="hull-status" value="Red">
+            <input type="hidden" name="attr_hullstatus" class="hull-status" value="Green">
             <div class="hullstatus">
                 <h4>Hull Integrity: <span name="attr_hullpercent"></span>%</h4>
             </div>
-            <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Red">
+            <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Green">
             <div class="shieldstatus">
                 <h4>Shields: <span name="attr_shieldpercent"></span></h4>
             </div>
@@ -649,7 +649,7 @@
             if (shieldPercent <= 50) {shieldstatus = "Orange"};
             if (shieldPercent <= 25) {shieldstatus = "Red"};
             shieldPercent += "%";
-            if (shieldPercent === 0) {
+            if (shields === 0) {
                 shieldstatus = "Down"
                 shieldPercent = "Down";
             };
