@@ -1497,7 +1497,10 @@ const Main = (() => {
                         rolls.push(roll);
                     }
                 }
-                weaponTip += w + ": " + rolls.toString() + " = " + weaponDamage + "<br>";
+                weaponTip += w + ": " + rolls.toString() + " vs. 4+<br>";
+                if (weaponDamage > 0) {
+                    weaponTip += "Damage: " + weaponDamage + "<br>";
+                }                
                 totalDamage += weaponDamage;
                 let fxObj =  findObjs({type: "custfx", name: "Beam2"})[0];
                 let pt1 = HexMap[shooter.hexLabel].centre;
