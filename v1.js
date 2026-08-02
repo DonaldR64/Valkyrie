@@ -1283,6 +1283,7 @@ log(mass)
                     shieldGenerators = 1;
                     AttributeSet(ship.charID,"shieldgenerators_max",shieldGenerators)
                 }
+                shieldGenerators = parseInt(shieldGenerators);
                 if (shieldGenerators === 0) {
                     shieldsMax = 0;
                 }
