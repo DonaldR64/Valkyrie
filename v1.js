@@ -1464,10 +1464,10 @@ log(rolls.toString())
         if (Projectiles.includes(weaponType)) {
             //roll to hit, then damage
             let toHit = 2;
-            if (losResult.distance > 3) {toHit = 3};
-            if (losResult.distance > 6) {toHit = 4};
-            if (losResult.distance > 9) {toHit = 5};
-            if (losResult.distance > 12) {toHit = 6};
+            if (losResult.distance > 3) {toHit = 2};
+            if (losResult.distance > 6) {toHit = 3};
+            if (losResult.distance > 9) {toHit = 4};
+            if (losResult.distance > 12) {toHit = 5};
             let rolls = [];
             let damage = 0;
             for (let i=0;i<weaponNum;i++) {
