@@ -630,9 +630,9 @@
             let crew = parseInt(values.crew);
             let crewMax = parseInt(values.crew_max);
             let crewPercent = Math.round(crew/crewMax * 100);
-            if (crewPercent <= 75) {crewStatus = "Yellow"};
-            if (crewPercent <= 50) {crewStatus = "Orange"};
-            if (crewPercent <= 25) {crewStatus = "Red"};
+            if (crewPercent < 100) {crewStatus = "Yellow"};
+            if (crewPercent < 66) {crewStatus = "Orange"};
+            if (crewPercent < 33) {crewStatus = "Red"};
 
             let mass = parseInt(values.mass);
             let shieldstatus = "Green";
