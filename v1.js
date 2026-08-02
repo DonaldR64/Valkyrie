@@ -1258,26 +1258,42 @@ const Main = (() => {
 
             } 
             if (ship.type === "Starship") {
+log(ship.name)
 
                 //bars on token
                 ship.hull = ship.hullMax;
-                AttributeSet(ship.charID,"hull",ship.hull);
+                //AttributeSet(ship.charID,"hull",ship.hull);
 
                 let shieldType = Attribute(ship.charID,"shieldtype");
+                if (!shieldType) {
+                    shieldType === "Normal"
+                    AttributeSet(ship.charID,"shieldtype",shieldType);
+                };
+log(shieldType)
                 let shieldNum = 3
                 if (shieldType === "Inferior") {shieldNum = 4};
                 if (shieldType === "Advanced") {shieldNum = 2};
-                let shieldsMax = Math.round(parseInt(Attribute(ship.charID,"mass"))/shieldNum);
-                if (parseInt(Attribute(ship.charID,"shieldgenerators")) === 0) {
+                let mass = parseInt(Attribute(ship.charID,"mass"));
+log(mass)
+
+                let shieldsMax = mass/shieldNum;
+
+                let shieldGenerators = Attribute(ship.charID,"shieldgenerators_max");
+                if (!shieldGenerators) {
+                    shieldGenerators = 1;
+                    AttributeSet(ship.charID,"shieldgenerators_max",shieldGenerators)
+                }
+                if (shieldGenerators === 0) {
                     shieldsMax = 0;
                 }
-                ship.shields = shieldsMax || 0;
-                ship.shieldsMax = shieldsMax || 0;
-log(ship.name)
+
+                ship.shields = shieldsMax;
+                ship.shieldsMax = shieldsMax;
+log("SG: " + shieldGenerators)
 log(ship.shields)
 log(ship.shieldsMax)
 
-
+                AttributeSet(ship.charID,"shieldgenerators",shieldGenerators);
                 AttributeSet(ship.charID,"shields",ship.shields);
                 AttributeSet(ship.charID,"shield_max",ship.shieldsMax);
                 let shieldColour = "#00ff00";
@@ -1291,22 +1307,22 @@ log(ship.shieldsMax)
                 for (let i=0;i<nominalAttributes.length;i++) {
                     AttributeSet(ship.charID,nominalAttributes[i],"Nominal");
                 }
-                let sg = parseInt(Attribute(ship.charID,"shieldgenerators_max"));
-log(sg)
 
-                AttributeSet(ship.charID,"shieldgenerators",sg);
+
                 let fc = parseInt(Attribute(ship.charID,"firecontrol_max"));
-                AttributeSet(ship.charID,"firecontrol",fc);
+                //AttributeSet(ship.charID,"firecontrol",fc);
+log("FC: " + fc)
 
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
-                AttributeSet(ship.charID,"crew",crew);
-                AttributeSet(ship.charID,"crew_max",crew);
+                //AttributeSet(ship.charID,"crew",crew);
+                //AttributeSet(ship.charID,"crew_max",crew);
+log("Crew: " + crew)
 
                 AttributeSet(ship.charID,"damagedsystems","");
 
                 let hullID = AttributeID(ship.charID,"hull");
                 let shieldID = AttributeID(ship.charID,"shields");
-
+/*
                 ship.token.set({
                     bar1_value: ship.hull,
                     bar1_max: ship.hullMax,
@@ -1332,6 +1348,7 @@ log(sg)
                 }
 
                 AddAbilities2(ship);
+*/
             }
 
         });
