@@ -778,7 +778,14 @@ log("new Crew: " +newCrew)
         }
 
         ThresholdDamage(startingLevel,finishLevel) {
-            let damagedSystems = Attribute(this.charID,"damagedsystems").split(",") || [];
+            let ds = Attribute(this.charID,"damagedsystems").split(",");
+            let damagedSystems = [];
+            _.each(ds,d => {
+                if (d && d !== "None" && d !== "") {
+                    damagedSystems.push(d);
+                }
+            })
+            
 log("Damaged Systems before")
 log(damagedSystems)
 
@@ -927,7 +934,7 @@ log("Needed for TD: " + needed);
                     let title = weapon.name + " " + weapon.type;
                     outputCard.body.push(title + " is Offline");
                     weapon.status = "Damaged";
-                    AttributeSet("weapon" + weapon.number + "status","Damaged");
+                    AttributeSet(this.charID,"weapon" + weapon.number + "status","Damaged");
                     damagedSystems.push(title);
                 }
             }
@@ -1636,17 +1643,18 @@ log("Needed for TD: " + needed);
 
             for (let w=1;w<=weaponNum;w++) {
                 let rolls = [];
+                let weaponHits = false;
                 let weaponDamage = 0;
                 for (let i=0;i<dice;i++) {
                     let roll = randomInteger(6);
                     if (roll < 4) {
                         rolls.push(roll);
                     } else if (roll > 3 && roll < 6) {
-                        hits++;
+                        weaponHits = true;
                         weaponDamage += baseDamage;
                         rolls.push(roll);
                     } else if (roll === 6) {
-                        hits++
+                        weaponHits = true;
                         weaponDamage += (baseDamage * 2);
                         if (weaponType.includes("Phaser")) {
                             let extraRoll;
@@ -1663,6 +1671,9 @@ log("Needed for TD: " + needed);
                         }
                         rolls.push(roll);
                     }
+                }
+                if (weaponHits === true) {
+                    hits++;
                 }
                 weaponTip += w + ": " + rolls.toString() + " vs. 4+ To Hit<br>";
                 if (weaponDamage > 0) {
