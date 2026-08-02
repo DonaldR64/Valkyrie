@@ -914,7 +914,7 @@ log("Needed for TD: " + needed);
                 let status = Attribute(this.charID,"weapon" + weapon.number + "status");
                 let roll = randomInteger(6);
                 if (roll <= needed && status === "Normal") {
-                    let title = weaponName + " " + weaponType;
+                    let title = weapon.name + " " + weapon.type;
                     outputCard.body.push(title + " is Offline");
                     weapon.status = "Damaged";
                     AttributeSet("weapon" + weapon.number + "status","Damaged");
