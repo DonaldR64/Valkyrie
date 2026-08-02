@@ -708,6 +708,7 @@ const Main = (() => {
 
             shields = shields - shieldDamage;
             this.token.set("bar2_value",shields);
+            this.shields = shields;
             let shieldstatus = "#00ff00";
             let shieldPercent = Math.round(shields/shieldsMax * 100);
             if (shieldPercent <= 75) {shieldstatus = "#ffff00"};
@@ -725,6 +726,7 @@ const Main = (() => {
             let hull = parseInt(this.token.get("bar1_value"));
             let hullMax = parseInt(this.token.get("bar1_max"));
             hull = Math.max(0,(hull - damage));
+            this.hull = hull;
             if (hull > 0) {
                 let levels = 4;
                 if (Attribute(this.charID,"advancedhull") === 1) {
@@ -738,10 +740,14 @@ const Main = (() => {
 
                 let crew = parseInt(Attribute(this.charID,"crew"));
                 let crewMax = parseInt(Attribute(this.charID,"crew_max"));
-                let crewIntervals = Math.floor(hullMax/crewMax);
-
-
+                let newCrew = Math.ceil(hull/hullMax * levels);
+                let casualties = crew - newCrew;
+                if (casualties > 0) {
+                    let noun = ["some","heavy","massive"];
+                    outputCard.body.push("There were "+ noun[Math.min((casualties - 1),2)] + " casualties to the crew");
+                }
                 if (delta > 0) {
+                    outputCard.body.push("Threshold Damage: " + delta) 
                     this.ThresholdDamage(delta - 1);
                 }
 
@@ -1284,6 +1290,7 @@ const Main = (() => {
                 AttributeSet(ship.charID,"firecontrol",Attribute(ship.charID,"firecontrol_max"));
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
                 AttributeSet(ship.charID,"crew",crew);
+                AttributeSet(ship.charID,"crew_max",crew);
 
 
                 AttributeSet(ship.charID,"damagedsystems","");

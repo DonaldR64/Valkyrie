@@ -601,7 +601,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shieldgenerators_max","shields","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","impulse","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","shieldtype","sensorstatus"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -628,22 +628,11 @@
 
             let mass = parseInt(values.mass);
             let shieldstatus = "Green";
-            let shieldNum = 3;
-            let shieldType = values.shieldtype || "Normal";
-            if (shieldType === "Inferior") {
-                shieldNum = 4;
-            }
-            if (shieldType === "Advanced") {
-                shieldNum = 2;
-            }
         
-            let shieldsMax = Math.round(mass/shieldNum);
-            let shields = values.shields || shieldsMax;
-            shields = parseInt(shields);
+            let shieldsMax = parseInt(values.shields_max);
+            let shields = parseInt(values.shields) || shieldsMax;
 
-            let sgMax = parseInt(values.shieldgenerators_max) || 0;
-            let sg = values.shieldgenerators || sgMax;
-            sg = parseInt(sgMax);
+            let sg = parseInt(values.shieldgenerators) || 0;
             if (sg === 0) {shields = 0};
 
             let shieldPercent = Math.round(shields/shieldsMax * 100);
@@ -654,12 +643,6 @@
                 shieldstatus = "Down"
                 shieldPercent = "Down";
             };
-            if (sgMax === 0) {
-                shieldstatus = "Down";
-                shieldPercent = "No Shields";
-            }
-
-
 
             let sensors = values.sensors || "Nominal";
             let sensorstatus = "Green";
@@ -762,11 +745,6 @@
                 factionsymbol = "https://files.d20.io/images/494930908/_yxSf8Knwl4BMu3-K-GU2Q/thumb.png?1784753907";
             }
 
-
- 
-            let crewMax = Math.ceil(mass/20);
-            let crew = values.crew || crewMax;
-
             let warpdrive = values.warpdrive || "Nominal";
             let warpdrivestatus = "Green";
             if (warpdrive === "Offline") {
@@ -796,19 +774,7 @@
                 fcdisplay: fcDisplay,
                 shieldpercent: shieldPercent,
                 hullpercent: hullpercent,
-                command: command,
-                lifesupport: lifesupport,
-                warpcore: warpcore,
-                hull: hull,
-                shields: shields,
-                shields_max: shieldsMax,
-                shieldgenerators: sg,
-                shieldgenerators_max: sgMax,
-                crew: crew,
-                crew_max: crewMax,
-                warpdrive: warpdrive,
                 warpdrivestatus: warpdrivestatus,
-                impulse: impulse,
                 impulsestatus: impulsestatus,
                 sensorstatus: sensorstatus,
 
