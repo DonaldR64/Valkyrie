@@ -815,6 +815,7 @@ log("Needed for TD: " + needed);
                     AttributeSet(this.charID,"command","Damaged");
                 }
                 damagedSystems.push("Command");
+                outputCard.body.push("[hr]");
             }
             //lifesupport
             let lifesupport = Attribute(this.charID,"lifesupport");
@@ -826,6 +827,7 @@ log("Needed for TD: " + needed);
                 AttributeSet(this.charID,"lifesupport","Failing");
                 this.token.set(SM.nolife,roll2);
                 damagedSystems.push("Life Support");
+                outputCard.body.push("[hr]");
             }
             //warpcore
             roll = randomInteger(6);
@@ -848,6 +850,7 @@ log("Needed for TD: " + needed);
                     this.token.set(SM.warp,1);
                 }
                 damagedSystems.push("Warp Core");
+                outputCard.body.push("[hr]");
             }
 
             //impulse
@@ -868,6 +871,7 @@ log("Needed for TD: " + needed);
                         outputCard.body.push("[#ff0000]Thrusters and Turn are Halved[/#]");
                     }
                     damagedSystems.push("Impulse Engines");
+                    outputCard.body.push("[hr]");
                 }
             }
 
@@ -901,6 +905,7 @@ log("Needed for TD: " + needed);
                             }
                         }
                         damagedSystems.push(system);
+                        outputCard.body.push("[hr]");
                     }
                 }
             }
@@ -922,6 +927,7 @@ log("Needed for TD: " + needed);
                         outputCard.body.push("[#ff0000]" + system + " have been Damaged and knocked Offline[/#]");
                     }
                     damagedSystems.push(system);
+                    outputCard.body.push("[hr]");
                 }
             }
 
@@ -1596,6 +1602,8 @@ log("Needed for TD: " + needed);
         let totalDamage = 0;
         let hits = 0;
         let weaponTip = "";
+        let sensorsOffline = Attribute(shooter.charID,"sensors") === "Offline" ? true:false;
+
 
         if (Projectiles.includes(weaponType)) {
             //roll to hit, then damage
@@ -1603,6 +1611,10 @@ log("Needed for TD: " + needed);
             if (losResult.distance > 6) {toHit = 3};
             if (losResult.distance > 9) {toHit = 4};
             if (losResult.distance > 12) {toHit = 5};
+            if (sensorsOffline) {
+                toHit = 6;
+                weaponTip = "Sensors Offline";
+            }
             for (let w=1;w<=weaponNum;w++) {
                 let roll = randomInteger(6);
                 let weaponDamage = 0;
@@ -1650,11 +1662,11 @@ log("Needed for TD: " + needed);
                     let roll = randomInteger(6);
                     if (roll < 4) {
                         rolls.push(roll);
-                    } else if (roll > 3 && roll < 6) {
+                    } else if ((roll > 3 && roll < 6 && sensorsOffline === false) || (roll === 6 && sensorsOffline)) {
                         weaponHits = true;
                         weaponDamage += baseDamage;
                         rolls.push(roll);
-                    } else if (roll === 6) {
+                    } else if (roll === 6 && sensorsOffline === false) {
                         weaponHits = true;
                         weaponDamage += (baseDamage * 2);
                         if (weaponType.includes("Phaser")) {
@@ -1677,6 +1689,9 @@ log("Needed for TD: " + needed);
                     hits++;
                 }
                 weaponTip += w + ": " + rolls.toString() + " vs. 4+ To Hit<br>";
+                if (sensorsOffline) {
+                    weaponTip += w + ": " + rolls.toString() + " vs. 6+ To Hit<br>";
+                }
                 if (weaponDamage > 0) {
                     weaponTip += "Damage: " + weaponDamage + "<br>";
                 }                
