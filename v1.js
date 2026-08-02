@@ -1271,8 +1271,13 @@ const Main = (() => {
                 if (parseInt(Attribute(ship.charID,"shieldgenerators")) === 0) {
                     shieldsMax = 0;
                 }
-                ship.shields = shieldsMax;
-                ship.shieldsMax = shieldsMax;
+                ship.shields = shieldsMax || 0;
+                ship.shieldsMax = shieldsMax || 0;
+log(ship.name)
+log(ship.shields)
+log(ship.shieldsMax)
+
+
                 AttributeSet(ship.charID,"shields",ship.shields);
                 AttributeSet(ship.charID,"shield_max",ship.shieldsMax);
                 let shieldColour = "#00ff00";
@@ -1287,6 +1292,8 @@ const Main = (() => {
                     AttributeSet(ship.charID,nominalAttributes[i],"Nominal");
                 }
                 let sg = parseInt(Attribute(ship.charID,"shieldgenerators_max"));
+log(sg)
+
                 AttributeSet(ship.charID,"shieldgenerators",sg);
                 let fc = parseInt(Attribute(ship.charID,"firecontrol_max"));
                 AttributeSet(ship.charID,"firecontrol",fc);
