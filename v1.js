@@ -1258,7 +1258,6 @@ const Main = (() => {
 
             } 
             if (ship.type === "Starship") {
-log(ship.name)
 
                 //bars on token
                 ship.hull = ship.hullMax;
@@ -1288,9 +1287,6 @@ log(ship.name)
 
                 ship.shields = shieldsMax;
                 ship.shieldsMax = shieldsMax;
-log("SG: " + shieldGenerators)
-log(ship.shields)
-log(ship.shieldsMax)
 
                 AttributeSet(ship.charID,"shieldgenerators",shieldGenerators);
                 AttributeSet(ship.charID,"shields",ship.shields);
@@ -1315,7 +1311,6 @@ log(ship.shieldsMax)
                 }
                 fc = parseInt(fc);
                 AttributeSet(ship.charID,"firecontrol",fc);
-log("FC: " + fc)
 
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
                 AttributeSet(ship.charID,"crew",crew);
