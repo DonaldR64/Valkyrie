@@ -720,7 +720,9 @@ const Main = (() => {
                 shieldstatus = "transparent";
             };
             this.token.set("aura1_color",shieldstatus);
-            this.HullDamage(hullDamage);
+            if (hullDamage > 0) {
+                this.HullDamage(hullDamage);
+            }
         }
 
         HullDamage(damage) {
@@ -740,12 +742,13 @@ const Main = (() => {
                 this.token.set("bar1_value",hull);
 
                 let crew = parseInt(Attribute(this.charID,"crew"));
-                let crewMax = parseInt(Attribute(this.charID,"crew",max));
+                let crewMax = parseInt(Attribute(this.charID,"crew",true));
                 let newCrew = Math.ceil(hull/hullMax * levels);
                 let casualties = crew - newCrew;
                 if (casualties > 0) {
                     let noun = ["some","heavy","massive"];
                     outputCard.body.push("There were "+ noun[Math.min((casualties - 1),2)] + " casualties to the crew");
+                    AttributeSet(this.charID,"crew",newCrew);
                 }
                 if (delta > 0) {
                     outputCard.body.push("Threshold Damage: " + delta) 
