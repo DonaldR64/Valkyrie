@@ -468,7 +468,7 @@ input[type="hidden"]:not[value="Off"].weapon1-status ~ .weapon1{
     display: grid;
 }
 input[type="hidden"][value="Fired"].weapon1-status ~ .weapon1 img{
-    filter: invert(77%) sepia(0%) saturate(0%) hue-rotate(159deg) brightness(87%) contrast(92%);
+    filter: invert(90%) sepia(0%) saturate(0%) hue-rotate(159deg) brightness(87%) contrast(92%);
 }
 input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1 img{
     filter: invert(11%) sepia(97%) saturate(5808%) hue-rotate(0deg) brightness(101%) contrast(114%);
@@ -479,7 +479,6 @@ input[type="hidden"][value="Damaged"].weapon1-status ~ .weapon1 img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    filter: invert(61%) sepia(64%) saturate(4815%) hue-rotate(86deg) brightness(121%) contrast(125%);
 }
 
 /* Weapon 2 */
