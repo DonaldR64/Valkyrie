@@ -956,23 +956,30 @@ log("Needed for TD: " + needed);
 
 
         Destroyed(method) {
+            //place the images on foreground area
             if (method === "WarpCore") {
-                //warp explosion, check for damage in area
-
-
-
+                //warp explosion, check for damage in area, 200x200
+                //https://files.d20.io/images/496239624/K_BQmNbrYAG2loEcqeNWBw/thumb.png?1785713095
+                let neighbours = HexMap[this.hexLabel].cube.neighbours;
+                _.each(neighbours,neighbour => {
+                    let Hex2 = HexMap[neighbour.label()];
+                    if (Hex2.tokenIDs.length > 0) {
+                        for (let i=0;i<Hex2.tokenIDs.length;i++) {
+                            let ship2 = ShipArray[Hex2.tokenIDs[0]];
+                            outputCard.body.push("[hr]");
+                            outputCard.body.push(ship2.name + " is caught by the Explosion of the Warp Core");
+                            ship2.Damage(Math.round(Math.sqrt(this.mass)));
+                        }
+                    }
+                })
             } else {
-                //small explosion, place wreckage
-                outputCard.body.push(this.name + " breaks up, any remaining crew escaping in life pods");
+                //small explosion, place wreckage, 70x70
+                outputCard.body.push(this.name + " breaks up, all remaining hands lost");
                 //debris - place on map
                 //https://files.d20.io/images/496238081/0kLZO4NJdwiF25EIctOz2Q/thumb.webp?1785712373
 
-                //explosion - remove at start of next turn
+                //explosion - remove at start of next turn, 100x100
                 //https://files.d20.io/images/496238080/OqdallnyzXoeUjectKl_Rw/thumb.webp?1785712373
-
-
-
-
 
             }
         }
