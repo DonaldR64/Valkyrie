@@ -20,7 +20,7 @@ const Main = (() => {
     }
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
-    const Projectiles = ["Pulse Torpedo","Photon Torpedo","Disruptor","Disruptor Mk.2"]
+    const Projectiles = ["Pulse Torpedo","Photon Torpedo"]
 
 
 
@@ -631,6 +631,8 @@ const Main = (() => {
                 if (weaponType === "Class 1 Phaser") {maxRange = 6};
                 if (weaponType === "Class 2 Phaser") {maxRange = 12};
                 if (weaponType === "Class 3 Phaser") {maxRange = 18};
+                if (weaponType === "Disruptor") {maxRange = 6};
+                if (weaponType === "Disruptor Mk.2") {maxRange = 12};
                 if (Projectiles.includes(weaponType)) {
                     maxRange = 15;
                 }
@@ -1419,92 +1421,108 @@ const Main = (() => {
 
 
         outputCard.body.push(weaponNum + " " + weaponType + s + " fire" + s2 + " at the Target");
-        let damage = 0;
+        let totalDamage = 0;
+        let hits = 0;
+        let weaponTip = "";
 
-        if (weaponType.includes("Phaser")) {
-            //to hit and damage are same roll
-            let rolls = [];
-            let dice = 1;
-            if ((weaponType.includes("Class 2") && losResult.distance <= 6) || (weaponType.includes("Class 3") && losResult.distance <= 12)) {
-                dice = 2;
-            }
-            if (weaponType.includes("Class 3") && losResult.distance <= 6) {
-                dice = 3;
-            }
-            dice = dice * weaponNum;
-            for (let i=0;i<dice;i++) {
-                let roll = randomInteger(6);
-                if (roll < 4) {
-                    rolls.push(roll);
-                } else if (roll > 3 && roll < 6) {
-                    damage++;
-                    rolls.push(roll);
-                } else if (roll === 6) {
-                    damage += 2;
-                    let extraRoll;
-                    do {
-                        extraRoll = randomInteger(6);
-                        if (extraRoll > 3 && extraRoll < 6) {
-                            roll += "/" + extraRoll;
-                            damage++;
-                        } else if (extraRoll === 6) {
-                            damage += 2;
-                            roll += "/6";
-                        }
-                    } while (extraRoll === 6);
-                    rolls.push(roll);
-                }
-            }
-log(rolls.toString())
-            let fxObj =  findObjs({type: "custfx", name: "Beam2"})[0];
-            let pt1 = HexMap[shooter.hexLabel].centre;
-            let pt2 = HexMap[target.hexLabel].centre;
-            spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
-        }        
         if (Projectiles.includes(weaponType)) {
             //roll to hit, then damage
             let toHit = 2;
-            if (losResult.distance > 3) {toHit = 2};
             if (losResult.distance > 6) {toHit = 3};
             if (losResult.distance > 9) {toHit = 4};
             if (losResult.distance > 12) {toHit = 5};
-            let rolls = [];
-            let damage = 0;
-            for (let i=0;i<weaponNum;i++) {
+            let weaponDamage = 0;
+            for (let w=1;w<=weaponNum;w++) {
                 let roll = randomInteger(6);
-                rolls.push(roll);
-                if (roll >= toHit) {
-                    if (weaponType.includes("Disruptor")) {
-                        damage += 2;
-                    }                    
-                    if (weaponType === "Disruptor Mk.2") {
-                        let roll = randomInteger(6);
-                        if (roll > 4) {
-                            damage += 2;
-                        }
-                    }                    
+                if (roll >= toHit) {                
                     if (weaponType === "Pulse Torpedo") {
-                        damage = randomInteger(6);
+                        weaponDamage = randomInteger(6);
+                        let wdTip = "[d6]";
                     }
                     if (weaponType === "Photon Torpedo") {
-                        damage = Math.max(randomInteger(6),randomInteger(6));
+                        weaponDamage = Math.max(randomInteger(6),randomInteger(6));
+                        let wdTip = "[2d6kh]";
                     }
                 }
+                weaponTip += w + ": " + roll + " vs. " + toHit + "+<br>";
+                if (weaponDamage > 0) {
+                    weaponTip += "Damage: " + weaponDamage + " " + wdTip;
+                }
+                totalDamage += weaponDamage;
             }
-log("To Hit Rolls: " + rolls.toString())
 
             let pt1 = HexMap[shooter.hexLabel].centre;
             let pt2 = HexMap[target.hexLabel].centre;
             spawnFxBetweenPoints(pt1, pt2,"missile-fire",Campaign().get("playerpageid"));
+        } else {
+            //phasers, disruptors
+            let diceArray = {
+                "Class 1 Phaser": [1,1],
+                "Class 2 Phaser": [2,2,1,1],
+                "Class 3 Phaser": [3,3,2,2,1,1],
+                "Disruptor": [3,2,1],
+                "Disruptor Mk.2": [4,3,2,1],
+            }
+            let interval = Math.ceil(losResult.distance / 3);
+            dice = diceArray[weaponType][interval];
+            let baseDamage = (weaponType.includes("Phaser")) ? 1:2;
+
+            for (let w=1;w<=weaponNum;w++) {
+                let rolls = [];
+                let weaponDamage = 0;
+                for (let i=0;i<dice;i++) {
+                    let roll = randomInteger(6);
+                    if (roll < 4) {
+                        rolls.push(roll);
+                    } else if (roll > 3 && roll < 6) {
+                        hits++;
+                        weaponDamage += baseDamage;
+                        rolls.push(roll);
+                    } else if (roll === 6) {
+                        hits++
+                        weaponDamage += (baseDamage * 2);
+                        if (weaponType.includes("Phaser")) {
+                            let extraRoll;
+                            do {
+                                extraRoll = randomInteger(6);
+                                if (extraRoll > 3 && extraRoll < 6) {
+                                    roll += "/" + extraRoll;
+                                    weaponDamage++;
+                                } else if (extraRoll === 6) {
+                                    weaponDamage += 2;
+                                    roll += "/6";
+                                }
+                            } while (extraRoll === 6);
+                        }
+                        rolls.push(roll);
+                    }
+                }
+                weaponTip += w + ": " + rolls.toString() + " = " + weaponDamage + "<br>";
+                totalDamage += weaponDamage;
+                let fxObj =  findObjs({type: "custfx", name: "Beam2"})[0];
+                let pt1 = HexMap[shooter.hexLabel].centre;
+                let pt2 = HexMap[target.hexLabel].centre;
+                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
+            }
+
+
+
+
+
+
+
+
         }
 
-        if (damage > 0) {
-            outputCard.body.push(damage + " Damage is Done");
-            target.Damage(damage);
+        if (hits > 0) {
+            weaponTip = '[' + hits + '](#" class="showtip" title="' + weaponTip + ')';
+            let s = (hits === 1) ? "":"s";
+            outputCard.body.push(weaponTip + " hit" + s + ", doing " + totalDamage + " Damage");
+            target.Damage(totalDamage);
         } else {
+            weaponTip = '[No Hits](#" class="showtip" title="' + weaponTip + ')';
             let s = (weaponNum === 1) ? "":"s";
-            let adverb = (weaponNum === 1) ? " Misses":" Miss";
-            outputCard.body.push("The " + weaponType + s + adverb) 
+            outputCard.body.push(weaponTip + " with " + weaponType + s)
         }
 
         PrintCard();
