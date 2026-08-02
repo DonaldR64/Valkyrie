@@ -776,8 +776,8 @@ log("new Crew: " +newCrew)
         ThresholdDamage(level,bonus) {
             //bonus is if delta > 1, adds to rolls
             let needed = level + bonus;
-
-
+log("Needed for TD: " + needed);
+            
 
 
 
