@@ -1431,22 +1431,24 @@ const Main = (() => {
             if (losResult.distance > 6) {toHit = 3};
             if (losResult.distance > 9) {toHit = 4};
             if (losResult.distance > 12) {toHit = 5};
-            let weaponDamage = 0;
             for (let w=1;w<=weaponNum;w++) {
                 let roll = randomInteger(6);
+                let weaponDamage = 0;
+                let damageRolls = [];
                 if (roll >= toHit) {                
                     if (weaponType === "Pulse Torpedo") {
-                        weaponDamage = randomInteger(6);
-                        let wdTip = "[d6]";
+                        damageRolls.push(randomInteger(6));
                     }
                     if (weaponType === "Photon Torpedo") {
-                        weaponDamage = Math.max(randomInteger(6),randomInteger(6));
-                        let wdTip = "[2d6kh]";
+                        damageRolls.push(randomInteger(6));
+                        damageRolls.push(randomInteger(6));
                     }
+                    damageRolls.sort().reverse();
+                    weaponDamage = damageRolls[0];
                 }
                 weaponTip += w + ": " + roll + " vs. " + toHit + "+<br>";
                 if (weaponDamage > 0) {
-                    weaponTip += "Damage: " + weaponDamage + " " + wdTip;
+                    weaponTip += "Damage: " + weaponDamage + " [" + damageRolls.toString() + "]";
                 }
                 totalDamage += weaponDamage;
             }
