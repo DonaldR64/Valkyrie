@@ -982,6 +982,8 @@ log("Needed for TD: " + needed);
                 //explosion - remove at start of next turn using name, 100x100
                 summonToken("-Oz3qYxcnBprYN7f61Yb",this.token.get("left"),this.token.get("top"),100,0,"foreground");
             }
+            this.token.remove();
+            delete ShipArray(this.id);
         }
 
 
