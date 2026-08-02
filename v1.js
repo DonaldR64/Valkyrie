@@ -1269,14 +1269,12 @@ log(ship.name)
                     shieldType === "Normal"
                     AttributeSet(ship.charID,"shieldtype",shieldType);
                 };
-log(shieldType)
                 let shieldNum = 3
                 if (shieldType === "Inferior") {shieldNum = 4};
                 if (shieldType === "Advanced") {shieldNum = 2};
                 let mass = parseInt(Attribute(ship.charID,"mass"));
-log(mass)
 
-                let shieldsMax = mass/shieldNum;
+                let shieldsMax = Math.floor(mass/shieldNum);
 
                 let shieldGenerators = Attribute(ship.charID,"shieldgenerators_max");
                 if (!shieldGenerators) {
@@ -1310,20 +1308,24 @@ log(ship.shieldsMax)
                 }
 
 
-                let fc = parseInt(Attribute(ship.charID,"firecontrol_max"));
-                //AttributeSet(ship.charID,"firecontrol",fc);
+                let fc = Attribute(ship.charID,"firecontrol_max");
+                if (!fc) {
+                    fc = 1;
+                    AttributeSet(ship.charID,"firecontrol_max",fc);
+                }
+                fc = parseInt(fc);
+                AttributeSet(ship.charID,"firecontrol",fc);
 log("FC: " + fc)
 
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
-                //AttributeSet(ship.charID,"crew",crew);
-                //AttributeSet(ship.charID,"crew_max",crew);
-log("Crew: " + crew)
+                AttributeSet(ship.charID,"crew",crew);
+                AttributeSet(ship.charID,"crew_max",crew);
 
                 AttributeSet(ship.charID,"damagedsystems","");
 
                 let hullID = AttributeID(ship.charID,"hull");
                 let shieldID = AttributeID(ship.charID,"shields");
-/*
+
                 ship.token.set({
                     bar1_value: ship.hull,
                     bar1_max: ship.hullMax,
@@ -1349,7 +1351,7 @@ log("Crew: " + crew)
                 }
 
                 AddAbilities2(ship);
-*/
+
             }
 
         });
