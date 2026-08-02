@@ -728,24 +728,32 @@ const Main = (() => {
         }
 
         HullDamage(damage) {
-            let hull = parseInt(this.token.get("bar1_value"));
+            let startingHull = parseInt(this.token.get("bar1_value"));
             let hullMax = parseInt(this.token.get("bar1_max"));
-            hull = Math.max(0,(hull - damage));
+            let hull = Math.max(0,(startingHull - damage));
             this.hull = hull;
             if (hull > 0) {
                 let levels = 4;
                 if (Attribute(this.charID,"advancedhull") === 1) {
                     levels = 3;
                 }
-                let startingLevel = Math.ceil(hull/hullMax * levels);
+                let startingLevel = levels - Math.ceil(startingHull/hullMax * levels);
+log("Starting Level: : " + startingLevel)
+                let finishLevel = levels - Math.ceil(hull/hullMax * levels);
+log("Finish Level: " + finishLevel)
 
-                let finishLevel = Math.ceil(hull/hullMax * levels);
-                let delta = startingLevel - finishLevel;
+                let delta = finishLevel - startingLevel;
+
+
+
                 this.token.set("bar1_value",hull);
 
                 let crew = parseInt(Attribute(this.charID,"crew"));
+log("Crew: " + crew)
                 let crewMax = parseInt(Attribute(this.charID,"crew",true));
-                let newCrew = Math.ceil(hull/hullMax * levels);
+log("CrewMax: " + crewMax)
+                let newCrew = Math.ceil(hull/hullMax * crewMax);
+log("new Crew: " +newCrew)
                 let casualties = crew - newCrew;
                 if (casualties > 0) {
                     let noun = ["some","heavy","massive"];
@@ -753,8 +761,7 @@ const Main = (() => {
                     AttributeSet(this.charID,"crew",newCrew);
                 }
                 if (delta > 0) {
-                    outputCard.body.push("Threshold Damage: " + delta) 
-                    this.ThresholdDamage(delta - 1);
+                    this.ThresholdDamage(startingLevel,finishLevel);
                 }
 
 
@@ -766,9 +773,9 @@ const Main = (() => {
             }
         }
 
-        ThresholdDamage(bonus) {
+        ThresholdDamage(level,bonus) {
             //bonus is if delta > 1, adds to rolls
-
+            let needed = level + bonus;
 
 
 
@@ -1435,7 +1442,8 @@ const Main = (() => {
                 let roll = randomInteger(6);
                 let weaponDamage = 0;
                 let damageRolls = [];
-                if (roll >= toHit) {                
+                if (roll >= toHit) {   
+                    hits++;            
                     if (weaponType === "Pulse Torpedo") {
                         damageRolls.push(randomInteger(6));
                     }
@@ -1446,7 +1454,7 @@ const Main = (() => {
                     damageRolls.sort().reverse();
                     weaponDamage = damageRolls[0];
                 }
-                weaponTip += w + ": " + roll + " vs. " + toHit + "+<br>";
+                weaponTip += w + ": " + roll + " vs. " + toHit + "+ To Hit<br>";
                 if (weaponDamage > 0) {
                     weaponTip += "Damage: " + weaponDamage + " [" + damageRolls.toString() + "]";
                 }
@@ -1465,7 +1473,7 @@ const Main = (() => {
                 "Disruptor": [3,2,1],
                 "Disruptor Mk.2": [4,3,2,1],
             }
-            let interval = Math.ceil(losResult.distance / 3);
+            let interval = Math.max(0,Math.ceil(losResult.distance / 3) - 1);
             dice = diceArray[weaponType][interval];
             let baseDamage = (weaponType.includes("Phaser")) ? 1:2;
 
@@ -1499,7 +1507,7 @@ const Main = (() => {
                         rolls.push(roll);
                     }
                 }
-                weaponTip += w + ": " + rolls.toString() + " vs. 4+<br>";
+                weaponTip += w + ": " + rolls.toString() + " vs. 4+ To Hit<br>";
                 if (weaponDamage > 0) {
                     weaponTip += "Damage: " + weaponDamage + "<br>";
                 }                
