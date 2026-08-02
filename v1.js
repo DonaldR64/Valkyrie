@@ -955,7 +955,13 @@ log("Needed for TD: " + needed);
         }
 
 
+        Destroyed(method) {
 
+
+
+
+
+        }
 
 
 
@@ -1565,6 +1571,14 @@ log("Needed for TD: " + needed);
 
         SetupCard(shooter.name,target.name,shooter.faction);
 
+        if (SM.ooc === true) {
+            errorMsg.push("Ship is Out of Control and Cannot Fire");
+        }
+        if (SM.nopower === true) {
+            errorMsg.push("Ship has no Power and Cannot Fire");
+        }
+
+
         let losResult = LOS(shooter,target);
         let errorMsg = [];
         if (losResult.los === false) {
@@ -1573,14 +1587,17 @@ log("Needed for TD: " + needed);
         let shooterArcs = losResult.shooterArcs;
 
         let weaponNum = 0;
+        let weaponsFiring = [];
 
         for (let i=0;i<shooter.weaponArray.length;i++) {
             let weapon = shooter.weaponArray[i];
             let type = weapon.type;
             let facing = weapon.facing; //will be an array of facing #s
             let inArc = facing.some(item => shooterArcs.includes(item));
-            if (losResult.distance <= weapon.maxRange && inArc === true && weaponType === type) {
+            let status = weapon.status;
+            if (losResult.distance <= weapon.maxRange && inArc === true && weaponType === type && weapon.status !== "Fired") {
                 weaponNum++;
+                weaponsFiring.push(weapon.number);
             }
         }
 
@@ -1721,6 +1738,11 @@ log("Needed for TD: " + needed);
             let s = (weaponNum === 1) ? "":"s";
             outputCard.body.push(weaponTip + " with " + weaponType + s)
         }
+
+        _.each(weaponsFiring,number => {
+            AttributeSet(shooter.charID,"weapon" + number + "status","Fired");
+        })
+
 
         PrintCard();
 
