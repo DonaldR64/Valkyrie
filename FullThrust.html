@@ -570,7 +570,7 @@
             <div class="firecontrolstatus">
                 <h4>Fire Control: <span name="attr_fcdisplay"></span></h4>
             </div>
-            <input type="hidden" name="attr_hullstatus" class="crew-status" value="Green">
+            <input type="hidden" name="attr_crewstatus" class="crew-status" value="Green">
             <div class="crewstatus">
                 <h4>Crew Level: <span name="attr_crew"></span></h4>
             </div>
@@ -601,7 +601,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -626,6 +626,14 @@
             let hullstatus = hullColours[hullLevel];
             if (levels === 3 && hullLevel === 2) {hullstatus = "Red"};
 
+            let crewStatus = "Green";
+            let crew = parseInt(values.crew);
+            let crewMax = parseInt(values.crew_max);
+            let crewPercent = Math.round(crew/crewMax * 100);
+            if (crewPercent <= 75) {crewStatus = "Yellow"};
+            if (crewPercent <= 50) {crewStatus = "Orange"};
+            if (crewPercent <= 25) {crewStatus = "Red"};
+
             let mass = parseInt(values.mass);
             let shieldstatus = "Green";
         
@@ -636,9 +644,6 @@
             if (sg === 0) {shields = 0};
 
             let shieldPercent = Math.round(shields/shieldsMax * 100);
-console.log(sg)
-console.log(shieldPercent)
-
 
             if (shieldPercent <= 75) {shieldstatus = "Yellow"};
             if (shieldPercent <= 50) {shieldstatus = "Orange"};
@@ -782,7 +787,7 @@ console.log(shieldPercent)
                 warpdrivestatus: warpdrivestatus,
                 impulsestatus: impulsestatus,
                 sensorstatus: sensorstatus,
-
+                crewstatus: crewstatus,
 
             });
         });

@@ -915,9 +915,6 @@ input[type="hidden"][value="Green"].firecontrol-status ~ .firecontrolstatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Dark Red"].crew-status ~ .crewstatus {
-    background-color: darkred;
-}
 input[type="hidden"][value="Red"].crew-status ~ .crewstatus {
     background-color: red;
 }

@@ -223,12 +223,14 @@ const Main = (() => {
 
 
     //Retrieve Values from character Sheet Attributes
-    const Attribute = (characterID,attributename) => {
+    const Attribute = (characterID,attributename,max = false) => {
         //Retrieve Values from character Sheet Attributes
         let attributeobj = findObjs({type:'attribute',characterid: characterID, name: attributename})[0]
         let attributevalue = "";
-        if (attributeobj) {
+        if (attributeobj && max === false) {
             attributevalue = attributeobj.get('current');
+        } else if (attributeobj && max === true) {
+            attributevalue = attributeobj.get('max');
         }
         return attributevalue;
     };
@@ -259,8 +261,7 @@ const Main = (() => {
         return aa;
     };
 
-    const AttributeSet = (characterID,attributename,newvalue,max) => {
-        if (!max) {max = false};
+    const AttributeSet = (characterID,attributename,newvalue,max = false) => {
         let attributeobj = findObjs({type:'attribute',characterid: characterID, name: attributename})[0]
         if (attributeobj) {
             if (max === true) {
@@ -1261,7 +1262,7 @@ const Main = (() => {
 
                 //bars on token
                 ship.hull = ship.hullMax;
-                //AttributeSet(ship.charID,"hull",ship.hull);
+                AttributeSet(ship.charID,"hull",ship.hull);
 
                 let shieldType = Attribute(ship.charID,"shieldtype");
                 if (!shieldType) {
@@ -1275,10 +1276,10 @@ const Main = (() => {
 
                 let shieldsMax = Math.floor(mass/shieldNum);
 
-                let shieldGenerators = Attribute(ship.charID,"shieldgenerators_max");
+                let shieldGenerators = Attribute(ship.charID,"shieldgenerators",true);
                 if (!shieldGenerators) {
                     shieldGenerators = 1;
-                    AttributeSet(ship.charID,"shieldgenerators_max",shieldGenerators)
+                    AttributeSet(ship.charID,"shieldgenerators",shieldGenerators,true)
                 }
                 shieldGenerators = parseInt(shieldGenerators);
                 if (shieldGenerators === 0) {
@@ -1289,8 +1290,8 @@ const Main = (() => {
                 ship.shieldsMax = shieldsMax;
 
                 AttributeSet(ship.charID,"shieldgenerators",shieldGenerators);
-                AttributeSet(ship.charID,"shields",ship.shields);
-                AttributeSet(ship.charID,"shield_max",ship.shieldsMax);
+                AttributeSet(ship.charID,"shields",shieldsMax);
+                AttributeSet(ship.charID,"shields",shieldsMax,true);
                 let shieldColour = "#00ff00";
                 if (shieldsMax === 0) {
                     shieldColour = "transparent";
@@ -1304,17 +1305,17 @@ const Main = (() => {
                 }
 
 
-                let fc = Attribute(ship.charID,"firecontrol_max");
+                let fc = Attribute(ship.charID,"firecontrol",true);
                 if (!fc) {
                     fc = 1;
-                    AttributeSet(ship.charID,"firecontrol_max",fc);
+                    AttributeSet(ship.charID,"firecontrol",fc,true);
                 }
                 fc = parseInt(fc);
                 AttributeSet(ship.charID,"firecontrol",fc);
 
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
                 AttributeSet(ship.charID,"crew",crew);
-                AttributeSet(ship.charID,"crew_max",crew);
+                AttributeSet(ship.charID,"crew",crew,true);
 
                 AttributeSet(ship.charID,"damagedsystems","");
 
