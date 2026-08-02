@@ -778,7 +778,10 @@ log("new Crew: " +newCrew)
         }
 
         ThresholdDamage(startingLevel,finishLevel) {
-            let damagedSystems = Attribute(this.charID,"damagedsystems");
+            let damagedSystems = Attribute(this.charID,"damagedsystems").split(",");
+log(damagedSystems)
+
+
             let needed = finishLevel + (finishLevel - 1 - startingLevel);
 log("Needed for TD: " + needed);
             let roll, roll2;
@@ -924,12 +927,12 @@ log("Needed for TD: " + needed);
                     outputCard.body.push(title + " is Offline");
                     weapon.status = "Damaged";
                     AttributeSet("weapon" + weapon.number + "status","Damaged");
-                    damagedSystems.push(weaponName + " " + weaponType);
+                    damagedSystems.push(title);
                 }
             }
 
 
-            AttributeSet(this.charID,"damagedsystems",damagedSystems);
+            AttributeSet(this.charID,"damagedsystems",damagedSystems.toString());
 
 
 
