@@ -893,7 +893,7 @@ log("Needed for TD: " + needed);
                 "Sensors": "sensors",
                 "Warp Drive": "warpdrive",
             }
-            let keys = Object.keys(systems);
+            keys = Object.keys(systems);
             for (let i=0;i<keys.length;i++) {
                 let system = keys[i];
                 let attribute = systems[system];
