@@ -553,7 +553,7 @@
             </div>
             <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Red">
             <div class="shieldstatus">
-                <h4>Shields: <span name="attr_shieldpercent"></span>%</h4>
+                <h4>Shields: <span name="attr_shieldpercent"></span></h4>
             </div>
         </section>
 
@@ -639,6 +639,7 @@
             if (shieldPercent <= 75) {shieldstatus = "Yellow"};
             if (shieldPercent <= 50) {shieldstatus = "Orange"};
             if (shieldPercent <= 25) {shieldstatus = "Red"};
+            shieldPercent += "%";
             if (shieldPercent === 0) {
                 shieldstatus = "Down"
                 shieldPercent = "Down";
