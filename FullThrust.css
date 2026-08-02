@@ -751,10 +751,10 @@ input[type="hidden"][value="Green"].lifesupport-status ~ .lifesupportstatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].lifesupport-status ~ .warpcorestatus {
+input[type="hidden"][value="Red"].warpcore-status ~ .warpcorestatus {
     background-color: red;
 }
-input[type="hidden"][value="Green"].lifesupport-status ~ .warpcorestatus {
+input[type="hidden"][value="Green"].warpcore-status ~ .warpcorestatus {
     background-color: green;
 }
 
