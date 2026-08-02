@@ -778,7 +778,8 @@ log("new Crew: " +newCrew)
         }
 
         ThresholdDamage(startingLevel,finishLevel) {
-            let damagedSystems = Attribute(this.charID,"damagedsystems").split(",");
+            let damagedSystems = Attribute(this.charID,"damagedsystems").split(",") || [];
+log("Damaged Systems before")
 log(damagedSystems)
 
 
