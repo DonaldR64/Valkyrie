@@ -740,7 +740,7 @@ const Main = (() => {
                 this.token.set("bar1_value",hull);
 
                 let crew = parseInt(Attribute(this.charID,"crew"));
-                let crewMax = parseInt(Attribute(this.charID,"crew_max"));
+                let crewMax = parseInt(Attribute(this.charID,"crew",max));
                 let newCrew = Math.ceil(hull/hullMax * levels);
                 let casualties = crew - newCrew;
                 if (casualties > 0) {
