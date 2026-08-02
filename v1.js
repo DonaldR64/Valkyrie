@@ -835,7 +835,7 @@ log("Needed for TD: " + needed);
             let warpcore = Attribute(this.charID,"warpcore");
             if (roll < needed && warpcore === "Nominal") {
                 if (roll2 === 6) {
-                    outputCard.body.push("[#ff0000]The Warp Core was damaged and went Critical![/#]");
+                    outputCard.body.push("[#ff0000]Warp Core Breach! The Ship is Destroyed![/#]");
                     this.Destroyed("WarpCore");
                     return;
                 } else if (roll2 === 5) {
@@ -963,6 +963,13 @@ log("Needed for TD: " + needed);
 
             } else {
                 //small explosion, place wreckage
+                outputCard.body.push(this.name + " breaks up, any remaining crew escaping in life pods");
+                //debris - place on map
+                //https://files.d20.io/images/496238081/0kLZO4NJdwiF25EIctOz2Q/thumb.webp?1785712373
+
+                //explosion - remove at start of next turn
+                //https://files.d20.io/images/496238080/OqdallnyzXoeUjectKl_Rw/thumb.webp?1785712373
+
 
 
 
