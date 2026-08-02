@@ -959,7 +959,9 @@ log("Needed for TD: " + needed);
             //place the images on foreground area
             if (method === "WarpCore") {
                 //warp explosion, check for damage in area, 200x200
-                //https://files.d20.io/images/496239624/K_BQmNbrYAG2loEcqeNWBw/thumb.png?1785713095
+                //remove at start of next turn using name 
+                summonToken("-Oz3qbaCI9NYUvt2iNwB",this.token.get("left"),this.token.get("top"),200,0,"foreground");
+
                 let neighbours = HexMap[this.hexLabel].cube.neighbours;
                 _.each(neighbours,neighbour => {
                     let Hex2 = HexMap[neighbour.label()];
@@ -976,11 +978,9 @@ log("Needed for TD: " + needed);
                 //small explosion, place wreckage, 70x70
                 outputCard.body.push(this.name + " breaks up, all remaining hands lost");
                 //debris - place on map
-                //https://files.d20.io/images/496238081/0kLZO4NJdwiF25EIctOz2Q/thumb.webp?1785712373
-
-                //explosion - remove at start of next turn, 100x100
-                //https://files.d20.io/images/496238080/OqdallnyzXoeUjectKl_Rw/thumb.webp?1785712373
-
+                summonToken("-Oz3qelr57I7hwLrS5rR",this.token.get("left"),this.token.get("top"),70,0,"foreground");
+                //explosion - remove at start of next turn using name, 100x100
+                summonToken("-Oz3qYxcnBprYN7f61Yb",this.token.get("left"),this.token.get("top"),100,0,"foreground");
             }
         }
 
