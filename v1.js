@@ -1286,12 +1286,14 @@ const Main = (() => {
                 for (let i=0;i<nominalAttributes.length;i++) {
                     AttributeSet(ship.charID,nominalAttributes[i],"Nominal");
                 }
-                AttributeSet(ship.charID,"shieldgenerators",Attribute(ship.charID,"shieldgenerators_max"));
-                AttributeSet(ship.charID,"firecontrol",Attribute(ship.charID,"firecontrol_max"));
+                let sg = parseInt(Attribute(ship.charID,"shieldgenerators_max"));
+                AttributeSet(ship.charID,"shieldgenerators",sg);
+                let fc = parseInt(Attribute(ship.charID,"firecontrol_max"));
+                AttributeSet(ship.charID,"firecontrol",fc);
+
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
                 AttributeSet(ship.charID,"crew",crew);
                 AttributeSet(ship.charID,"crew_max",crew);
-
 
                 AttributeSet(ship.charID,"damagedsystems","");
 

@@ -632,10 +632,14 @@
             let shieldsMax = parseInt(values.shields_max);
             let shields = parseInt(values.shields) || shieldsMax;
 
-            let sg = parseInt(values.shieldgenerators) || 0;
+            let sg = parseInt(values.shieldgenerators);
             if (sg === 0) {shields = 0};
 
             let shieldPercent = Math.round(shields/shieldsMax * 100);
+console.log(sg)
+console.log(shieldPercent)
+
+
             if (shieldPercent <= 75) {shieldstatus = "Yellow"};
             if (shieldPercent <= 50) {shieldstatus = "Orange"};
             if (shieldPercent <= 25) {shieldstatus = "Red"};
