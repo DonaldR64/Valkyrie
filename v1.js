@@ -956,11 +956,18 @@ log("Needed for TD: " + needed);
 
 
         Destroyed(method) {
+            if (method === "WarpCore") {
+                //warp explosion, check for damage in area
+
+
+
+            } else {
+                //small explosion, place wreckage
 
 
 
 
-
+            }
         }
 
 
