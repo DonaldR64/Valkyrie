@@ -689,9 +689,9 @@
             let shieldsMax = parseInt(values.shields_max);
             let shields = parseInt(values.shields);
 
-            let sg = parseInt(values.shieldgenerators);
+            let sg = values.shieldgenerators
             let shieldgenstatus = "Green";
-            if (sg === 0) {
+            if (sg === "Damaged") {
                 shields = 0
                 shieldgenstatus = "Red";
             };
