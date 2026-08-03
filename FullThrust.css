@@ -1069,7 +1069,7 @@ input[type="hidden"]:not[value="Green"].impulse2pos-status ~ .impulse2pos{
 input[type="hidden"][value="Green"].sheildgenpos-status ~ .sheildgenpos{
     display: none;
 }
-input[type="hidden"]:not[value="Green"].sheildgenpos-status ~ .sheildgenpos{
+input[type="hidden"][value="Red"].sheildgenpos-status ~ .sheildgenpos{
     display: grid;
 }
 .sheildgenpos img{
@@ -1081,7 +1081,7 @@ input[type="hidden"]:not[value="Green"].sheildgenpos-status ~ .sheildgenpos{
 input[type="hidden"][value="Green"].sensorpos-status ~ .sensorpospos{
     display: none;
 }
-input[type="hidden"]:not[value="Green"].sensorpos-status ~ .sensorpospos{
+input[type="hidden"][value="Red"].sensorpos-status ~ .sensorpospos{
     display: grid;
 }
 .sensorpospos img{
@@ -1093,7 +1093,7 @@ input[type="hidden"]:not[value="Green"].sensorpos-status ~ .sensorpospos{
 input[type="hidden"][value="Green"].fireconpos-status ~ .fireconpos{
     display: none;
 }
-input[type="hidden"]:not[value="Green"].fireconpos-status ~ .fireconpos{
+input[type="hidden"][value="Red"].fireconpos-status ~ .fireconpos{
     display: grid;
 }
 .fireconpos img{
@@ -1105,7 +1105,7 @@ input[type="hidden"]:not[value="Green"].fireconpos-status ~ .fireconpos{
 input[type="hidden"][value="Green"].cloakpos-status ~ .cloakpos{
     display: none;
 }
-input[type="hidden"]:not[value="Green"].cloakpos-status ~ .cloakpos{
+input[type="hidden"][value="Red"].cloakpos-status ~ .cloakpos{
     display: grid;
 }
 .cloakpos img{
