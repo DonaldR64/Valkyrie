@@ -727,7 +727,7 @@ const Main = (() => {
             }
 
             if (hullDamage > 0) {
-                this.HullDamage(hullDamage,targetArcs);
+                this.HullDamage(hullDamage);
             }
         }
 
