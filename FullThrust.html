@@ -538,7 +538,7 @@
             </div>
 
             <input type="hidden" name="attr_sensorstatus" class="sensorpos-status" value="Green">
-            <div class="sensorpospos">
+            <div class="sensorpos">
                 <img src="https://files.d20.io/images/496313410/8Cdm5kQhCRYL4QLYiGgu_w/thumb.png?1785785210"/>
             </div>
             <input type="hidden" name="attr_shieldgenstatus" class="sheildgenpos-status" value="Green">
@@ -724,14 +724,12 @@
                 firecontrolstatus = "Red"
             };
 
-            let cloakstatus = "None";
-            let cloak = values.cloak || "None";
+            let cloakstatus = "Green";
+            let cloak = values.cloak;
             if (cloak === "Offline") {
                 cloakstatus = "Red";
             }
-            if (cloak === "Nominal") {
-                cloakstatus = "Green";
-            }
+
 
 
     
@@ -826,7 +824,6 @@
             if (cloakLoc) {
                 $20(`div[class = "cloakpos"]`).addClass(cloakLoc);
             }
-console.log(shieldgenLoc)
 
 
 

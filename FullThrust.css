@@ -1078,13 +1078,13 @@ input[type="hidden"][value="Red"].sheildgenpos-status ~ .sheildgenpos{
     height: 40px;
 }
 /* Sensors Icon */
-input[type="hidden"][value="Green"].sensorpos-status ~ .sensorpospos{
+input[type="hidden"][value="Green"].sensorpos-status ~ .sensorpos{
     display: none;
 }
-input[type="hidden"][value="Red"].sensorpos-status ~ .sensorpospos{
+input[type="hidden"][value="Red"].sensorpos-status ~ .sensorpos{
     display: grid;
 }
-.sensorpospos img{
+.sensorpos img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
