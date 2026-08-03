@@ -722,7 +722,30 @@ input[type="hidden"]:not[value="Green"].bridgepos-status ~ .bridgepos{
     width: 40px;
     height: 40px;
 }
-
+/* Lifesupport Icon */
+input[type="hidden"][value="Green"].lifepos-status ~ .lifepos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].lifepos-status ~ .lifepos{
+    display: grid;
+}
+.lifepos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+/* Warp Core Icon */
+input[type="hidden"][value="Green"].warpcorepos-status ~ .warpcorepos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].warpcorepos-status ~ .warpcorepos{
+    display: grid;
+}
+.warpcorepos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
 
 
 

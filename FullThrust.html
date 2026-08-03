@@ -513,10 +513,16 @@
 
             <input type="hidden" name="attr_commandstatus" class="bridgepos-status" value="Off">
             <div class="bridgepos">
-                <img src="https://files.d20.io/images/496308541/hOlHE9cwNG0p46k9RYZTag/thumb.png?1785781794"/>
+                <img src="https://files.d20.io/images/496308994/GW4sBu6r-mSS4TdiF9Y3Fw/thumb.png?1785782116"/>
             </div>
-
-            
+            <input type="hidden" name="attr_lifesupportstatus" class="lifepos-status" value="Off">
+            <div class="lifepos">
+                <img src="https://files.d20.io/images/496309008/Iyk9Ip8tjYrZyTAKYTYoIg/thumb.png?1785782123"/>
+            </div>
+            <input type="hidden" name="attr_warpcorestatus" class="warpcorepos-status" value="Off">
+            <div class="warpcorepos">
+                <img src="https://files.d20.io/images/496309011/Ozl3TjopgAhBQuBmTyaFEQ/thumb.png?1785782127"/>
+            </div>
 
 
 
@@ -741,6 +747,15 @@
             if (bridgeLoc) {
                 $20(`div[class = "bridgepos"]`).addClass(bridgeLoc);
             }
+            let lifeLoc = "pos" + values.lifeloc;
+            if (lifeLoc) {
+                $20(`div[class = "lifepos"]`).addClass(lifeLoc);
+            }
+            let warpcoreLoc = "pos" + values.warpcoreloc;
+            if (warpcoreLoc) {
+                $20(`div[class = "warpcorepos"]`).addClass(warpcoreLoc);
+            }
+
 
 
 
