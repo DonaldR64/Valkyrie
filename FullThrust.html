@@ -43,19 +43,7 @@
             <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
-            <label for="attr_shieldgenerators_max"># of Shield Generators:</label>
-            <select name="attr_shieldgenerators_max">
-                <option selected = "selected" value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select>   
-            <label for="attr_shieldtype">Shields Type:</label>
-            <select name="attr_shieldtype">
-                <option selected = "selected" value="Normal">Normal</option>
-                <option value="Inferior">Inferior</option>
-                <option value="Advanced">Advanced</option>
-            </select>   
+            <label>Max Shields:</label><input type="number" name="attr_shields_max">  
             <label for="attr_firecontrol_max"># of Fire Control Centres:</label>
             <select name="attr_firecontrol_max">
                 <option selected = "selected" value="1">1</option>
@@ -64,11 +52,27 @@
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>    
+            <label>Advanced Fire Control:</label><input type="checkbox" name="attr_advancedfirecontrol" value="1">
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloaking" value="1">   
         </div>
 
+        <div class="col">
+            <h3>System Locations - leave blank if none</h3>
+            <h3>(row then column #s)</h3>
+            <label>Bridge:</label><input type="number" name="attr_bridgeloc">
+            <label>Life Support:</label><input type="number" name="attr_lifeloc">
+            <label>Warp Core:</label><input type="number" name="attr_warpcoreloc">
 
+            <label>Impulse 1:</label><input type="number" name="attr_impulse1loc">
+            <label>Impulse 2:</label><input type="number" name="attr_impulse2loc">
+            <label>Warp Drive:</label><input type="number" name="attr_warpdriveloc">
 
+            <label>Shield Generator:</label><input type="number" name="attr_shieldgenloc">
+            <label>Sensors:</label><input type="number" name="attr_sensorloc">
+            <label>Fire Control:</label><input type="number" name="attr_fireconloc">
+
+            <label>Cloaking Device:</label><input type="number" name="attr_cloakloc">
+        </div>
     </div>    
 
 
@@ -100,13 +104,14 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon1name"></td>
                     <td><select name="attr_weapon1type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
+                        <option value = "Disruptor III">Disruptor III</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon1facing"></td>
@@ -123,13 +128,14 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon2name"></td>
                     <td><select name="attr_weapon2type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
+                        <option value = "Disruptor III">Disruptor III</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon2facing"></td>
@@ -145,13 +151,14 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon3name"></td>
                     <td><select name="attr_weapon3type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
+                        <option value = "Disruptor III">Disruptor III</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon3facing"></td>
@@ -167,13 +174,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon4name"></td>
                     <td><select name="attr_weapon4type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon4facing"></td>
@@ -189,13 +196,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon5name"></td>
                     <td><select name="attr_weapon5type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon5facing"></td>
@@ -211,13 +218,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon6name"></td>
                     <td><select name="attr_weapon6type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon6facing"></td>
@@ -233,13 +240,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon7name"></td>
                     <td><select name="attr_weapon7type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon7facing"></td>
@@ -255,13 +262,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon8name"></td>
                     <td><select name="attr_weapon8type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon8facing"></td>
@@ -277,13 +284,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon9name"></td>
                     <td><select name="attr_weapon9type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon9facing"></td>
@@ -299,13 +306,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon10name"></td>
                     <td><select name="attr_weapon10type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon10facing"></td>
@@ -321,13 +328,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon11name"></td>
                     <td><select name="attr_weapon11type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon11facing"></td>
@@ -343,13 +350,13 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon12name"></td>
                     <td><select name="attr_weapon12type">
-                        <option value = "Class 1 Phaser">Class 1 Phaser</option>
-                        <option value = "Class 2 Phaser">Class 2 Phaser</option>
-                        <option value = "Class 3 Phaser">Class 3 Phaser</option> 
-                        <option value = "Pulse Torpedo">Pulse Torpedo</option>
+                        <option value = "Phaser I">Phaser I</option>
+                        <option value = "Phaser II">Phaser II</option>
+                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
-                        <option value = "Disruptor">Disruptor</option>
-                        <option value = "Disruptor Mk.2">Disruptor Mk.2</option>
+                        <option value = "Disruptor I">Disruptor</option>
+                        <option value = "Disruptor II">Disruptor II</option>
                         <option value = "Plasma Bolt Launcher">Plasma Bolt Launcher</option>
                     </select></td>                 
                     <td><input type="text" name="attr_weapon12facing"></td>
@@ -387,6 +394,7 @@
             <div class="namearea">
                 <h1><span name="attr_character_name"></span></h1>
                 <h3><span name="attr_class"></span></h3>
+                <h4>Mass: <span name="attr_mass"</h4>
             </div>
             <div class="iconarea">
                 <img name="attr_factionsymbol"/>
@@ -508,8 +516,6 @@
 
 
 
-
-
         </section>    
 
         <section class="helm">
@@ -546,7 +552,7 @@
             </div>
             <input type="hidden" name="attr_impulsestatus" class="impulse-status" value="Green">
             <div class="impulsestatus">
-                <h4>Impulse Engines: <span name="attr_impulse"></span></h4>
+                <h4>Impulse Engines: <span name="attr_impulsedisplay"></span></h4>
             </div>
             <input type="hidden" name="attr_hullstatus" class="hull-status" value="Green">
             <div class="hullstatus">
@@ -602,7 +608,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse","mass", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse1","impulse2","mass", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -666,9 +672,6 @@
             let fc = values.firecontrol || fcMax;
             fc = parseInt(fc);
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
-            if (fc === 0) {
-                firecontrolstatus = "Red"
-            };
             let fcDisplay = fc;
             if (fc === 0) {
                 fcDisplay = "Offline"
@@ -735,17 +738,22 @@
 
 
             let thrusters = parseInt(values.thrusters_max);
-            let impulse = values.impulse || "Nominal";
+            let impulse1 = values.impulse1 || "Nominal";
+            let impulse2 = values.impulse2 || "Nominal";
             let impulsestatus = "Green";
-            if (impulse === "Damaged") {
+            let impulsedisplay = "Nominal";
+            if (impulse1 === "Damaged" || impulse2 === "Damaged") {
                 thrusters = Math.floor(thrusters/2);
                 impulsestatus = "Yellow";
+                impulsedisplay = "Damaged";
             }
-            if (impulse === "Offline") {
+            if (impulse1 === "Damaged" && impulse2 === "Damaged") {
                 thrusters = 0;
                 impulsestatus = "Red";
+                impulsedisplay = "Offline"
             }
-            let turnPts = thrusters;
+        
+            let turnPts = Math.round(thrusters/2);
 
             let faction = values.faction;
             let factionsymbol = "";
@@ -787,6 +795,7 @@
                 hullpercent: hullpercent,
                 warpdrivestatus: warpdrivestatus,
                 impulsestatus: impulsestatus,
+                impulsedisplay: impulsedisplay,
                 sensorstatus: sensorstatus,
                 crewstatus: crewStatus,
 
