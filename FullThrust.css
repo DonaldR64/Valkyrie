@@ -156,7 +156,7 @@ section {
     display: grid;
     grid-gap: 4px;
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: repeat(auto-fill, 1fr);
     background-color: white;
 }
 
@@ -165,7 +165,7 @@ section {
     display: grid;
     grid-gap: 4px;
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: repeat(auto-fill, 1fr);
     background-color: white;
 }
 
