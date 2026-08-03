@@ -1066,13 +1066,13 @@ input[type="hidden"]:not[value="Green"].impulse2pos-status ~ .impulse2pos{
 }
 
 /* Shield Generator Icon */
-input[type="hidden"][value="Green"].sheildgenpos-status ~ .sheildgenpos{
+input[type="hidden"][value="Green"].shieldgenpos-status ~ .shieldgenpos{
     display: none;
 }
-input[type="hidden"][value="Red"].sheildgenpos-status ~ .sheildgenpos{
+input[type="hidden"][value="Red"].shieldgenpos-status ~ .shieldgenpos{
     display: grid;
 }
-.sheildgenpos img{
+.shieldgenpos img{
     flex-shrink: 0;
     width: 40px;
     height: 40px;
