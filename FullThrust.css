@@ -747,6 +747,47 @@ input[type="hidden"]:not[value="Green"].warpcorepos-status ~ .warpcorepos{
     height: 40px;
 }
 
+/* Warp Drive Icon */
+input[type="hidden"][value="Green"].warpdrivepos-status ~ .warpdrivepos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].warpdrivepos-status ~ .warpdrivepos{
+    display: grid;
+}
+.warpdrivepos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+/* Impulse 1 Icon */
+input[type="hidden"][value="Green"].impulse1pos-status ~ .impulse1pos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].impulse1pos-status ~ .impulse1pos{
+    display: grid;
+}
+.impulse1pos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+/* Impulse 2 Icon */
+input[type="hidden"][value="Green"].impulse2pos-status ~ .impulse2pos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].impulse2pos-status ~ .impulse2pos{
+    display: grid;
+}
+.impulse2pos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+
+
+
+
+
 
 
 
