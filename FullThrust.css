@@ -1102,7 +1102,7 @@ input[type="hidden"][value="Red"].fireconpos-status ~ .fireconpos{
     height: 40px;
 }
 /* Cloaking Device Icon */
-input[type="hidden"][value="Green"].cloakpos-status ~ .cloakpos{
+input[type="hidden"]:not[value="Red"].cloakpos-status ~ .cloakpos{
     display: none;
 }
 input[type="hidden"][value="Red"].cloakpos-status ~ .cloakpos{
@@ -1307,15 +1307,15 @@ input[type="hidden"][value="Red"].sensor-status ~ .sensorstatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value="Red"].sensor-status ~ .sensorstatus {
+input[type="hidden"][value="Red"].cloak-status ~ .cloakstatus {
     background-color: red;
     display: grid;
 }
-input[type="hidden"][value="Green"].sensor-status ~ .sensorstatus {
+input[type="hidden"][value="Green"].cloak-status ~ .cloakstatus {
     display: grid;
     background-color: green;
 }
-input[type="hidden"][value="None"].sensor-status ~ .sensorstatus {
+input[type="hidden"][value="None"].cloak-status ~ .cloakstatus {
     display: none;
 }
 

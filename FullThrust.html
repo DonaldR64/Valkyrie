@@ -728,8 +728,11 @@
                 firecontrolstatus = "Red"
             };
 
-            let cloakstatus = "Green";
+            let cloakstatus = "None";
             let cloak = values.cloak;
+            if (cloak === "Nominal") {
+                cloakstatus = "Green";
+            }
             if (cloak === "Offline") {
                 cloakstatus = "Red";
             }
