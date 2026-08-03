@@ -719,11 +719,11 @@
             fc = parseInt(fc);
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             let advFC = values.advancedfirecontrol;
+            fcDisplay = fc
             if (advFC === "1") {
-                fc = fc * 2;
+                fcDisplay = fc * 2
             }
-            fcDisplay = fc.toString();
-            if (fc === "0") {
+            if (fc === 0) {
                 fcDisplay = "Offline"
                 firecontrolstatus = "Red"
             };
