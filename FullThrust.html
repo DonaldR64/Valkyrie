@@ -610,11 +610,11 @@
             <h3>OPS</h3>
             <input type="hidden" name="attr_cloakstatus" class="cloak-status" value="Green">
             <div class="cloakstatus">
-                <h4>Sensors: <span name="attr_cloak"></span></h4>
+                <h4>Cloak: <span name="attr_cloak"></span></h4>
             </div>
             <input type="hidden" name="attr_sensorstatus" class="sensor-status" value="Green">
             <div class="sensorstatus">
-                <h4>Sensors: <span name="attr_sensordisplay"></span></h4>
+                <h4>Sensors: <span name="attr_sensors"></span></h4>
             </div>
             <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Green">
             <div class="firecontrolstatus">
@@ -651,7 +651,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensors","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
