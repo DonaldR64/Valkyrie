@@ -832,6 +832,9 @@ log("Needed for TD: " + needed);
             //warpcore
             roll = randomInteger(6);
             roll2 = randomInteger(6);
+roll = 0
+roll2 = 6
+        
             let warpcore = Attribute(this.charID,"warpcore");
             if (roll < needed && warpcore === "Nominal") {
                 if (roll2 === 6) {
@@ -960,30 +963,37 @@ log("Needed for TD: " + needed);
             if (method === "WarpCore") {
                 //warp explosion, check for damage in area, 200x200
                 //remove at start of next turn using name 
-                summonToken("-Oz3qbaCI9NYUvt2iNwB",this.token.get("left"),this.token.get("top"),200,0,"foreground");
-
-                let neighbours = HexMap[this.hexLabel].cube.neighbours;
-                _.each(neighbours,neighbour => {
-                    let Hex2 = HexMap[neighbour.label()];
-                    if (Hex2.tokenIDs.length > 0) {
-                        for (let i=0;i<Hex2.tokenIDs.length;i++) {
-                            let ship2 = ShipArray[Hex2.tokenIDs[0]];
+                summonToken("-Oz3qbaCI9NYUvt2iNwB",this.token.get("left"),this.token.get("top"),200,0,"map");
+                let damage = Math.round(Math.sqrt(this.mass));
+log(damage)
+                _.each(ShipArray,ship => {
+                    if (ship.id !== this.id) {
+                        let d = this.Distance(ship);
+                        if (d <= 1) {
                             outputCard.body.push("[hr]");
-                            outputCard.body.push(ship2.name + " is caught by the Explosion of the Warp Core");
-                            ship2.Damage(Math.round(Math.sqrt(this.mass)));
+                            outputCard.body.push(ship.name + " is caught by the Explosion of the Warp Core");
+                            ship2.Damage(damageRolls);
                         }
                     }
                 })
+
+
+
+log(neighbours)
+
+//fx
             } else {
                 //small explosion, place wreckage, 70x70
                 outputCard.body.push(this.name + " breaks up, all remaining hands lost");
                 //debris - place on map
-                summonToken("-Oz3qelr57I7hwLrS5rR",this.token.get("left"),this.token.get("top"),70,0,"foreground");
+                summonToken("-Oz3qelr57I7hwLrS5rR",this.token.get("left"),this.token.get("top"),70,0,"map");
                 //explosion - remove at start of next turn using name, 100x100
-                summonToken("-Oz3qYxcnBprYN7f61Yb",this.token.get("left"),this.token.get("top"),100,0,"foreground");
+                summonToken("-Oz3qYxcnBprYN7f61Yb",this.token.get("left"),this.token.get("top"),100,0,"map");
+//fx
+
             }
             this.token.remove();
-            delete ShipArray(this.id);
+            delete ShipArray[this.id];
         }
 
 
