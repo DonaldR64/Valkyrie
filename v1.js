@@ -21,7 +21,7 @@ const Main = (() => {
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
     const Projectiles = ["Pulse Torpedo","Photon Torpedo"]
-
+    let targetArcs = [];
 
 
     const DefineHexInfo = () => {
@@ -728,7 +728,7 @@ const Main = (() => {
             }
 
             if (hullDamage > 0) {
-                this.HullDamage(hullDamage);
+                this.HullDamage(hullDamage,targetArcs);
             }
         }
 
@@ -931,8 +931,9 @@ log("new Crew: " +newCrew)
             for (let i=0;i<this.weaponArray.length;i++) {
                 let weapon = this.weaponArray[i];
                 let status = Attribute(this.charID,"weapon" + weapon.number + "status");
+                let inArc = weapon.facing.some(item => targetArcs.includes(item));
                 let roll = randomInteger(6);
-                if (roll <= needed && status === "Normal") {
+                if (roll <= needed && status === "Normal" && inArc) {
                     let title = weapon.name + " " + weapon.type;
                     outputCard.body.push("[#ff0000]" + title + " is Offline[/#]");
                     weapon.status = "Damaged";
@@ -967,8 +968,6 @@ log("new Crew: " +newCrew)
                         }
                     }
                 })
-
-//fx
             } else {
                 //small explosion, place wreckage, 70x70
                 outputCard.body.push(this.name + " breaks up, all remaining hands lost");
@@ -976,9 +975,8 @@ log("new Crew: " +newCrew)
                 summonToken("-Oz3qelr57I7hwLrS5rR",this.token.get("left"),this.token.get("top"),70,0,"map");
                 //explosion - remove at start of next turn using name, 100x100
                 summonToken("-Oz3qYxcnBprYN7f61Yb",this.token.get("left"),this.token.get("top"),100,0,"map");
-//fx
-
             }
+            spawnFx(this.token.get("left"), this.token.get("top"), "burst-magic");
             this.token.remove();
             delete ShipArray[this.id];
         }
@@ -1605,6 +1603,7 @@ log("new Crew: " +newCrew)
             errorMsg.push("No LOS - " + losResult.losReason);
         }
         let shooterArcs = losResult.shooterArcs;
+        targetArcs = losResult.targetArcs;
 
         let weaponNum = 0;
         let weaponsFiring = [];
