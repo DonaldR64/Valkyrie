@@ -786,13 +786,8 @@ log("new Crew: " +newCrew)
                     damagedSystems.push(d);
                 }
             })
-            
-log("Damaged Systems before")
-log(damagedSystems)
-
 
             let needed = finishLevel + (finishLevel - 1 - startingLevel);
-log("Needed for TD: " + needed);
             let roll, roll2;
 
 
@@ -831,10 +826,7 @@ log("Needed for TD: " + needed);
             }
             //warpcore
             roll = randomInteger(6);
-            roll2 = randomInteger(6);
-roll = 0
-roll2 = 6
-        
+            roll2 = randomInteger(6);        
             let warpcore = Attribute(this.charID,"warpcore");
             if (roll < needed && warpcore === "Nominal") {
                 if (roll2 === 6) {
