@@ -21,7 +21,6 @@ const Main = (() => {
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
     const Projectiles = ["Pulse Torpedo","Photon Torpedo"]
-    let targetArcs = [];
 
 
     const DefineHexInfo = () => {
@@ -931,9 +930,8 @@ log("new Crew: " +newCrew)
             for (let i=0;i<this.weaponArray.length;i++) {
                 let weapon = this.weaponArray[i];
                 let status = Attribute(this.charID,"weapon" + weapon.number + "status");
-                let inArc = weapon.facing.some(item => targetArcs.includes(item));
                 let roll = randomInteger(6);
-                if (roll <= needed && status === "Normal" && inArc) {
+                if (roll <= needed && status === "Normal") {
                     let title = weapon.name + " " + weapon.type;
                     outputCard.body.push("[#ff0000]" + title + " is Offline[/#]");
                     weapon.status = "Damaged";
@@ -1603,7 +1601,6 @@ log("new Crew: " +newCrew)
             errorMsg.push("No LOS - " + losResult.losReason);
         }
         let shooterArcs = losResult.shooterArcs;
-        targetArcs = losResult.targetArcs;
 
         let weaponNum = 0;
         let weaponsFiring = [];
