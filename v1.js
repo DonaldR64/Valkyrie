@@ -964,22 +964,17 @@ roll2 = 6
                 //warp explosion, check for damage in area, 200x200
                 //remove at start of next turn using name 
                 summonToken("-Oz3qbaCI9NYUvt2iNwB",this.token.get("left"),this.token.get("top"),200,0,"map");
-                let damage = Math.round(Math.sqrt(this.mass));
-log(damage)
+                let damage = Math.round(Math.sqrt(parseInt(Attribute(this.charID,"mass"))));
                 _.each(ShipArray,ship => {
                     if (ship.id !== this.id) {
                         let d = this.Distance(ship);
                         if (d <= 1) {
                             outputCard.body.push("[hr]");
-                            outputCard.body.push(ship.name + " is caught by the Explosion of the Warp Core");
-                            ship2.Damage(damageRolls);
+                            outputCard.body.push(ship.name + " is caught by the Explosion of the Warp Core, taking " + damage + " Damage");
+                            ship.Damage(damage);
                         }
                     }
                 })
-
-
-
-log(neighbours)
 
 //fx
             } else {
