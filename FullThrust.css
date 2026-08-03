@@ -718,7 +718,7 @@ input[type="hidden"]:not[value="Green"].bridgepos-status ~ .bridgepos{
     display: grid;
 }
 input[type="hidden"]:not[value="Green"].bridgepos-status ~ .bridgepos img{
-    filter: invert(11%) sepia(97%) saturate(5808%) hue-rotate(0deg) brightness(101%) contrast(114%);
+    filter: invert(24%) sepia(93%) saturate(7390%) hue-rotate(357deg) brightness(103%) contrast(114%);
 }
 .bridgepos img{
     flex-shrink: 0;
