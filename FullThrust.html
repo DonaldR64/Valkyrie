@@ -54,7 +54,7 @@
             </select>    
             <label>Advanced Fire Control:</label><input type="checkbox" name="attr_advancedfirecontrol" value="1">
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloaking" value="1">   
-        </div>
+        </div>  
 
         <div class="col">
             <h3>System Locations - leave blank if none</h3>
@@ -511,6 +511,15 @@
                 <img name="attr_weapon12pic"/>
             </div>
 
+            <input type="hidden" name="attr_commandstatus" class="bridgepos-status" value="Off">
+            <div class="bridgepos">
+                <img src="https://files.d20.io/images/496307118/BDhpoePYUKQGjdfXTyoG0w/thumb.png?1785780897"/>
+            </div>
+
+
+
+
+
 
 
 
@@ -725,6 +734,17 @@
             if (wpn12Loc) {
                 $20(`div[class = "weapon12"]`).addClass(wpn12Loc);
             }
+
+            let bridgeLoc = "pos" + values.bridgeloc;
+            if (bridgeLoc) {
+                $20(`div[class = "bridgepos"]`).addClass(bridgeLoc);
+            }
+
+
+
+
+
+
 
 
             let ds = values.damagedsystems || "All Systems Nominal";

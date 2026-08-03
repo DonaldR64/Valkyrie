@@ -384,6 +384,22 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     grid-row: 4/5;
     grid-column: 3/4;
 }
+.pos44{
+    grid-row: 4/5;
+    grid-column: 4/5;
+}
+.pos45{
+    grid-row: 4/5;
+    grid-column: 5/6;
+}
+.pos46{
+    grid-row: 4/5;
+    grid-column: 6/7;
+}
+.pos47{
+    grid-row: 4/5;
+    grid-column: 7/8;
+}
 .pos48{
     grid-row: 4/5;
     grid-column: 8/9;
@@ -693,6 +709,24 @@ input[type="hidden"][value="Damaged"].weapon12-status ~ .weapon12 img{
     width: 40px;
     height: 40px;
 }
+
+/* Bridge Icon */
+input[type="hidden"][value="Green"].bridgepos-status ~ .bridgepos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].bridgepos-status ~ .bridgepos{
+    display: grid;
+}
+input[type="hidden"]:not[value="Green"].bridgepos-status ~ .bridgepos img{
+    filter: invert(11%) sepia(97%) saturate(5808%) hue-rotate(0deg) brightness(101%) contrast(114%);
+}
+.bridgepos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+
+
 
 
 
