@@ -165,7 +165,7 @@ section {
     display: grid;
     grid-gap: 4px;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(3,1fr);
+    grid-template-rows: repeat(4,1fr);
     background-color: white;
 }
 
@@ -815,8 +815,54 @@ input[type="hidden"]:not[value="Green"].impulse2pos-status ~ .impulse2pos{
     height: 40px;
 }
 
-
-
+/* Shield Generator Icon */
+input[type="hidden"][value="Green"].sheildgenpos-status ~ .sheildgenpos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].sheildgenpos-status ~ .sheildgenpos{
+    display: grid;
+}
+.sheildgenpos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+/* Sensors Icon */
+input[type="hidden"][value="Green"].sensorpos-status ~ .sensorpospos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].sensorpos-status ~ .sensorpospos{
+    display: grid;
+}
+.sensorpospos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+/* Fire Control Icon */
+input[type="hidden"][value="Green"].fireconpos-status ~ .fireconpos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].fireconpos-status ~ .fireconpos{
+    display: grid;
+}
+.fireconpos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+/* Cloaking Device Icon */
+input[type="hidden"][value="Green"].cloakpos-status ~ .cloakpos{
+    display: none;
+}
+input[type="hidden"]:not[value="Green"].cloakpos-status ~ .cloakpos{
+    display: grid;
+}
+.cloakpos img{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
 
 
 
@@ -1003,8 +1049,25 @@ input[type="hidden"][value="Red"].sensor-status ~ .sensorstatus {
     background-color: red;
 }
 
-
-
+.cloakstatus {
+    grid-gap: 1px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    padding: 3px;   
+}
+input[type="hidden"][value="Red"].sensor-status ~ .sensorstatus {
+    background-color: red;
+    display: grid;
+}
+input[type="hidden"][value="Green"].sensor-status ~ .sensorstatus {
+    display: grid;
+    background-color: green;
+}
+input[type="hidden"][value="None"].sensor-status ~ .sensorstatus {
+    display: none;
+}
 
 
 

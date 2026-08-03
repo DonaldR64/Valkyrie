@@ -537,8 +537,22 @@
                 <img src="https://files.d20.io/images/496310701/kFfSEYTCH2zFJBgRpOgKVA/thumb.png?1785783292"/>
             </div>
 
-
-
+            <input type="hidden" name="attr_sensorstatus" class="sensorpos-status" value="Off">
+            <div class="sensorpospos">
+                <img src="https://files.d20.io/images/496313410/8Cdm5kQhCRYL4QLYiGgu_w/thumb.png?1785785210"/>
+            </div>
+            <input type="hidden" name="attr_shieldgenstatus" class="sheildgenpos-status" value="Off">
+            <div class="sheildgenpos">
+                <img src="https://files.d20.io/images/496313411/TLSt7CUpdXUTSYfFvo-paw/thumb.png?1785785213"/>
+            </div>
+            <input type="hidden" name="attr_firecontrolstatus" class="fireconpos-status" value="Off">
+            <div class="fireconpos">
+                <img src="https://files.d20.io/images/496313561/ghOKS73YKSulDxta6pR2Dg/thumb.png?1785785330"/>
+            </div>
+            <input type="hidden" name="attr_cloakstatus" class="cloakpos-status" value="Off">
+            <div class="cloakpos">
+                <img src="https://files.d20.io/images/496314212/R2m6YBqUv_PA1g50SukEgQ/thumb.png?1785785811"/>
+            </div>
 
 
 
@@ -546,7 +560,6 @@
 
         <section class="helm">
             <h3>Helm</h3>
-            <h4>Current Speed: <span name="attr_speed"></span></h4>
             <h4>Thrusters: <span name="attr_thrusters"></span></h4>
             <h4>Max Turn: <span name="attr_turnpts"></span> Pts.</h4>
         </section>
@@ -595,6 +608,10 @@
 
         <section class="ops">
             <h3>OPS</h3>
+            <input type="hidden" name="attr_cloakstatus" class="cloak-status" value="Green">
+            <div class="cloakstatus">
+                <h4>Sensors: <span name="attr_cloak"></span></h4>
+            </div>
             <input type="hidden" name="attr_sensorstatus" class="sensor-status" value="Green">
             <div class="sensorstatus">
                 <h4>Sensors: <span name="attr_sensordisplay"></span></h4>
@@ -634,7 +651,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -673,7 +690,11 @@
             let shields = parseInt(values.shields);
 
             let sg = parseInt(values.shieldgenerators);
-            if (sg === 0) {shields = 0};
+            let shieldgenstatus = "Green";
+            if (sg === 0) {
+                shields = 0
+                shieldgenstatus = "Red";
+            };
 
             let shieldPercent = Math.round(shields/shieldsMax * 100);
 
@@ -702,6 +723,17 @@
                 fcDisplay = "Offline"
                 firecontrolstatus = "Red"
             };
+
+            let cloakstatus = "None";
+            let cloak = values.cloak || "None";
+            if (cloak === "Offline") {
+                cloakstatus = "Red";
+            }
+            if (cloak === "Nominal") {
+                cloakstatus = "Green";
+            }
+
+
     
             let wpn1Loc = "pos" + values.weapon1location;
             if (wpn1Loc) {
@@ -778,8 +810,22 @@
                 $20(`div[class = "impulse2pos"]`).addClass(impulse2Loc);
             }
 
-
-
+            let shieldgenLoc = "pos" + values.shieldgenloc;
+            if (shieldgenLoc) {
+                $20(`div[class = "shieldgenpos"]`).addClass(shieldgenLoc);
+            }
+            let sensorLoc = "pos" + values.sensorloc;
+            if (sensorLoc) {
+                $20(`div[class = "sensorpos"]`).addClass(sensorLoc);
+            }
+            let fireconLoc = "pos" + values.fireconloc;
+            if (fireconLoc) {
+                $20(`div[class = "fireconpos"]`).addClass(fireconLoc);
+            }
+            let cloakLoc = "pos" + values.cloakloc;
+            if (cloakLoc) {
+                $20(`div[class = "cloakpos"]`).addClass(cloakLoc);
+            }
 
 
 
@@ -867,11 +913,11 @@
                 impulsestatus: impulsestatus,
                 impulse1status: impulse1status,
                 impulse2status: impulse2status,
-
+                shieldgenstatus: shieldgenstatus,
                 impulsedisplay: impulsedisplay,
                 sensorstatus: sensorstatus,
                 crewstatus: crewStatus,
-
+                cloakstatus: cloakStatus,
             });
         });
     });
