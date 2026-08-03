@@ -651,7 +651,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -718,8 +718,12 @@
             let fc = values.firecontrol || fcMax;
             fc = parseInt(fc);
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
-            let fcDisplay = fc;
-            if (fc === 0) {
+            let advFC = values.advancedfirecontrol;
+            if (advFC === "1") {
+                fc = fc * 2;
+            }
+            fcDisplay = fc.toString();
+            if (fc === "0") {
                 fcDisplay = "Offline"
                 firecontrolstatus = "Red"
             };
