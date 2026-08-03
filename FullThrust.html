@@ -608,7 +608,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse1","impulse2","mass", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensorstatus","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -641,7 +641,6 @@
             if (crewPercent < 66) {crewStatus = "Orange"};
             if (crewPercent < 33) {crewStatus = "Red"};
 
-            let mass = parseInt(values.mass);
             let shieldstatus = "Green";
         
             let shieldsMax = parseInt(values.shields_max);
@@ -741,9 +740,18 @@
             let impulse1 = values.impulse1 || "Nominal";
             let impulse2 = values.impulse2 || "Nominal";
             let impulsestatus = "Green";
+            let impulse1status = "Green";
+            let impulse2status = "Green";
             let impulsedisplay = "Nominal";
-            if (impulse1 === "Damaged" || impulse2 === "Damaged") {
-                thrusters = Math.floor(thrusters/2);
+            if (impulse1 === "Damaged" && impulse2 !== "Damaged") {
+                impulse1status = "Red";
+                thrusters = Math.round(thrusters/2);
+                impulsestatus = "Yellow";
+                impulsedisplay = "Damaged";
+            }
+            if (impulse2 === "Damaged" && impulse1 !== "Damaged") {
+                impulse2status = "Red";
+                thrusters = Math.round(thrusters/2);
                 impulsestatus = "Yellow";
                 impulsedisplay = "Damaged";
             }
@@ -751,6 +759,8 @@
                 thrusters = 0;
                 impulsestatus = "Red";
                 impulsedisplay = "Offline"
+                impulse1status = "Red";
+                impulse2status = "Red";
             }
         
             let turnPts = Math.round(thrusters/2);
@@ -795,6 +805,9 @@
                 hullpercent: hullpercent,
                 warpdrivestatus: warpdrivestatus,
                 impulsestatus: impulsestatus,
+                impulse1status: impulse1status,
+                impulse2status: impulse2status,
+
                 impulsedisplay: impulsedisplay,
                 sensorstatus: sensorstatus,
                 crewstatus: crewStatus,
