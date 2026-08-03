@@ -1102,7 +1102,10 @@ input[type="hidden"][value="Red"].fireconpos-status ~ .fireconpos{
     height: 40px;
 }
 /* Cloaking Device Icon */
-input[type="hidden"]:not[value="Red"].cloakpos-status ~ .cloakpos{
+input[type="hidden"][value="Green"].cloakpos-status ~ .cloakpos{
+    display: none;
+}
+input[type="hidden"][value="None"].cloakpos-status ~ .cloakpos{
     display: none;
 }
 input[type="hidden"][value="Red"].cloakpos-status ~ .cloakpos{
