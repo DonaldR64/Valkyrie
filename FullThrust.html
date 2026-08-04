@@ -43,6 +43,7 @@
             <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
+            <label>Enhanced Sensors:</label><input type="checkbox" name="attr_enhancedsensors" value="1">
             <label>Max Shields:</label><input type="number" name="attr_shields_max">  
             <label for="attr_firecontrol_max"># of Fire Control Centres:</label>
             <select name="attr_firecontrol_max">
@@ -610,15 +611,15 @@
             <h3>OPS</h3>
             <input type="hidden" name="attr_cloakstatus" class="cloak-status" value="Green">
             <div class="cloakstatus">
-                <h4>Cloak: <span name="attr_cloak"></span></h4>
+                <h4><span name="attr_cloakdisplay"></span></h4>
             </div>
             <input type="hidden" name="attr_sensorstatus" class="sensor-status" value="Green">
             <div class="sensorstatus">
-                <h4>Sensors: <span name="attr_sensors"></span></h4>
+                <h4><span name="attr_sensorDisplay"></span></h4>
             </div>
             <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Green">
             <div class="firecontrolstatus">
-                <h4>Fire Control: <span name="attr_fcdisplay"></span></h4>
+                <h4><span name="attr_fcdisplay"></span></h4>
             </div>
             <input type="hidden" name="attr_crewstatus" class="crew-status" value="Green">
             <div class="crewstatus">
@@ -651,7 +652,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensors","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","enhancedsensors","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensors","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -707,11 +708,18 @@
                 shieldPercent = "Down";
             };
 
-            let sensors = values.sensors || "Nominal";
+            let sensors = values.sensors;
+            let enhSensors = values.enhancedsensors;
+            let sensorDisplay = "Sensors: Operational";
+            if (enhSensors === "1") {
+                sensorDisplay = "Enhanced Sensors: Operational";
+            }
             let sensorstatus = "Green";
             if (sensors === "Offline") {
                 sensorstatus = "Red";
+                sensorDisplay = "Sensors Offline";
             }
+
 
             let firecontrolstatus = "Green";
             let fcMax = parseInt(values.firecontrol_max);
@@ -719,22 +727,25 @@
             fc = parseInt(fc);
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             let advFC = values.advancedfirecontrol;
-            fcDisplay = fc
+            fcDisplay = "Fire Control: " + fc;
             if (advFC === "1") {
-                fcDisplay = fc * 2
+                fcDisplay = "Adv. Fire Control: " + (fc * 2);
             }
             if (fc === 0) {
-                fcDisplay = "Offline"
+                fcDisplay = "Fire Control Offline"
                 firecontrolstatus = "Red"
             };
 
             let cloakstatus = "None";
+            let cloakdisplay;
             let cloak = values.cloak;
             if (cloak === "Nominal") {
                 cloakstatus = "Green";
+                cloakdisplay = "Cloaking Device: Operational"
             }
             if (cloak === "Offline") {
                 cloakstatus = "Red";
+                cloakdisplay = "Cloaking Device Offline";
             }
 
 
@@ -920,8 +931,10 @@
                 shieldgenstatus: shieldgenstatus,
                 impulsedisplay: impulsedisplay,
                 sensorstatus: sensorstatus,
+                sensordisplay: sensorDisplay,
                 crewstatus: crewStatus,
                 cloakstatus: cloakstatus,
+                cloakdisplay: cloakdisplay,
             });
         });
     });
