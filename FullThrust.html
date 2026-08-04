@@ -41,19 +41,15 @@
         <div class="col">
             <h3>Systems</h3>
             <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
+            <label>Enhanced Sensors:</label><input type="checkbox" name="attr_enhancedsensors" value="1">
+            <label>Fire Control:</label><input type="number" name="attr_firecontrol_max">  
+            <label>Advanced Fire Control:</label><input type="checkbox" name="attr_advancedfirecontrol" value="1">
+            <label>Starting Shields:</label><input type="number" name="attr_shields_max">  
+            <label>Starting Armour:</label><input type="number" name="attr_armour_max">  
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
-            <label>Enhanced Sensors:</label><input type="checkbox" name="attr_enhancedsensors" value="1">
-            <label>Max Shields:</label><input type="number" name="attr_shields_max">  
-            <label for="attr_firecontrol_max"># of Fire Control Centres:</label>
-            <select name="attr_firecontrol_max">
-                <option selected = "selected" value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>    
-            <label>Advanced Fire Control:</label><input type="checkbox" name="attr_advancedfirecontrol" value="1">
+            <label>Starting Screens:</label><input type="number" name="attr_screens_max">  
+            <label>Advanced Screens:</label><input type="checkbox" name="attr_advancedscreens" value="1">
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloaking_max" value="1">   
         </div>  
 
@@ -68,7 +64,7 @@
             <label>Impulse 2:</label><input type="number" name="attr_impulse2loc">
             <label>Warp Drive:</label><input type="number" name="attr_warpdriveloc">
 
-            <label>Shield Generator:</label><input type="number" name="attr_shieldgenloc">
+            <label>Screens:</label><input type="number" name="attr_screenloc">
             <label>Sensors:</label><input type="number" name="attr_sensorloc">
             <label>Fire Control:</label><input type="number" name="attr_fireconloc">
 
@@ -82,7 +78,6 @@
 
     <div class="row">
         <h3>Weapons</h3>
-
         <div class="weapons">
             <table>
             <thead>
@@ -105,9 +100,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon1name"></td>
                     <td><select name="attr_weapon1type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -129,9 +125,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon2name"></td>
                     <td><select name="attr_weapon2type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -152,9 +149,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon3name"></td>
                     <td><select name="attr_weapon3type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -175,9 +173,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon4name"></td>
                     <td><select name="attr_weapon4type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -197,9 +196,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon5name"></td>
                     <td><select name="attr_weapon5type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -219,9 +219,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon6name"></td>
                     <td><select name="attr_weapon6type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -241,9 +242,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon7name"></td>
                     <td><select name="attr_weapon7type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -263,9 +265,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon8name"></td>
                     <td><select name="attr_weapon8type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -285,9 +288,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon9name"></td>
                     <td><select name="attr_weapon9type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -307,9 +311,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon10name"></td>
                     <td><select name="attr_weapon10type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -329,9 +334,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon11name"></td>
                     <td><select name="attr_weapon11type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -351,9 +357,10 @@
                     </select></td>
                     <td><input type="text" name="attr_weapon12name"></td>
                     <td><select name="attr_weapon12type">
-                        <option value = "Phaser I">Phaser I</option>
-                        <option value = "Phaser II">Phaser II</option>
-                        <option value = "Phaser III">Phaser III</option> 
+                        <option value = "Beam 1">Beam 1</option>
+                        <option value = "Beam 2">Beam 2</option>
+                        <option value = "Beam 3">Beam 3</option> 
+                        <option value = "Phaser Bank">Phaser Bank</option> 
                         <option value = "Photon Torpedo (SR)">Photon Torpedo (SR)</option>
                         <option value = "Photon Torpedo">Photon Torpedo</option>
                         <option value = "Disruptor I">Disruptor</option>
@@ -542,8 +549,8 @@
             <div class="sensorpos">
                 <img src="https://files.d20.io/images/496313410/8Cdm5kQhCRYL4QLYiGgu_w/thumb.png?1785785210"/>
             </div>
-            <input type="hidden" name="attr_shieldgenstatus" class="shieldgenpos-status" value="Green">
-            <div class="shieldgenpos">
+            <input type="hidden" name="attr_screenstatus" class="screenpos-status" value="Green">
+            <div class="screenpos">
                 <img src="https://files.d20.io/images/496313411/TLSt7CUpdXUTSYfFvo-paw/thumb.png?1785785213"/>
             </div>
             <input type="hidden" name="attr_firecontrolstatus" class="fireconpos-status" value="Green">
@@ -598,9 +605,9 @@
             <div class="hullstatus">
                 <h4>Hull Integrity: <span name="attr_hullpercent"></span>%</h4>
             </div>
-            <input type="hidden" name="attr_shieldgenstatus" class="shieldgen-status" value="Green">
-            <div class="shieldgenstatus">
-                <h4>Shield Generators: <span name="attr_shieldgenerators"></span></h4>
+            <input type="hidden" name="attr_screenstatus" class="screen-status" value="Green">
+            <div class="screenstatus">
+                <h4>Screens: <span name="attr_screendisplay"></span></h4>
             </div>
             <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Green">
             <div class="shieldstatus">
@@ -656,7 +663,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","shieldgenerators","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","enhancedsensors","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensors","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","shieldgenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","enhancedsensors", "armour","armour_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensors","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -694,23 +701,42 @@
             let shieldsMax = parseInt(values.shields_max);
             let shields = parseInt(values.shields);
 
-            let sg = values.shieldgenerators;
-            let shieldgenstatus = "Green";
-            if (sg === "Offline") {
-                shields = 0
-                shieldgenstatus = "Red";
-            };
+            let screens = parseInt(values.screens) || 0;
+            let screensMax = parseInt(values.screens_max) || 0;
+            let screenstatus = "Green";
+            let screendisplay = "Screens: Nominal";
+            if (screensMax === 0) {
+                screenstatus = "None";
+                screendisplay = "";
+            }
+            if (screens < screensMax && screensMax > 0) {
+                screenstatus = "Yellow";
+                screendisplay = "Screens: Damaged";
+            }
+            if (screens === 0 && screensMax > 0) {
+                screenstatus = "Red";
+                screendisplay = "Screens: Offline";
+            }
+            if (values.advancedscreens === "1") {
+                screendisplay = "Adv. " + screendisplay;
+            }
 
+
+
+            let shieldsMax = parseInt(values.shields_max);
+            let shields = parseInt(values.shields);
             let shieldPercent = Math.round(shields/shieldsMax * 100);
-
             if (shieldPercent <= 75) {shieldstatus = "Yellow"};
             if (shieldPercent <= 50) {shieldstatus = "Orange"};
             if (shieldPercent <= 25) {shieldstatus = "Red"};
             shieldPercent += "%";
-            if (shields === 0) {
+            if (shields === 0 && shieldMax > 0) {
                 shieldstatus = "Down"
                 shieldPercent = "Down";
             };
+            if (shieldMax === 0) {
+                shieldstatus = "None";
+            }
 
             let sensors = values.sensors;
             let enhSensors = values.enhancedsensors;
@@ -830,9 +856,9 @@
                 $20(`div[class = "impulse2pos"]`).addClass(impulse2Loc);
             }
 
-            let shieldgenLoc = "pos" + values.shieldgenloc;
-            if (shieldgenLoc) {
-                $20(`div[class = "shieldgenpos"]`).addClass(shieldgenLoc);
+            let screenLoc = "pos" + values.screenloc;
+            if (screenLoc) {
+                $20(`div[class = "screenpos"]`).addClass(screenLoc);
             }
             let sensorLoc = "pos" + values.sensorloc;
             if (sensorLoc) {
@@ -932,13 +958,14 @@
                 impulsestatus: impulsestatus,
                 impulse1status: impulse1status,
                 impulse2status: impulse2status,
-                shieldgenstatus: shieldgenstatus,
+                screenstatus: screenstatus,
                 impulsedisplay: impulsedisplay,
                 sensorstatus: sensorstatus,
                 sensordisplay: sensorDisplay,
                 crewstatus: crewStatus,
                 cloakstatus: cloakstatus,
                 cloakdisplay: cloakdisplay,
+                screendisplay: screendisplay,
             });
         });
     });
