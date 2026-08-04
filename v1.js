@@ -1524,7 +1524,7 @@ log("new Crew: " +newCrew)
                     bar2_link: shieldID,
 
                     bar3_value: thrustersMax,
-                    bar3_max: thrustersMax,
+                    bar3_max: "",
                     bar3_link: thrustersID,
 
                     showplayers_bar1: true,
