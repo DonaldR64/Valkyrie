@@ -1469,6 +1469,9 @@ log("new Crew: " +newCrew)
                 ship.hull = ship.hullMax;
                 AttributeSet(ship.charID,"hull",ship.hull);
 
+                let thrustersMax = parseInt(Attribute(ship.charID,"thrusters",true));
+                AttributeSet(ship.charID,"thrusters",thrustersMax);
+
 
                 let shieldsMax = parseInt(Attribute(ship.charID,"shields",true));
                 ship.shields = shieldsMax;
@@ -1492,6 +1495,7 @@ log("new Crew: " +newCrew)
                 }
 
 
+
                 let fc = Attribute(ship.charID,"firecontrol",true);
                 if (!fc) {
                     fc = 1;
@@ -1508,6 +1512,7 @@ log("new Crew: " +newCrew)
 
                 let hullID = AttributeID(ship.charID,"hull");
                 let shieldID = AttributeID(ship.charID,"shields");
+                let thrustersID = AttributeID(ship.charID,"thrusters");
 
                 ship.token.set({
                     bar1_value: ship.hull,
@@ -1517,6 +1522,10 @@ log("new Crew: " +newCrew)
                     bar2_value: shieldsMax,
                     bar2_max: shieldsMax,
                     bar2_link: shieldID,
+
+                    bar3_value: thrustersMax,
+                    bar3_max: thrustersMax,
+                    bar3_link: thrustersID,
 
                     showplayers_bar1: true,
                     showplayers_bar2: true,
