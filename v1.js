@@ -1,5 +1,5 @@
 const Main = (() => {
-    const version = '2026.7.22';
+    const version = '2026.8.3';
     if (!state.FullThrust) {state.FullThrust = {}};
 
     const pageInfo = {};
@@ -1469,44 +1469,26 @@ log("new Crew: " +newCrew)
                 ship.hull = ship.hullMax;
                 AttributeSet(ship.charID,"hull",ship.hull);
 
-                let shieldType = Attribute(ship.charID,"shieldtype");
-                if (!shieldType) {
-                    shieldType === "Normal"
-                    AttributeSet(ship.charID,"shieldtype",shieldType);
-                };
-                let shieldNum = 3
-                if (shieldType === "Inferior") {shieldNum = 4};
-                if (shieldType === "Advanced") {shieldNum = 2};
-                let mass = parseInt(Attribute(ship.charID,"mass"));
 
-                let shieldsMax = Math.floor(mass/shieldNum);
-
-                let shieldGenerators = Attribute(ship.charID,"shieldgenerators",true);
-                if (!shieldGenerators) {
-                    shieldGenerators = 1;
-                    AttributeSet(ship.charID,"shieldgenerators",shieldGenerators,true)
-                }
-                shieldGenerators = parseInt(shieldGenerators);
-                if (shieldGenerators === 0) {
-                    shieldsMax = 0;
-                }
-
+                let shieldsMax = parseInt(Attribute(ship.charID,"shields",true));
                 ship.shields = shieldsMax;
                 ship.shieldsMax = shieldsMax;
-
-                AttributeSet(ship.charID,"shieldgenerators",shieldGenerators);
+                AttributeSet(ship.charID,"shieldgenerators","Nominal");
                 AttributeSet(ship.charID,"shields",shieldsMax);
-                AttributeSet(ship.charID,"shields",shieldsMax,true);
                 let shieldColour = "#00ff00";
                 if (shieldsMax === 0) {
                     shieldColour = "transparent";
                 }
             
-
                 //uses Attributes only
                 let nominalAttributes = ["command","lifesupport","warpcore","sensors","impulse","warpdrive"]
                 for (let i=0;i<nominalAttributes.length;i++) {
                     AttributeSet(ship.charID,nominalAttributes[i],"Nominal");
+                }
+
+                let cloak = Attribute(ship.charID,"cloaking",true);
+                if (cloak === "1") {
+                    AttributeSet(ship.charID,"cloaking","1");
                 }
 
 
