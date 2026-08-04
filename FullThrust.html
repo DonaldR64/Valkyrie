@@ -100,7 +100,7 @@
                     <td><select name="attr_weapon1status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                         <option value = "Fired">Fired</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon1name"></td>
@@ -124,7 +124,7 @@
                     <td><select name="attr_weapon2status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                         <option value = "Fired">Fired</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon2name"></td>
@@ -148,7 +148,7 @@
                     <td><select name="attr_weapon3status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon3name"></td>
                     <td><select name="attr_weapon3type">
@@ -171,7 +171,7 @@
                     <td><select name="attr_weapon4status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon4name"></td>
                     <td><select name="attr_weapon4type">
@@ -193,7 +193,7 @@
                     <td><select name="attr_weapon5status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon5name"></td>
                     <td><select name="attr_weapon5type">
@@ -215,7 +215,7 @@
                     <td><select name="attr_weapon6status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon6name"></td>
                     <td><select name="attr_weapon6type">
@@ -237,7 +237,7 @@
                     <td><select name="attr_weapon7status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon7name"></td>
                     <td><select name="attr_weapon7type">
@@ -259,7 +259,7 @@
                     <td><select name="attr_weapon8status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon8name"></td>
                     <td><select name="attr_weapon8type">
@@ -281,7 +281,7 @@
                     <td><select name="attr_weapon9status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon9name"></td>
                     <td><select name="attr_weapon9type">
@@ -303,7 +303,7 @@
                     <td><select name="attr_weapon10status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon10name"></td>
                     <td><select name="attr_weapon10type">
@@ -325,7 +325,7 @@
                     <td><select name="attr_weapon11status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon11name"></td>
                     <td><select name="attr_weapon11type">
@@ -347,7 +347,7 @@
                     <td><select name="attr_weapon12status">
                         <option selected = "selected" value = "Off">Off</option>
                         <option value = "Normal">Normal</option>
-                        <option value = "Damaged">Damaged</option>
+                        <option value = "Offline">Offline</option>
                     </select></td>
                     <td><input type="text" name="attr_weapon12name"></td>
                     <td><select name="attr_weapon12type">
@@ -656,7 +656,7 @@
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
-            if (command.includes("Damaged")) {commandstatus = "Orange"};
+            if (command.includes("Offline")) {commandstatus = "Orange"};
 
             let lifesupportstatus = "Red";
             let lifesupport = values.lifesupport || "Nominal";
@@ -864,19 +864,19 @@
             let impulse1status = "Green";
             let impulse2status = "Green";
             let impulsedisplay = "Nominal";
-            if (impulse1 === "Damaged" && impulse2 !== "Damaged") {
+            if (impulse1 === "Offline" && impulse2 !== "Offline") {
                 impulse1status = "Red";
                 thrusters = Math.round(thrusters/2);
                 impulsestatus = "Yellow";
-                impulsedisplay = "Damaged";
+                impulsedisplay = "Offline";
             }
-            if (impulse2 === "Damaged" && impulse1 !== "Damaged") {
+            if (impulse2 === "Offline" && impulse1 !== "Offline") {
                 impulse2status = "Red";
                 thrusters = Math.round(thrusters/2);
                 impulsestatus = "Yellow";
-                impulsedisplay = "Damaged";
+                impulsedisplay = "Offline";
             }
-            if (impulse1 === "Damaged" && impulse2 === "Damaged") {
+            if (impulse1 === "Offline" && impulse2 === "Offline") {
                 thrusters = 0;
                 impulsestatus = "Red";
                 impulsedisplay = "Offline"

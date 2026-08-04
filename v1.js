@@ -773,7 +773,7 @@ log("new Crew: " +newCrew)
 
 
             } else {
-                this.Destroyed("Damaged");
+                this.Destroyed("Offline");
             }
         }
 
@@ -806,7 +806,7 @@ log("new Crew: " +newCrew)
                     outputCard.body.push("[#ff0000]The Command Bridge was Damaged![/#]");
                     outputCard.body.push("[#ff0000]The Ship is Out of Control for " + roll2 + " turns or until Repaired[/#]");
                     this.token.set(SM.ooc,roll2);
-                    AttributeSet(this.charID,"command","Damaged");
+                    AttributeSet(this.charID,"command","Offline");
                 }
                 damagedSystems.push("Command");
                 outputCard.body.push("[hr]");
@@ -840,7 +840,7 @@ log("new Crew: " +newCrew)
                 } else {
                     outputCard.body.push("[#ff0000]The Warp Core was damaged[/#]");
                     outputCard.body.push("[#ff0000]If not repaired, there is an increasing chance each turn it will go critical and explode[/#]");
-                    AttributeSet(this.charID,"warpcore","Damaged");
+                    AttributeSet(this.charID,"warpcore","Offline");
                     this.token.set(SM.warp,1);
                 }
                 damagedSystems.push("Warp Core");
@@ -851,9 +851,9 @@ log("new Crew: " +newCrew)
             let impulse = Attribute(this.charID,"impulse");
             if (impulse !== "Offline") {
                 let roll = randomInteger(6);
-                let result = "Damaged";
+                let result = "Offline";
                 if (roll <= needed) {
-                    if (impulse === "Damaged") {
+                    if (impulse === "Offline") {
                         result = "Offline";
                     } 
                     AttributeSet(this.charID,"impulse",result);
@@ -934,8 +934,8 @@ log("new Crew: " +newCrew)
                 if (roll <= needed && status === "Normal") {
                     let title = weapon.name + " " + weapon.type;
                     outputCard.body.push("[#ff0000]" + title + " is Offline[/#]");
-                    weapon.status = "Damaged";
-                    AttributeSet(this.charID,"weapon" + weapon.number + "status","Damaged");
+                    weapon.status = "Offline";
+                    AttributeSet(this.charID,"weapon" + weapon.number + "status","Offline");
                     damagedSystems.push(title);
                 }
             }
@@ -1481,7 +1481,7 @@ log("new Crew: " +newCrew)
                 }
             
                 //uses Attributes only
-                let nominalAttributes = ["command","lifesupport","warpcore","sensors","impulse","warpdrive"]
+                let nominalAttributes = ["command","lifesupport","warpcore","sensors","impulse1","impulse2","warpdrive"]
                 for (let i=0;i<nominalAttributes.length;i++) {
                     AttributeSet(ship.charID,nominalAttributes[i],"Nominal");
                 }
@@ -1546,6 +1546,61 @@ log("new Crew: " +newCrew)
 
 
     }
+
+    const TestPics = () => {
+        _.each(ShipArray,ship => {
+            if (ship.type === "Starship") {
+                //bars on token
+                ship.hull = ship.hullMax;
+                AttributeSet(ship.charID,"hull",ship.hull);
+
+                let shieldsMax = parseInt(Attribute(ship.charID,"shields",true));
+                ship.shields = 0;
+                ship.shieldsMax = shieldsMax;
+                AttributeSet(ship.charID,"shieldgenerators","Offline");
+                AttributeSet(ship.charID,"shields",0);
+            
+                //uses Attributes only
+                AttributeSet(ship.charID,"command","Destroyed");
+                AttributeSet(ship.charID,"lifesupport","Failing");
+                AttributeSet(ship.charID,"warpcore","Critical");
+
+                AttributeSet(ship.charID,"sensors","Offline");
+                AttributeSet(ship.charID,"firecontrol",0);
+
+                AttributeSet(ship.charID,"impulse1","Offline");
+                AttributeSet(ship.charID,"impulse2","Offline");
+                AttributeSet(ship.charID,"warpdrive","Offline");
+
+
+                let cloak = Attribute(ship.charID,"cloaking",true);
+                if (cloak === "1") {
+                    AttributeSet(ship.charID,"cloaking","Offline");
+                }
+
+                
+
+                let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
+                AttributeSet(ship.charID,"crew",crew);
+                AttributeSet(ship.charID,"crew",crew,true);
+
+                AttributeSet(ship.charID,"damagedsystems","");
+
+                for (let i=0;i<ship.weaponArray.length;i++) {
+                    ship.weaponArray[i].status = "Normal";
+                    AttributeSet(ship.charID,"weapon" + (i+1) + "status","Offline");
+                }
+
+
+            }
+
+        });
+
+
+
+    }
+
+
 
 
     const Fire = (msg) => {
@@ -2113,7 +2168,9 @@ log("new Crew: " +newCrew)
             case '!Fire':
                 Fire(msg);
                 break;
-
+            case '!TestPics':
+                TestPics();
+                break;
         }
     };
 
