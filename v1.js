@@ -1473,15 +1473,21 @@ log("new Crew: " +newCrew)
                 AttributeSet(ship.charID,"thrusters",thrustersMax);
 
 
-                let shieldsMax = parseInt(Attribute(ship.charID,"shields",true));
+                let shieldsMax = parseInt(Attribute(ship.charID,"shields",true)) || 0;
                 ship.shields = shieldsMax;
                 ship.shieldsMax = shieldsMax;
-                AttributeSet(ship.charID,"shieldgenerators","Nominal");
                 AttributeSet(ship.charID,"shields",shieldsMax);
                 let shieldColour = "#00ff00";
                 if (shieldsMax === 0) {
                     shieldColour = "transparent";
                 }
+                
+                let screens = parseInt(Attribute(ship.charID,"screens",true)) || 0;
+                AttributeSet(ship.charID,"screens",screens);
+
+                let armour = parseInt(Attribute(ship.charID,"armour",true)) || 0;
+                AttributeSet(ship.charID,"armour",armour);
+
             
                 //uses Attributes only
                 let nominalAttributes = ["command","lifesupport","warpcore","sensors","impulse1","impulse2","warpdrive"]
@@ -1489,19 +1495,12 @@ log("new Crew: " +newCrew)
                     AttributeSet(ship.charID,nominalAttributes[i],"Nominal");
                 }
 
-                let cloak = Attribute(ship.charID,"cloaking",true);
+                let cloak = Attribute(ship.charID,"cloak",true);
                 if (cloak === "1") {
-                    AttributeSet(ship.charID,"cloaking","1");
+                    AttributeSet(ship.charID,"cloak","Nominal");
                 }
 
-
-
-                let fc = Attribute(ship.charID,"firecontrol",true);
-                if (!fc) {
-                    fc = 1;
-                    AttributeSet(ship.charID,"firecontrol",fc,true);
-                }
-                fc = parseInt(fc);
+                let fc = parseInt(Attribute(ship.charID,"firecontrol",true)) || 1;
                 AttributeSet(ship.charID,"firecontrol",fc);
 
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
