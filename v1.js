@@ -948,6 +948,15 @@ log("new Crew: " +newCrew)
 
         }
 
+        ImpulseDamage() {
+
+
+
+
+        }
+
+
+
 
         Destroyed(method) {
             //place the images on foreground area
@@ -1615,6 +1624,63 @@ log(fc)
     }
 
 
+    const Helm = (msg) => {
+        let Tag = msg.content.split(";");
+        let id = Tag[1];
+        let order = Tag[2];
+        let ship = ShipArray[id];
+        if (!ship) {
+            sendChat("","Error");
+            return;
+        }
+
+        let speed = parseInt(ship.token.get("bar3_value"));
+        let driveType = (Attribute(ship.charID,"advanceddrive") === "1") ? "Advanced":"Normal"; 
+        let turn = (driveType === "Normal") ? 2:1;
+        let turnPts = Math.round(speed/turn);
+
+
+
+
+        SetupCard(ship.name,order,ship.faction);
+        if (order === 'Dead Stop') {
+            outputCard.body.push("The Ship comes to a Dead Stop");
+            outputCard.body.push("Max turn " + (turnPts + 1) + " Points");
+        } 
+
+        if (order === "Emergency Thrust") {
+            let newSpeed, newTurnPts;
+            let roll = randomInteger(6);
+            if (roll < 6) {
+                newSpeed = Math.round(speed * 1.5);
+                newTurnPts = Math.round(newSpeed/turn);
+                outputCard.body.push("The Impulse Engines are pushed to 150%");
+                outputCard.body.push("Speed this turn is " + newSpeed);
+                outputCard.body.push("Max turn is " + newTurnPts + " Points");
+                if (roll > 3) {
+                    outputCard.body.push("The Impulse Engines however are damaged by the Maneuvre");
+                    ship.ImpulseDamage();
+                }
+            }
+            if (roll === 6) {
+                newSpeed = Math.round(speed /2);
+                newTurnPts = Math.round(newSpeed/turn);
+                ship.ImpulseDamage();
+                outputCard.body.push("The Impulse Engines are pushed, but immediately take damage");
+                outputCard.body.push("Speed this turn is " + newSpeed);
+                outputCard.body.push("Max turn is " + newTurnPts + " Points");
+                ship.ImpulseDamage();
+            }
+        }
+        
+        PrintCard();
+
+
+
+    }
+
+
+
 
 
     const Fire = (msg) => {
@@ -2185,6 +2251,11 @@ log(fc)
             case '!TestPics':
                 TestPics();
                 break;
+            case '!Helm':
+                Helm(msg);
+                break;
+
+
         }
     };
 
