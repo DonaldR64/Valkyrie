@@ -40,7 +40,7 @@
 
         <div class="col">
             <h3>Systems</h3>
-            <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
+            <label>Thruster Total:</label><input type="number" name="attr_thrusters">
             <label>Advanced Drive?:</label><input type="checkbox" name="attr_advanceddrive" value="1">
             <label for="attr_firecontrol_max">Fire Control:</label>
             <select name="attr_firecontrol_max">
@@ -575,7 +575,7 @@
 
         <section class="helm">
             <h3>Helm</h3>
-            <h4>Thrusters: <span name="attr_thrusters"></span></h4>
+            <h4>Max Speed: <span name="attr_speed"></span></h4>
             <h4>Max Turn: <span name="attr_turnpts"></span> Pts.</h4>
         </section>
 
@@ -900,7 +900,7 @@
             }
 
 
-            let thrusters = parseInt(values.thrusters_max);
+            let speed = parseInt(values.thrusters_max);
             let impulse1 = values.impulse1;
             let impulse2 = values.impulse2;
             let impulsestatus = "Green";
@@ -909,18 +909,18 @@
             let impulsedisplay = "Nominal";
             if (impulse1 === "Offline" && impulse2 !== "Offline") {
                 impulse1status = "Red";
-                thrusters = Math.round(thrusters/2);
+                speed = Math.round(speed/2);
                 impulsestatus = "Yellow";
                 impulsedisplay = "Offline";
             }
             if (impulse2 === "Offline" && impulse1 !== "Offline") {
                 impulse2status = "Red";
-                thrusters = Math.round(thrusters/2);
+                speed = Math.round(speed/2);
                 impulsestatus = "Yellow";
                 impulsedisplay = "Offline";
             }
             if (impulse1 === "Offline" && impulse2 === "Offline") {
-                thrusters = 0;
+                speed = 0;
                 impulsestatus = "Red";
                 impulsedisplay = "Offline"
                 impulse1status = "Red";
@@ -931,7 +931,7 @@
             if (values.advanceddrives === "1") {
                 turn = 1;
             }
-            let turnPts = Math.round(thrusters/turn);
+            let turnPts = Math.round(speed/turn);
 
             let faction = values.faction;
             let factionsymbol = "";
@@ -965,7 +965,7 @@
                 damaged8: damagedsystems[7],
                 damaged9: damagedsystems[8],
                 damaged10: damagedsystems[9],
-                thrusters: thrusters,
+                speed: speed,
                 turnpts: turnPts,
                 factionsymbol: factionsymbol,
                 fcdisplay: fcDisplay,

@@ -626,7 +626,7 @@ const Main = (() => {
             for (let w=1;w<13;w++) {
                 let weaponStatus = aa["weapon" + w + "status"];
                 let weaponName = aa["weapon" + w + "name"];
-                if (weaponStatus === "Off" || !weaponName) {continue};
+                if (!weaponStatus || weaponStatus === "Off") {continue};
                 let weaponType = aa["weapon" + w + "type"];
                 let weaponFacing = aa["weapon" + w + 'facing'].split("/").map((e) => parseInt(e));
                 let maxRange;
@@ -1470,10 +1470,10 @@ log(ship.name)
                 ship.hull = ship.hullMax;
                 AttributeSet(ship.charID,"hull",hullMax);
 
-                let thrustersMax = Attribute(ship.charID,"thrusters",true);
-log(thrustersMax)
-                thrustersMax = parseInt(thrustersMax) || 0;
-                AttributeSet(ship.charID,"thrusters",thrustersMax);
+                let thrusters = Attribute(ship.charID,"thrusters");
+log(thrusters)
+                speed = parseInt(thrusters) || 0;
+                AttributeSet(ship.charID,"speed",speed);
 
 
                 let shieldsMax = parseInt(Attribute(ship.charID,"shields",true)) || 0;
@@ -1513,10 +1513,8 @@ log(fc)
 
                 let hullID = AttributeID(ship.charID,"hull");
                 let shieldID = AttributeID(ship.charID,"shields");
-                let thrustersID = AttributeID(ship.charID,"thrusters");
-log(hullID)
-log(shieldID)
-log(thrustersID)
+                let speedID = AttributeID(ship.charID,"speed");
+
                 ship.token.set({
                     bar1_value: hullMax,
                     bar1_max: hullMax,
@@ -1526,9 +1524,9 @@ log(thrustersID)
                     bar2_max: shieldsMax,
                     bar2_link: shieldID,
 
-                    bar3_value: thrustersMax,
+                    bar3_value: speed,
                     bar3_max: "",
-                    bar3_link: thrustersID,
+                    bar3_link: speedID,
 
                     showplayers_bar1: true,
                     showplayers_bar2: true,
