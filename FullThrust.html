@@ -620,6 +620,14 @@
             <div class="shieldstatus">
                 <h4>Shields: <span name="attr_shieldpercent"></span></h4>
             </div>
+            <input type="hidden" name="attr_armourstatus" class="armour-status" value="Green">
+            <div class="armourstatus">
+                <h4>Armour: <span name="attr_armourDisplay"></span></h4>
+            </div>
+
+
+
+
         </section>
 
 
@@ -721,6 +729,22 @@
                 screenimg = "https://files.d20.io/images/496441633/fR5Of0FXd3Gs0R2-Mw076Q/thumb.png?1785890300";
                 screendisplay = "Adv. " + screendisplay;
             }
+
+
+            let armourMax = parseInt(values.armour_max) || 0;
+            let armour = parseInt(values.armour) || 0;
+            let armourStatus = "Green";
+            let armourDisplay = "Armour: " + armour;
+            if (armour < armourMax && armour > 0) {
+                armourStatus = "Yellow";
+            }
+            if (armour === 0 && armourMax > 0) {
+                armourStatus = "Red";
+            }
+            if (armourMax === 0) {
+                armourStatus = "None";
+            }
+
 
 
             let shieldstatus = "Green";
@@ -956,6 +980,7 @@
                 screendisplay: screendisplay,
                 screenimg: screenimg,
                 fcimg: fcimg,
+                armourdisplay: armourDisplay,
             });
         });
     });
