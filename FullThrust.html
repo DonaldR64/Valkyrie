@@ -744,10 +744,10 @@
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             let advFC = values.advancedfirecontrol;
             fcDisplay = "Fire Control: " + fc;
-            fcImg = "https://files.d20.io/images/496442199/ZWeVnItTMAG0VtCPAFimvg/thumb.png?1785890622";
+            fcimg = "https://files.d20.io/images/496442199/ZWeVnItTMAG0VtCPAFimvg/thumb.png?1785890622";
             if (advFC === "1") {
                 fcDisplay = "Adv. Fire Control: " + (fc * 2);
-                fcImg = "https://files.d20.io/images/496442200/JCLlyg_05ccvriJpaPBpRA/thumb.png?1785890623";
+                fcimg = "https://files.d20.io/images/496442200/JCLlyg_05ccvriJpaPBpRA/thumb.png?1785890623";
             }
             if (fc === 0) {
                 fcDisplay = "Fire Control Offline"
@@ -953,7 +953,7 @@
                 cloakdisplay: cloakdisplay,
                 screendisplay: screendisplay,
                 screenimg: screenimg,
-                fcimg: fcImg,
+                fcimg: fcimg,
             });
         });
     });
