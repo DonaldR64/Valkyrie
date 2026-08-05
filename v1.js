@@ -1502,7 +1502,7 @@ log("new Crew: " +newCrew)
 
                 let fc = parseInt(Attribute(ship.charID,"firecontrol",true)) || 1;
                 AttributeSet(ship.charID,"firecontrol",fc);
-
+log(fc)
                 let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
                 AttributeSet(ship.charID,"crew",crew);
                 AttributeSet(ship.charID,"crew",crew,true);
