@@ -1070,6 +1070,9 @@ input[type="hidden"]:not[value="Green"].impulse2pos-status ~ .impulse2pos{
 input[type="hidden"][value="Green"].screenpos-status ~ .screenpos{
     display: none;
 }
+input[type="hidden"][value="None"].screenpos-status ~ .screenpos{
+    display: none;
+}
 input[type="hidden"][value="Red"].screenpos-status ~ .screenpos{
     display: grid;
 }

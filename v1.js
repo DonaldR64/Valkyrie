@@ -1562,10 +1562,13 @@ log("new Crew: " +newCrew)
                 ship.hull = ship.hullMax;
                 AttributeSet(ship.charID,"hull",ship.hull);
 
+
+
+
+
                 let shieldsMax = parseInt(Attribute(ship.charID,"shields",true));
                 ship.shields = 0;
                 ship.shieldsMax = shieldsMax;
-                AttributeSet(ship.charID,"shieldgenerators","Offline");
                 AttributeSet(ship.charID,"shields",0);
             
                 //uses Attributes only
@@ -1573,7 +1576,6 @@ log("new Crew: " +newCrew)
                 AttributeSet(ship.charID,"lifesupport","Failing");
                 AttributeSet(ship.charID,"warpcore","Critical");
 
-                AttributeSet(ship.charID,"sensors","Offline");
                 AttributeSet(ship.charID,"firecontrol",0);
 
                 AttributeSet(ship.charID,"impulse1","Offline");
@@ -1585,6 +1587,8 @@ log("new Crew: " +newCrew)
                 if (cloak === "1") {
                     AttributeSet(ship.charID,"cloaking","Offline");
                 }
+
+                AttributeSet(ship.charID,"screens",0);
 
                 
 
