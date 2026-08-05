@@ -41,7 +41,7 @@
         <div class="col">
             <h3>Systems</h3>
             <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
-            <label>Advanced Drive?:</label><input type="checkbox" name="attr_advancedfirecontrol" value="1">
+            <label>Advanced Drive?:</label><input type="checkbox" name="attr_advanceddrive" value="1">
             <label for="attr_firecontrol_max">Fire Control:</label>
             <select name="attr_firecontrol_max">
                 <option value="0">0</option>
@@ -674,7 +674,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advanceddrive","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -927,7 +927,11 @@
                 impulse2status = "Red";
             }
         
-            let turnPts = Math.round(thrusters/2);
+            let turn = 2;
+            if (values.advanceddrives === "1") {
+                turn = 1;
+            }
+            let turnPts = Math.round(thrusters/turn);
 
             let faction = values.faction;
             let factionsymbol = "";

@@ -1466,10 +1466,11 @@ log("new Crew: " +newCrew)
             if (ship.type === "Starship") {
 
                 //bars on token
+                let hullMax = parseInt(Attribute(ship.charID,"hull",true)) || 1;
                 ship.hull = ship.hullMax;
-                AttributeSet(ship.charID,"hull",ship.hull);
+                AttributeSet(ship.charID,"hull",hullMax);
 
-                let thrustersMax = parseInt(Attribute(ship.charID,"thrusters",true));
+                let thrustersMax = parseInt(Attribute(ship.charID,"thrusters",true)) || 1;
                 AttributeSet(ship.charID,"thrusters",thrustersMax);
 
 
@@ -1481,14 +1482,13 @@ log("new Crew: " +newCrew)
                 if (shieldsMax === 0) {
                     shieldColour = "transparent";
                 }
-                
+
                 let screens = parseInt(Attribute(ship.charID,"screens",true)) || 0;
                 AttributeSet(ship.charID,"screens",screens);
 
                 let armour = parseInt(Attribute(ship.charID,"armour",true)) || 0;
                 AttributeSet(ship.charID,"armour",armour);
 
-            
                 //uses Attributes only
                 let nominalAttributes = ["command","lifesupport","warpcore","sensors","impulse1","impulse2","warpdrive"]
                 for (let i=0;i<nominalAttributes.length;i++) {
@@ -1514,8 +1514,8 @@ log("new Crew: " +newCrew)
                 let thrustersID = AttributeID(ship.charID,"thrusters");
 
                 ship.token.set({
-                    bar1_value: ship.hull,
-                    bar1_max: ship.hullMax,
+                    bar1_value: hullMax,
+                    bar1_max: hullMax,
                     bar1_link: hullID,
 
                     bar2_value: shieldsMax,

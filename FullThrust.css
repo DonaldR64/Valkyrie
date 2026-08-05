@@ -1067,10 +1067,10 @@ input[type="hidden"]:not[value="Green"].impulse2pos-status ~ .impulse2pos{
 }
 
 /* Defensive Screen Icon */
-input[type="hidden"][value="Green"].screen-status ~ .screenstatus{
+input[type="hidden"][value="Green"].screenpos-status ~ .screenstatus{
     display: none;
 }
-input[type="hidden"][value="Red"].screen-status ~ .screenstatus{
+input[type="hidden"][value="Red"].screenpos-status ~ .screenstatus{
     display: grid;
 }
 .screenstatus img{
