@@ -41,15 +41,26 @@
         <div class="col">
             <h3>Systems</h3>
             <label>Thruster Total:</label><input type="number" name="attr_thrusters_max">
-            <label>Enhanced Sensors:</label><input type="checkbox" name="attr_enhancedsensors" value="1">
             <label>Fire Control:</label><input type="number" name="attr_firecontrol_max">  
-            <label>Advanced Fire Control:</label><input type="checkbox" name="attr_advancedfirecontrol" value="1">
-            <label>Starting Shields:</label><input type="number" name="attr_shields_max">  
-            <label>Starting Armour:</label><input type="number" name="attr_armour_max">  
+            <label for="attr_firecontrol_max">Fire Control:</label>
+            <select name="attr_firecontrol_max">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <label>Advanced Fire Control ?:</label><input type="checkbox" name="attr_advancedfirecontrol" value="1">
+            <label>Starting Shields (0+):</label><input type="number" name="attr_shields_max">  
+            <label>Starting Armour (0+):</label><input type="number" name="attr_armour_max">  
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
-            <label>Starting Screens:</label><input type="number" name="attr_screens_max">  
-            <label>Advanced Screens:</label><input type="checkbox" name="attr_advancedscreens" value="1">
+            <label for="attr_screens_max">Starting Screens:</label>
+            <select name="attr_screens_max">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            <label>Advanced Screens ?:</label><input type="checkbox" name="attr_advancedscreens" value="1">
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloaking_max" value="1">   
         </div>  
 
@@ -65,7 +76,6 @@
             <label>Warp Drive:</label><input type="number" name="attr_warpdriveloc">
 
             <label>Screens:</label><input type="number" name="attr_screenloc">
-            <label>Sensors:</label><input type="number" name="attr_sensorloc">
             <label>Fire Control:</label><input type="number" name="attr_fireconloc">
 
             <label>Cloaking Device:</label><input type="number" name="attr_cloakloc">
@@ -545,13 +555,9 @@
                 <img src="https://files.d20.io/images/496310701/kFfSEYTCH2zFJBgRpOgKVA/thumb.png?1785783292"/>
             </div>
 
-            <input type="hidden" name="attr_sensorstatus" class="sensorpos-status" value="Green">
-            <div class="sensorpos">
-                <img src="https://files.d20.io/images/496313410/8Cdm5kQhCRYL4QLYiGgu_w/thumb.png?1785785210"/>
-            </div>
             <input type="hidden" name="attr_screenstatus" class="screenpos-status" value="Green">
             <div class="screenpos">
-                <img src="https://files.d20.io/images/496313411/TLSt7CUpdXUTSYfFvo-paw/thumb.png?1785785213"/>
+                <img src="/>
             </div>
             <input type="hidden" name="attr_firecontrolstatus" class="fireconpos-status" value="Green">
             <div class="fireconpos">
@@ -607,7 +613,7 @@
             </div>
             <input type="hidden" name="attr_screenstatus" class="screen-status" value="Green">
             <div class="screenstatus">
-                <h4>Screens: <span name="attr_screendisplay"></span></h4>
+                <h4><span name="attr_screendisplay"></span></h4>
             </div>
             <input type="hidden" name="attr_shieldstatus" class="shield-status" value="Green">
             <div class="shieldstatus">
@@ -623,10 +629,6 @@
             <input type="hidden" name="attr_cloakstatus" class="cloak-status" value="Green">
             <div class="cloakstatus">
                 <h4><span name="attr_cloakdisplay"></span></h4>
-            </div>
-            <input type="hidden" name="attr_sensorstatus" class="sensor-status" value="Green">
-            <div class="sensorstatus">
-                <h4><span name="attr_sensorDisplay"></span></h4>
             </div>
             <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Green">
             <div class="firecontrolstatus">
@@ -663,7 +665,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol","enhancedsensors", "armour","armour_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","sensors","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters_max","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -696,33 +698,31 @@
             if (crewPercent < 66) {crewStatus = "Orange"};
             if (crewPercent < 33) {crewStatus = "Red"};
 
-            let shieldstatus = "Green";
-        
-            let shieldsMax = parseInt(values.shields_max);
-            let shields = parseInt(values.shields);
-
             let screens = parseInt(values.screens) || 0;
             let screensMax = parseInt(values.screens_max) || 0;
             let screenstatus = "Green";
-            let screendisplay = "Screens: Nominal";
+            let screendisplay,screenimg;
             if (screensMax === 0) {
                 screenstatus = "None";
                 screendisplay = "";
+            } else {
+                screenimg = "https://files.d20.io/images/496441632/qS4KRMlYcWOi7jqFGocFKQ/thumb.png?1785890300";
+                screendisplay = "Screens: Level " + screens;
             }
-            if (screens < screensMax && screensMax > 0) {
+            if (screens === 1 && screensMax === 2) {
                 screenstatus = "Yellow";
-                screendisplay = "Screens: Damaged";
             }
             if (screens === 0 && screensMax > 0) {
                 screenstatus = "Red";
                 screendisplay = "Screens: Offline";
             }
             if (values.advancedscreens === "1") {
+                screenimg = "https://files.d20.io/images/496441633/fR5Of0FXd3Gs0R2-Mw076Q/thumb.png?1785890300";
                 screendisplay = "Adv. " + screendisplay;
             }
 
 
-
+            let shieldstatus = "Green";
             let shieldsMax = parseInt(values.shields_max);
             let shields = parseInt(values.shields);
             let shieldPercent = Math.round(shields/shieldsMax * 100);
@@ -738,19 +738,6 @@
                 shieldstatus = "None";
             }
 
-            let sensors = values.sensors;
-            let enhSensors = values.enhancedsensors;
-            let sensorDisplay = "Sensors: Operational";
-            if (enhSensors === "1") {
-                sensorDisplay = "Enhanced Sensors: Operational";
-            }
-            let sensorstatus = "Green";
-            if (sensors === "Offline") {
-                sensorstatus = "Red";
-                sensorDisplay = "Sensors Offline";
-            }
-
-
             let firecontrolstatus = "Green";
             let fcMax = parseInt(values.firecontrol_max);
             let fc = values.firecontrol || 0;
@@ -758,8 +745,10 @@
             if (fc < fcMax) {firecontrolstatus = "Yellow"};
             let advFC = values.advancedfirecontrol;
             fcDisplay = "Fire Control: " + fc;
+            fcImg = "https://files.d20.io/images/496442199/ZWeVnItTMAG0VtCPAFimvg/thumb.png?1785890622";
             if (advFC === "1") {
                 fcDisplay = "Adv. Fire Control: " + (fc * 2);
+                fcImg = "https://files.d20.io/images/496442200/JCLlyg_05ccvriJpaPBpRA/thumb.png?1785890623";
             }
             if (fc === 0) {
                 fcDisplay = "Fire Control Offline"
@@ -960,12 +949,12 @@
                 impulse2status: impulse2status,
                 screenstatus: screenstatus,
                 impulsedisplay: impulsedisplay,
-                sensorstatus: sensorstatus,
-                sensordisplay: sensorDisplay,
                 crewstatus: crewStatus,
                 cloakstatus: cloakstatus,
                 cloakdisplay: cloakdisplay,
                 screendisplay: screendisplay,
+                screenimg: screenImg,
+                fcImg: fcImg,
             });
         });
     });
