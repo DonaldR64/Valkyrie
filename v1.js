@@ -1464,13 +1464,15 @@ log("new Crew: " +newCrew)
 
             } 
             if (ship.type === "Starship") {
-
+log(ship.name)
                 //bars on token
                 let hullMax = parseInt(Attribute(ship.charID,"hull",true)) || 1;
                 ship.hull = ship.hullMax;
                 AttributeSet(ship.charID,"hull",hullMax);
 
-                let thrustersMax = parseInt(Attribute(ship.charID,"thrusters",true)) || 1;
+                let thrustersMax = Attribute(ship.charID,"thrusters",true);
+log(thrustersMax)
+                thrustersMax = parseInt(thrustersMax) || 0;
                 AttributeSet(ship.charID,"thrusters",thrustersMax);
 
 
@@ -1512,7 +1514,9 @@ log(fc)
                 let hullID = AttributeID(ship.charID,"hull");
                 let shieldID = AttributeID(ship.charID,"shields");
                 let thrustersID = AttributeID(ship.charID,"thrusters");
-
+log(hullID)
+log(shieldID)
+log(thrustersID)
                 ship.token.set({
                     bar1_value: hullMax,
                     bar1_max: hullMax,
