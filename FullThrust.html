@@ -906,11 +906,11 @@
                 damagedsystems.push(sys);
             }
 
-            let torpedos = values.torpedos || 0;
-            let torpedoMax = values.torpedos_max || 0;
+            let torpedos = parseInt(values.torpedos) || 0;
+            let torpedoMax = parseInt(values.torpedos_max) || 0;
             let torpedoStatus = "Green";
             if (torpedoMax > 0) {
-                let ratio = torpedos/torpedoMax;
+                let ratio = Math.round(torpedos/torpedoMax);
                 if (ratio < 25%) {torpedoStatus = "Red"};
                 if (ration < 50%) {torpedoStatus = "Yellow"};
             } else if (torpedoMax === 0) {
