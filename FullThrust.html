@@ -61,7 +61,7 @@
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
-            <label>Advanced Shield Generator ?:</label><input type="checkbox" name="attr_advancedscreens" value="1">
+            <label>Advanced Shield Generators ?:</label><input type="checkbox" name="attr_advancedscreens" value="1">
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloak_max" value="1">   
         </div>  
 
@@ -716,14 +716,14 @@
                 screendisplay = "";
             } else {
                 screenimg = "https://files.d20.io/images/496441632/qS4KRMlYcWOi7jqFGocFKQ/thumb.png?1785890300";
-                screendisplay = "Screens: Level " + screens;
+                screendisplay = "Shield Generators: " + screens;
             }
             if (screens === 1 && screensMax === 2) {
                 screenstatus = "Yellow";
             }
             if (screens === 0 && screensMax > 0) {
                 screenstatus = "Red";
-                screendisplay = "Screens: Offline";
+                screendisplay = "Shield Generators: Offline";
             }
             if (values.advancedscreens === "1") {
                 screenimg = "https://files.d20.io/images/496441633/fR5Of0FXd3Gs0R2-Mw076Q/thumb.png?1785890300";
@@ -749,11 +749,17 @@
             let shieldstatus = "Green";
             let shieldsMax = parseInt(values.shields_max);
             let shields = parseInt(values.shields);
+
+            if (screenstatus === "Red") {
+                shields = 0;
+            }
+
             let shieldPercent = Math.round(shields/shieldsMax * 100);
             if (shieldPercent <= 75) {shieldstatus = "Yellow"};
             if (shieldPercent <= 50) {shieldstatus = "Orange"};
             if (shieldPercent <= 25) {shieldstatus = "Red"};
             shieldPercent += "%";
+
             if (shields === 0 && shieldsMax > 0) {
                 shieldstatus = "Down"
                 shieldPercent = "Down";
