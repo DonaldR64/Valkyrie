@@ -63,6 +63,7 @@
             </select>
             <label>Advanced Shield Generators ?:</label><input type="checkbox" name="attr_advancedscreens" value="1">
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloak_max" value="1">   
+            <label>Torpedo Magazine:</label><input type="number" name="attr_torpedo_max">  
         </div>  
 
         <div class="col">
@@ -642,6 +643,10 @@
             <input type="hidden" name="attr_firecontrolstatus" class="firecontrol-status" value="Green">
             <div class="firecontrolstatus">
                 <h4><span name="attr_fcdisplay"></span></h4>
+            </div>
+            <input type="hidden" name="attr_torpedo_max" class="torpedo-status" value=0>
+            <div class="torpedostatus">
+                <h4>Torpedo Magazine: <span name="attr_torpedo"></span></h4>
             </div>
             <input type="hidden" name="attr_crewstatus" class="crew-status" value="Green">
             <div class="crewstatus">
