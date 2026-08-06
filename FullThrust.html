@@ -910,9 +910,9 @@
             let torpedoMax = parseInt(values.torpedos_max) || 0;
             let torpedoStatus = "Green";
             if (torpedoMax > 0) {
-                let ratio = Math.round(torpedos/torpedoMax);
-                if (ratio < 25%) {torpedoStatus = "Red"};
-                if (ration < 50%) {torpedoStatus = "Yellow"};
+                let ratio = Math.round(torpedos/torpedoMax) * 100;
+                if (ratio < 25) {torpedoStatus = "Red"};
+                if (ration < 50) {torpedoStatus = "Yellow"};
             } else if (torpedoMax === 0) {
                 torpedoStatus = "None";
             }

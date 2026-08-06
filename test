@@ -1,0 +1,342 @@
+  const buttonlist = ["input","ship"];
+    var checked = 0;
+    buttonlist.forEach(button => {
+        on(`clicked:${button}`, function() {
+            setAttrs({
+                sheetTab: button
+            });
+        });
+    });
+
+    on("sheet:opened", function() {
+        setAttrs({sheetTab:"ship"});
+    });
+
+    on("change:attrs sheet:opened", function(eventInfo) { 
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advanceddrive","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak","torpedo","torpedo_max"], function(values) {
+            let commandstatus = "Green";
+            let command = values.command || "Nominal";
+            if (command === "Destroyed") {commandstatus = "Red"};
+            if (command.includes("Offline")) {commandstatus = "Orange"};
+
+            let lifesupportstatus = "Red";
+            let lifesupport = values.lifesupport || "Nominal";
+            if (lifesupport === "Nominal") {lifesupportstatus = "Green"};
+
+            let warpcorestatus = "Red";
+            let warpcore = values.warpcore || "Nominal";
+            if (warpcore === "Nominal") {warpcorestatus = "Green"};
+
+            let hullMax = parseInt(values.hull_max);
+            let hull = values.hull || hullMax;
+            hull = parseInt(hull);
+            let levels = 4;
+            if (values.advancedhull === "1") {levels = 3};
+            let hullpercent = Math.round(hull/hullMax * 100);
+            let hullLevel = Math.ceil(hull/hullMax * levels);
+            let hullColours = ["Dark Red","Red","Orange","Yellow","Green"];
+            let hullstatus = hullColours[hullLevel];
+            if (levels === 3 && hullLevel === 2) {hullstatus = "Red"};
+
+            let crewStatus = "Green";
+            let crew = parseInt(values.crew);
+            let crewMax = parseInt(values.crew_max);
+            let crewPercent = Math.round(crew/crewMax * 100);
+            if (crewPercent < 100) {crewStatus = "Yellow"};
+            if (crewPercent < 66) {crewStatus = "Orange"};
+            if (crewPercent < 33) {crewStatus = "Red"};
+
+            let screens = parseInt(values.screens) || 0;
+            let screensMax = parseInt(values.screens_max) || 0;
+            let screenstatus = "Green";
+            let screendisplay,screenimg;
+            if (screensMax === 0) {
+                screenstatus = "None";
+                screendisplay = "";
+            } else {
+                screenimg = "https://files.d20.io/images/496441632/qS4KRMlYcWOi7jqFGocFKQ/thumb.png?1785890300";
+                screendisplay = "Shield Generators: " + screens;
+            }
+            if (screens === 1 && screensMax === 2) {
+                screenstatus = "Yellow";
+            }
+            if (screens === 0 && screensMax > 0) {
+                screenstatus = "Red";
+                screendisplay = "Shield Generators: Offline";
+            }
+            if (values.advancedscreens === "1") {
+                screenimg = "https://files.d20.io/images/496441633/fR5Of0FXd3Gs0R2-Mw076Q/thumb.png?1785890300";
+                screendisplay = "Adv. " + screendisplay;
+            }
+
+
+            let armourMax = parseInt(values.armour_max) || 0;
+            let armour = parseInt(values.armour) || 0;
+            let armourStatus = "Green";
+            if (armour < armourMax && armour > 0) {
+                armourStatus = "Yellow";
+            }
+            if (armour === 0 && armourMax > 0) {
+                armourStatus = "Red";
+            }
+            if (armourMax === 0) {
+                armourStatus = "None";
+            }
+
+
+
+            let shieldstatus = "Green";
+            let shieldsMax = parseInt(values.shields_max);
+            let shields = parseInt(values.shields);
+
+            if (screenstatus === "Red") {
+                shields = 0;
+            }
+
+            let shieldPercent = Math.round(shields/shieldsMax * 100);
+            if (shieldPercent <= 75) {shieldstatus = "Yellow"};
+            if (shieldPercent <= 50) {shieldstatus = "Orange"};
+            if (shieldPercent <= 25) {shieldstatus = "Red"};
+            shieldPercent += "%";
+
+            if (shields === 0 && shieldsMax > 0) {
+                shieldstatus = "Down"
+                shieldPercent = "Down";
+            };
+            if (shieldsMax === 0) {
+                shieldstatus = "None";
+            }
+
+            let firecontrolstatus = "Green";
+            let fcMax = parseInt(values.firecontrol_max);
+            let fc = values.firecontrol || 0;
+            fc = parseInt(fc) || 0;
+            if (fc < fcMax) {firecontrolstatus = "Yellow"};
+            let advFC = values.advancedfirecontrol;
+            fcDisplay = "Fire Control: " + fc;
+            fcimg = "https://files.d20.io/images/496442199/ZWeVnItTMAG0VtCPAFimvg/thumb.png?1785890622";
+            if (advFC === "1") {
+                fcDisplay = "Adv. Fire Control: " + (fc * 2);
+                fcimg = "https://files.d20.io/images/496442200/JCLlyg_05ccvriJpaPBpRA/thumb.png?1785890623";
+            }
+            if (fc === 0) {
+                fcDisplay = "Fire Control Offline"
+                firecontrolstatus = "Red"
+            };
+
+            let cloakstatus = "None";
+            let cloakdisplay;
+            let cloak = values.cloak;
+            if (cloak === "Nominal") {
+                cloakstatus = "Green";
+                cloakdisplay = "Cloaking Device: Operational"
+            }
+            if (cloak === "Offline") {
+                cloakstatus = "Red";
+                cloakdisplay = "Cloaking Device Offline";
+            }
+
+
+
+    
+            let wpn1Loc = "pos" + values.weapon1location;
+            if (wpn1Loc) {
+                $20(`div[class = "weapon1"]`).addClass(wpn1Loc);
+            }
+            let wpn2Loc = "pos" + values.weapon2location;
+            if (wpn2Loc) {
+                $20(`div[class = "weapon2"]`).addClass(wpn2Loc);
+            }
+            let wpn3Loc = "pos" + values.weapon3location;
+            if (wpn2Loc) {
+                $20(`div[class = "weapon3"]`).addClass(wpn3Loc);
+            }
+            let wpn4Loc = "pos" + values.weapon4location;
+            if (wpn4Loc) {
+                $20(`div[class = "weapon4"]`).addClass(wpn4Loc);
+            }
+            let wpn5Loc = "pos" + values.weapon5location;
+            if (wpn5Loc) {
+                $20(`div[class = "weapon5"]`).addClass(wpn5Loc);
+            }
+            let wpn6Loc = "pos" + values.weapon6location;
+            if (wpn6Loc) {
+                $20(`div[class = "weapon6"]`).addClass(wpn6Loc);
+            }
+            let wpn7Loc = "pos" + values.weapon7location;
+            if (wpn7Loc) {
+                $20(`div[class = "weapon7"]`).addClass(wpn7Loc);
+            }
+            let wpn8Loc = "pos" + values.weapon8location;
+            if (wpn8Loc) {
+                $20(`div[class = "weapon8"]`).addClass(wpn8Loc);
+            }
+            let wpn9Loc = "pos" + values.weapon9location;
+            if (wpn9Loc) {
+                $20(`div[class = "weapon9"]`).addClass(wpn9Loc);
+            }
+            let wpn10Loc = "pos" + values.weapon10location;
+            if (wpn10Loc) {
+                $20(`div[class = "weapon10"]`).addClass(wpn10Loc);
+            }
+            let wpn11Loc = "pos" + values.weapon11location;
+            if (wpn11Loc) {
+                $20(`div[class = "weapon11"]`).addClass(wpn11Loc);
+            }
+            let wpn12Loc = "pos" + values.weapon12location;
+            if (wpn12Loc) {
+                $20(`div[class = "weapon12"]`).addClass(wpn12Loc);
+            }
+
+            let bridgeLoc = "pos" + values.bridgeloc;
+            if (bridgeLoc) {
+                $20(`div[class = "bridgepos"]`).addClass(bridgeLoc);
+            }
+            let lifeLoc = "pos" + values.lifeloc;
+            if (lifeLoc) {
+                $20(`div[class = "lifepos"]`).addClass(lifeLoc);
+            }
+            let warpcoreLoc = "pos" + values.warpcoreloc;
+            if (warpcoreLoc) {
+                $20(`div[class = "warpcorepos"]`).addClass(warpcoreLoc);
+            }
+
+            let warpdriveLoc = "pos" + values.warpdriveloc;
+            if (warpdriveLoc) {
+                $20(`div[class = "warpdrivepos"]`).addClass(warpdriveLoc);
+            }
+            let impulse1Loc = "pos" + values.impulse1loc;
+            if (impulse1Loc) {
+                $20(`div[class = "impulse1pos"]`).addClass(impulse1Loc);
+            }
+            let impulse2Loc = "pos" + values.impulse2loc;
+            if (impulse2Loc) {
+                $20(`div[class = "impulse2pos"]`).addClass(impulse2Loc);
+            }
+
+            let screenLoc = "pos" + values.screenloc;
+            if (screenLoc) {
+                $20(`div[class = "screenpos"]`).addClass(screenLoc);
+            }
+            let sensorLoc = "pos" + values.sensorloc;
+            if (sensorLoc) {
+                $20(`div[class = "sensorpos"]`).addClass(sensorLoc);
+            }
+            let fireconLoc = "pos" + values.fireconloc;
+            if (fireconLoc) {
+                $20(`div[class = "fireconpos"]`).addClass(fireconLoc);
+            }
+            let cloakLoc = "pos" + values.cloakloc;
+            if (cloakLoc) {
+                $20(`div[class = "cloakpos"]`).addClass(cloakLoc);
+            }
+
+
+            let ds = values.damagedsystems || "All Systems Nominal";
+            ds = ds.split(",").map((e) => e.trim());
+            let damagedsystems = [];
+            for (let i=0;i<12;i++) {
+                let sys = ds[i] || "None";
+                damagedsystems.push(sys);
+            }
+
+            let torpedos = parseInt(values.torpedos) || 0;
+            let torpedoMax = parseInt(values.torpedos_max) || 0;
+            let torpedoStatus = "Green";
+            if (torpedoMax > 0) {
+                let ratio = Math.round(torpedos/torpedoMax);
+                if (ratio < ) {torpedoStatus = "Red"};
+                if (ration < 50%) {torpedoStatus = "Yellow"};
+            } else if (torpedoMax === 0) {
+                torpedoStatus = "None";
+            }
+
+
+            let speed = parseInt(values.thrusters);
+            let impulse1 = values.impulse1;
+            let impulse2 = values.impulse2;
+            let impulsestatus = "Green";
+            let impulse1status = "Green";
+            let impulse2status = "Green";
+            let impulsedisplay = "Nominal";
+            if (impulse1 === "Offline" && impulse2 !== "Offline") {
+                impulse1status = "Red";
+                speed = Math.round(speed/2);
+                impulsestatus = "Yellow";
+                impulsedisplay = "Offline";
+            }
+            if (impulse2 === "Offline" && impulse1 !== "Offline") {
+                impulse2status = "Red";
+                speed = Math.round(speed/2);
+                impulsestatus = "Yellow";
+                impulsedisplay = "Offline";
+            }
+            if (impulse1 === "Offline" && impulse2 === "Offline") {
+                speed = 0;
+                impulsestatus = "Red";
+                impulsedisplay = "Offline"
+                impulse1status = "Red";
+                impulse2status = "Red";
+            }
+        
+            let turn = 2;
+            if (values.advanceddrives === "1") {
+                turn = 1;
+            }
+            let turnPts = Math.round(speed/turn);
+
+            let faction = values.faction;
+            let factionsymbol = "";
+            if (faction === "Klingon") {
+                factionsymbol = "https://files.d20.io/images/494961715/XBNJxsAasyGU_WX5Ub4XyQ/thumb.png?1784771002";
+            }
+            if (faction === "Federation") {
+                factionsymbol = "https://files.d20.io/images/494930908/_yxSf8Knwl4BMu3-K-GU2Q/thumb.png?1784753907";
+            }
+
+            let warpdrive = values.warpdrive || "Nominal";
+            let warpdrivestatus = "Green";
+            if (warpdrive === "Offline") {
+                warpdrivestatus = "Red"
+            }
+
+            setAttrs({
+                commandstatus: commandstatus,
+                lifesupportstatus: lifesupportstatus,
+                warpcorestatus: warpcorestatus,
+                hullstatus: hullstatus,
+                shieldstatus: shieldstatus,
+                firecontrolstatus: firecontrolstatus,
+                damaged1: damagedsystems[0],
+                damaged2: damagedsystems[1],
+                damaged3: damagedsystems[2],
+                damaged4: damagedsystems[3],
+                damaged5: damagedsystems[4],
+                damaged6: damagedsystems[5],
+                damaged7: damagedsystems[6],
+                damaged8: damagedsystems[7],
+                damaged9: damagedsystems[8],
+                damaged10: damagedsystems[9],
+                speed: speed,
+                turnpts: turnPts,
+                factionsymbol: factionsymbol,
+                fcdisplay: fcDisplay,
+                shieldpercent: shieldPercent,
+                hullpercent: hullpercent,
+                warpdrivestatus: warpdrivestatus,
+                impulsestatus: impulsestatus,
+                impulse1status: impulse1status,
+                impulse2status: impulse2status,
+                screenstatus: screenstatus,
+                impulsedisplay: impulsedisplay,
+                crewstatus: crewStatus,
+                cloakstatus: cloakstatus,
+                cloakdisplay: cloakdisplay,
+                screendisplay: screendisplay,
+                screenimg: screenimg,
+                fcimg: fcimg,
+                armourstatus: armourStatus,
+                torpedostatus: torpedoStatus,
+            });
+        });
+    });
