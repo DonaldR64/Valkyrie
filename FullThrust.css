@@ -1364,14 +1364,26 @@ input[type="hidden"][value="None"].cloak-status ~ .cloakstatus {
     align-items: center;
     padding: 3px;   
 }
-input[type="hidden"][value=0].torpedo-status ~ .torpedostatus {
-    display: none;
+input[type="hidden"][value="Red"].torpedo-status ~ .torpedostatus {
+    background-color: red;
+    display: grid;
 }
-input[type="hidden"]:not[value=0].torpedo-status ~ .torpedostatus {
+input[type="hidden"][value="Yellow"].torpedo-status ~ .torpedostatus {   
+    background-color:  yellow;
+}
+input[type="hidden"][value="Yellow"].torpedo-status ~ .torpedostatus h4{   
+    color:  black;
+}
+
+
+
+input[type="hidden"][value="Green"].torpedo-status ~ .torpedostatus {
     display: grid;
     background-color: green;
 }
-
+input[type="hidden"][value="None"].torpedo-status ~ .torpedostatus {
+    display: none;
+}
 
 
 

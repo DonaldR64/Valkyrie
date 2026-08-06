@@ -644,7 +644,7 @@
             <div class="firecontrolstatus">
                 <h4><span name="attr_fcdisplay"></span></h4>
             </div>
-            <input type="hidden" name="attr_torpedo_max" class="torpedo-status" value=0>
+            <input type="hidden" name="attr_torpedostatus" class="torpedo-status" value=0>
             <div class="torpedostatus">
                 <h4>Torpedo Magazine: <span name="attr_torpedo"></span></h4>
             </div>
@@ -679,7 +679,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advanceddrive","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advanceddrive","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak","torpedo","torpedo_max"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -906,6 +906,17 @@
                 damagedsystems.push(sys);
             }
 
+            let torpedos = values.torpedos || 0;
+            let torpedoMax = values.torpedos_max || 0;
+            let torpedoStatus = "Green";
+            if (torpedoMax > 0) {
+                let ratio = torpedos/torpedoMax;
+                if (ratio < 25%) {torpedoStatus = "Red"};
+                if (ration < 50%) {torpedoStatus = "Yellow"};
+            } else if (torpedoMax === 0) {
+                torpedoStatus = "None";
+            }
+
 
             let speed = parseInt(values.thrusters);
             let impulse1 = values.impulse1;
@@ -991,6 +1002,7 @@
                 screenimg: screenimg,
                 fcimg: fcimg,
                 armourstatus: armourStatus,
+                torpedostatus: torpedoStatus,
             });
         });
     });
