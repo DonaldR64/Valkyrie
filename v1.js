@@ -1369,7 +1369,9 @@ log("new Crew: " +newCrew)
 
 
     const StartGame = () => {
-  
+        _.each(ShipArray,ship => {
+            state.FullThrust.damageControl[ship.id] = "Vital";
+        })
 
     }
 
@@ -1624,7 +1626,7 @@ log(fc)
     }
 
 
-    const Helm = (msg) => {
+    const Orders = (msg) => {
         let Tag = msg.content.split(";");
         let id = Tag[1];
         let order = Tag[2];
@@ -1672,6 +1674,15 @@ log(fc)
                 ship.ImpulseDamage();
             }
         }
+
+        if (order === "Damage Control") {
+            let priority = Tag[3]; //Vital Systems, Defensive, Weapons, Impusle Engines, Fire Control
+            state.FullThrust.damageControl[id] = priority;
+            outputCard.body.push(priority + " Systems will be given priority for Damage Control Teams");
+        }
+
+
+
         
         PrintCard();
 
@@ -1679,7 +1690,26 @@ log(fc)
 
     }
 
+    const Engineering = (msg) => {
+        let Tag = msg.content.split(";");
+        let id = Tag[1];
+        let order = Tag[2];
+        let ship = ShipArray[id];
+        if (!ship) {
+            sendChat("","Error");
+            return;
+        }
+        SetupCard(ship.name,order,ship.faction);
+        if (order === "Damage Control") {
+            let priority = Tag[3]; //Vital Systems, Defensive, Weapons, Impusle Engines, Fire Control
+            state.FullThrust.damagecontrol[id] = priority;
+            outputCard.body.push(priority + " Systems will be given priority for Damage Control Teams");
+        }
 
+
+
+        PrintCard();
+    }
 
 
 
@@ -1978,6 +2008,7 @@ log(fc)
             turn: 1,
             losLines: [],
             phase: 0,
+            damageControl: {},
 
         }
 
@@ -2251,8 +2282,8 @@ log(fc)
             case '!TestPics':
                 TestPics();
                 break;
-            case '!Helm':
-                Helm(msg);
+            case '!Orders':
+                Orders(msg);
                 break;
 
 
