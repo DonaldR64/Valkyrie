@@ -20,7 +20,7 @@ const Main = (() => {
     }
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
-    const Projectiles = ["Pulse Torpedo","Photon Torpedo"]
+    const Projectiles = ["Photon Torpedo", "Photon Torpedo (SR)"]
 
 
     const DefineHexInfo = () => {
@@ -630,14 +630,18 @@ const Main = (() => {
                 let weaponType = aa["weapon" + w + "type"];
                 let weaponFacing = aa["weapon" + w + 'facing'].split("/").map((e) => parseInt(e));
                 let maxRange;
-                if (weaponType === "Class 1 Phaser") {maxRange = 6};
-                if (weaponType === "Class 2 Phaser") {maxRange = 12};
-                if (weaponType === "Class 3 Phaser") {maxRange = 18};
-                if (weaponType === "Disruptor") {maxRange = 6};
-                if (weaponType === "Disruptor Mk.2") {maxRange = 12};
-                if (Projectiles.includes(weaponType)) {
-                    maxRange = 15;
-                }
+                if (weaponType === "Beam 1") {maxRange = 12};
+                if (weaponType === "Beam 2") {maxRange = 24};
+                if (weaponType === "Beam 3") {maxRange = 36};
+                if (weaponType === "Disruptor I") {maxRange = 12};
+                if (weaponType === "Disruptor II") {maxRange = 24};
+                if (weaponType === "Disruptor III") {maxRange = 36};
+                if (weaponType === "Phaser Bank") {maxRange = 24};
+                if (weaponType === "Photon Torpedo") {maxRange = 30};
+                if (weaponType === "Photon Torpedo (SR)") {maxRange = 20};
+                if (weaponType === "Photon Torpedo (LR)") {maxRange = 45};
+
+
                 let weapon = {
                     number: w,
                     status: weaponStatus,
@@ -1068,14 +1072,17 @@ log("new Crew: " +newCrew)
         let types = [];
         _.each(ship.weaponArray, weapon => {
             if (types.includes(weapon.type) === false) {
+
                 types.push(weapon.type);
             }
         })
+        let order = "?{Fire";
         _.each(types,type => {
-            let abilityName = "Fire: " + type + "s";
-            let action = "!Fire;@{selected|token_id};@{target|token_id};" + type;
-            AddAbility(abilityName,action,ship.charID);
+            order += "|" + type;
         })
+        order += "}"
+        action = "!Fire;@{selected|token_id};@{target|token_id};" + order;
+        AddAbility("Tactical",action,ship.charID);
 
 
 
@@ -1688,27 +1695,6 @@ log(fc)
 
 
 
-    }
-
-    const Engineering = (msg) => {
-        let Tag = msg.content.split(";");
-        let id = Tag[1];
-        let order = Tag[2];
-        let ship = ShipArray[id];
-        if (!ship) {
-            sendChat("","Error");
-            return;
-        }
-        SetupCard(ship.name,order,ship.faction);
-        if (order === "Damage Control") {
-            let priority = Tag[3]; //Vital Systems, Defensive, Weapons, Impusle Engines, Fire Control
-            state.FullThrust.damagecontrol[id] = priority;
-            outputCard.body.push(priority + " Systems will be given priority for Damage Control Teams");
-        }
-
-
-
-        PrintCard();
     }
 
 
