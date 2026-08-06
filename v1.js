@@ -630,9 +630,9 @@ const Main = (() => {
                 let weaponType = aa["weapon" + w + "type"];
                 let weaponFacing = aa["weapon" + w + 'facing'].split("/").map((e) => parseInt(e));
                 let maxRange;
-                if (weaponType === "Beam 1") {maxRange = 12};
-                if (weaponType === "Beam 2") {maxRange = 24};
-                if (weaponType === "Beam 3") {maxRange = 36};
+                if (weaponType === "Phaser I") {maxRange = 12};
+                if (weaponType === "Phaser II") {maxRange = 24};
+                if (weaponType === "Phaser III") {maxRange = 36};
                 if (weaponType === "Disruptor I") {maxRange = 12};
                 if (weaponType === "Disruptor II") {maxRange = 24};
                 if (weaponType === "Disruptor III") {maxRange = 36};
