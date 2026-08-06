@@ -1370,13 +1370,11 @@ input[type="hidden"][value="Red"].torpedo-status ~ .torpedostatus {
 }
 input[type="hidden"][value="Yellow"].torpedo-status ~ .torpedostatus {   
     background-color:  yellow;
+    display: grid;
 }
 input[type="hidden"][value="Yellow"].torpedo-status ~ .torpedostatus h4{   
     color:  black;
 }
-
-
-
 input[type="hidden"][value="Green"].torpedo-status ~ .torpedostatus {
     display: grid;
     background-color: green;
