@@ -642,7 +642,7 @@ const Main = (() => {
 
 
                 let weapon = {
-                    number: w,
+                    pos: w-1,
                     status: weaponStatus,
                     name: weaponName,
                     type: weaponType,
@@ -1075,26 +1075,31 @@ log("new Crew: " +newCrew)
         for(let a=0;a<abilArray.length;a++) {
             abilArray[a].remove();
         } 
-        //Weapon Types
-        let types = [];
-        let fireNum = 1;
-        _.each(ship.weaponArray, weapon => {
-            let add = false;
+        //Weapons
+        let macros = {};
+        for (let w=0;w<ship.weaponArray.length;w++) {
+            let weapon = ship.weaponArray[w];
+            let type;
             if (Projectiles.includes(weapon.type)) {
-                add = true;
-                phrase = weapon.name + " " + weapon.type;
-            } else if (types.includes(weapon.type) === false) {
-                add = true;
-                types.push(weapon.type);
-                phrase = "Avail " + weapon.type + "s";
+                type = weapon.name + " " + weapon.type;
+                type = type.trim();
+            } else {
+                type = "Avail. " + weapon.type + "s";
             }
-            if (add === true) {
-                action = "!Fire;@{selected|token_id};@{target|token_id};" + phrase
-                abilityName = fireNum + ": Fire " + phrase;
-                AddAbility(abilityName,action,ship.charID);
+            if (macros[type]) {
+                macros[type].push(weapon.pos);
+            } else {
+                macros[type] = [weapon.pos];
             }
-        })
+        }
 
+        let keys = Object.keys(macros);
+        for (let i=0;i<keys.length;i++) {
+            action = "!Fire;@{selected|token_id};@{target|token_id};";
+            action += macros[keys[i]].toString();
+            abilityName = (i+1) + ": Fire " + keys[i];
+            AddAbility(abilityName,action,ship.charID);
+        }
 
         action = "!Orders;@{selected|token_id};?{Order|Dead Stop|Emergency Thrust";
         if (Attribute(ship.charID,"cloak",true) === "1") {
@@ -1754,13 +1759,7 @@ log(fc)
         let Tag = msg.content.split(";");
         let shooter = ShipArray[Tag[1]];
         let target = ShipArray[Tag[2]];
-        let weaponType = Tag[3].trim();
-        if (weaponType.includes("Avail")) {
-            weaponType = weaponType.replace("Avail ","");
-        } 
-
-log(weaponType)
-return
+        let weaponPos = Tag[3].split(",");
 
         if (!shooter) {
             sendChat("","Not valid shooter");
@@ -1794,26 +1793,28 @@ return
         }
         let shooterArcs = losResult.shooterArcs;
 
-        let weaponNum = 0;
         let weaponsFiring = [];
+        let weaponType;
 
-        for (let i=0;i<shooter.weaponArray.length;i++) {
-            let weapon = shooter.weaponArray[i];
-            let type = weapon.type;
+
+
+
+        for (let i=0;i<weaponPos.length;i++) {
+            let pos = weaponPos[i];
+            let weapon = shooter.weaponArray[pos];
+            weaponType = weapon.type;
             let facing = weapon.facing; //will be an array of facing #s
             let inArc = facing.some(item => shooterArcs.includes(item));
             let status = weapon.status;
-            if (losResult.distance <= weapon.maxRange && inArc === true && weaponType === type && weapon.status !== "Fired") {
-                weaponNum++;
-                weaponsFiring.push(weapon.number);
+            if (losResult.distance <= weapon.maxRange && inArc === true && weapon.status !== "Fired") {
+                weaponsFiring.push(pos);
             }
         }
 
+        let s = (weaponsFiring.length === 1) ? "":"s";
+        let s2 = (weaponsFiring.length === 1) ? "s":"";
 
-        let s = (weaponNum === 1) ? "":"s";
-        let s2 = (weaponNum === 1) ? "s":"";
-
-        if (weaponNum === 0) {
+        if (weaponsFiring.length === 0) {
             errorMsg.push("No Weapons of this Class with Range/Arc/Power");
         }
 
@@ -1823,11 +1824,15 @@ return
         }
 
 
-        outputCard.body.push(weaponNum + " " + weaponType + s + " fire" + s2 + " at the Target");
+
+        outputCard.body.push(weaponsFiring.length + " " + weaponType + s + " fire" + s2 + " at the Target");
         let totalDamage = 0;
         let hits = 0;
         let weaponTip = "";
-        let sensorsOffline = Attribute(shooter.charID,"sensors") === "Offline" ? true:false;
+
+log(weaponType)
+PrintCard()
+return
 
 
         if (Projectiles.includes(weaponType)) {
