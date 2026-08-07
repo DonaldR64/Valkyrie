@@ -1084,6 +1084,17 @@ log("new Crew: " +newCrew)
         action = "!Fire;@{selected|token_id};@{target|token_id};" + order;
         AddAbility("Tactical",action,ship.charID);
 
+        action = "!Orders;@{selected|token_id};?{Order|Dead Stop|Emergency Thrust";
+        if (Attribute(ship.charID,"cloak",true) === "1") {
+            action += "|Cloak/Decloak";
+        }
+        action += "}";
+        AddAbility("Helm",action,ship.charID);
+
+        action = "!Orders;@{selected|token_id};Damage Control;?{System to Prioritze|Vital Systems|Defensive|Weapons|Impulse Engines|Fire Control}";
+        AddAbility("Damage Control",action,ship.charID);
+
+
 
 
     }
