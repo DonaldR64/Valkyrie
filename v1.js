@@ -1080,7 +1080,7 @@ log("new Crew: " +newCrew)
         let order = "?{Fire";
         let typeKeys = Object.keys(types);
         for (let i=0;i<typeKeys.length;i++) {
-            let s = (types[typeKeys[i]] > 1) ? "(" + types[typeKeys[i]] + ")":"";
+            let s = (types[typeKeys[i]] > 1) ? "(" + types[typeKeys[i]] + ") ":"";
             order += "|" + s + typeKeys[i];
         }
         order += "}"
