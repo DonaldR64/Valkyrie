@@ -1988,7 +1988,11 @@ log(weapon)
                 let fxObj =  findObjs({type: "custfx", name: fxName})[0];
                 let pt1 = HexMap[shooter.hexLabel].centre;
                 let pt2 = HexMap[target.hexLabel].centre;
-                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));            }
+                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));            
+///maybe if spread do a delayed fire using stuff re mortar fx in forum
+
+
+            }
         } else {
             //Beams etc
 
