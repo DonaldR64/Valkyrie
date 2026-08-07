@@ -556,7 +556,7 @@
 
             <input type="hidden" name="attr_screenstatus" class="screenpos-status" value="Off">
             <div class="screenpos">
-                <img alt="Screen Generator" name="attr_screenimg"/>
+                <img src="https://files.d20.io/images/496642751/GgZCMSFRF7SY0GVrmCUMSA/thumb.png?1786064085"/>
             </div>
             <input type="hidden" name="attr_firecontrolstatus" class="fireconpos-status" value="Off">
             <div class="fireconpos">
@@ -712,14 +712,11 @@
             let screens = parseInt(values.screens) || 0;
             let screensMax = parseInt(values.screens_max) || 0;
             let screenstatus = "Green";
-            let screendisplay,screenimg;
+            let screendisplay;
             if (screensMax === 0) {
                 screenstatus = "None";
                 screendisplay = "";
-            } else {
-                screenimg = "https://files.d20.io/images/496441632/qS4KRMlYcWOi7jqFGocFKQ/thumb.png?1785890300";
-                screendisplay = "Shield Generators: " + screens;
-            }
+            } 
             if (screens === 1 && screensMax === 2) {
                 screenstatus = "Yellow";
             }
@@ -728,7 +725,6 @@
                 screendisplay = "Shield Generators: Offline";
             }
             if (values.advancedscreens === "1") {
-                screenimg = "https://files.d20.io/images/496441633/fR5Of0FXd3Gs0R2-Mw076Q/thumb.png?1785890300";
                 screendisplay = "Adv. " + screendisplay;
             }
 
