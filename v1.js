@@ -705,7 +705,6 @@ const Main = (() => {
             }
             let hullDamage = 0;
             let armourDamage = 0;
-            let hull = parseInt(this.token.get("bar1_value"));
             let armour = parseInt(Attribute(this.charID,"armour")) || 0;
             let shieldDamage = 0;
 
@@ -749,15 +748,21 @@ const Main = (() => {
                     n = " All the "
                 }
                 outputCard.body.push("Shields took " + n + " Damage");
-                SetShields(shields);
+                this.SetShields(shields);
+                if (shields === 0) {
+                    outputCard.body.push("[#ff0000]Shields are Down![/#]");
+                }
             }
             if (armourDamage > 0) {
                 outputCard.body.push("Armour took " + armourDamage + " Damage");
-                AttributeSet(this.charID,"armour",level);
+                AttributeSet(this.charID,"armour",armour);
+                if (armour === 0) {
+                    outputCard.body.push("[#ff0000]Armour is Gone![/#]");
+                }
             }
             if (hullDamage > 0) {
                 outputCard.body.push(hullDamage + " went through to the Hull");
-                //this.HullDamage(hullDamage);
+                this.HullDamage(hullDamage);
             }
 
 
@@ -778,15 +783,10 @@ const Main = (() => {
         }
 
  
-
-
-
-
-
         HullDamage(damage) {
             let startingHull = parseInt(this.token.get("bar1_value"));
             let hullMax = parseInt(this.token.get("bar1_max"));
-            let hull = Math.max(0,(startingHull - damage));
+            let hull = Math.max(0,(startingHull - damage)); // if 0 is destroyed
             this.hull = hull;
             if (hull > 0) {
                 let levels = 4;
@@ -840,10 +840,6 @@ log("new Crew: " +newCrew)
 
             let needed = finishLevel + (finishLevel - 1 - startingLevel);
             let roll, roll2;
-
-
-
-
             //command
             roll = randomInteger(6);
             roll2 = randomInteger(6);
