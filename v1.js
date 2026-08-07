@@ -1970,19 +1970,12 @@ log(weapon)
             }
 
 
-
-PrintCard();
-return;
-
-
-
-
-
             let pt1 = HexMap[shooter.hexLabel].centre;
             let pt2 = HexMap[target.hexLabel].centre;
             spawnFxBetweenPoints(pt1, pt2,"missile-fire",Campaign().get("playerpageid"));
         } else {
-      
+            //Beams etc
+
 
 
 
