@@ -899,39 +899,12 @@ log("new Crew: " +newCrew)
             //impulse
             let impulse1 = Attribute(this.charID,"impulse1");
             let impulse2 = Attribute(this.charID,"impulse2");
-            let oneEngine = false;
-            if (impulse1 === "Offline" || impulse2 === "Offline") {
-                oneEngine = true;
-            }
-            let which = randomInteger(2);
-            if (which === 1 && impulse1 === "Offline") {
-                which = 2;
-            }
-            if (which === 2 && impulse2 === "Offline") {
-                if (impulse1 === "Offline") {
-                    which = 3;
-                } else {
-                    which = 1;
-                }
-            }
-
-            if (which !== 3) { //ie. both not offline
+            if (impulse1 !== "Offline" ||  impulse2 !== "Offline") {
                 let roll = randomInteger(6);
-                
                 if (roll <= needed) {
-                    AttributeSet(this.charID,"impulse" + which,"Offline");
-                    outputCard.body.push("[#ff0000]Impulse Engines were Hit[/#]");
-                    if (oneEngine === true) {
-                        outputCard.body.push("[#ff0000]They are now Offline and the Ship will Drift until repaired[/#]");
-                        this.token.set(SM.nopower,true);
-                    } else {
-                        outputCard.body.push("[#ff0000]Thrusters and Turn are Halved[/#]");
-                    }
-                    damagedSystems.push("Impulse Engines " + which);
-                    outputCard.body.push("[hr]");
+                    this.ImpulseDamage();
                 }
             }
-
 
             //systems with #s
             let systems = {
@@ -1010,10 +983,41 @@ log("new Crew: " +newCrew)
         }
 
         ImpulseDamage() {
+            let impulse1 = Attribute(this.charID,"impulse1");
+            let impulse2 = Attribute(this.charID,"impulse2");
+            let oneEngine = false;
+            if (impulse1 === "Offline" || impulse2 === "Offline") {
+                oneEngine = true;
+            }
+            let which = randomInteger(2);
+            if (which === 1 && impulse1 === "Offline") {
+                which = 2;
+            }
+            if (which === 2 && impulse2 === "Offline") {
+                if (impulse1 === "Offline") {
+                    which = 3;
+                } else {
+                    which = 1;
+                }
+            }
+            let speed = parseInt(ship.token.get("bar3_value"));
 
-
-
-
+            if (which !== 3) { //ie. both not offline
+                AttributeSet(this.charID,"impulse" + which,"Offline");
+                outputCard.body.push("[#ff0000]Impulse Engines are Damaged[/#]");
+                if (oneEngine === true) {
+                    outputCard.body.push("[#ff0000]They are now Offline and the Ship will Drift until repaired[/#]");
+                    this.token.set(SM.nopower,true);
+                    this.token.set("bar3_value",0);
+                } else {
+                    outputCard.body.push("[#ff0000]Thrusters and Turn are Halved[/#]");
+                    let newSpeed = Math.round(speed/2);
+                    this.token.set("bar3_value",newSpeed);  
+                    outputCard.body.push("Speed this turn is " + newSpeed);
+                }
+                damagedSystems.push("Impulse Engines " + which);
+                outputCard.body.push("[hr]");
+            }
         }
 
 
@@ -1745,6 +1749,10 @@ log(fc)
 
 
         SetupCard(ship.name,order,ship.faction);
+        if (speed === 0 && (order === "Dead Stop" || order === "Emergency Thrust")) {
+            outputCard.body.push("The Ship is Dead in the Water and cannot do this");
+            order = "None";
+        }
         if (order === 'Dead Stop') {
             outputCard.body.push("The Ship comes to a Dead Stop");
             outputCard.body.push("Max turn " + (turnPts + 1) + " Points");
@@ -1760,17 +1768,14 @@ log(fc)
                 outputCard.body.push("Speed this turn is " + newSpeed);
                 outputCard.body.push("Max turn is " + newTurnPts + " Points");
                 if (roll > 3) {
-                    outputCard.body.push("The Impulse Engines however are damaged by the Maneuvre");
+                    outputCard.body.push("After the Maneuvre, the engines are Damaged");
                     ship.ImpulseDamage();
                 }
             }
             if (roll === 6) {
                 newSpeed = Math.round(speed /2);
                 newTurnPts = Math.round(newSpeed/turn);
-                ship.ImpulseDamage();
                 outputCard.body.push("The Impulse Engines are pushed, but immediately take damage");
-                outputCard.body.push("Speed this turn is " + newSpeed);
-                outputCard.body.push("Max turn is " + newTurnPts + " Points");
                 ship.ImpulseDamage();
             }
         }
