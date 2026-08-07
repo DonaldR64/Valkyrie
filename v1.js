@@ -896,23 +896,37 @@ log("new Crew: " +newCrew)
             }
 
             //impulse
-            let impulse = Attribute(this.charID,"impulse");
-            if (impulse !== "Offline") {
+            let impulse1 = Attribute(this.charID,"impulse1");
+            let impulse2 = Attribute(this.charID,"impulse2");
+            let oneEngine = false;
+            if (impulse1 === "Offline" || impulse2 === "Offline") {
+                oneEngine = true;
+            }
+            let which = randomInteger(2);
+            if (which === 1 && impulse1 === "Offline") {
+                which = 2;
+            }
+            if (which === 2 && impulse2 === "Offline") {
+                if (impulse1 === "Offline") {
+                    which = 3;
+                } else {
+                    which = 1;
+                }
+            }
+
+            if (which !== 3) { //ie. both not offline
                 let roll = randomInteger(6);
-                let result = "Offline";
+                
                 if (roll <= needed) {
-                    if (impulse === "Offline") {
-                        result = "Offline";
-                    } 
-                    AttributeSet(this.charID,"impulse",result);
-                    outputCard.body.push("[#ff0000]Impulse Engines were Hit and are now " + result + "[/#]");
-                    if (result === "Offline") {
-                        outputCard.body.push("[#ff0000]The Ship will Drift until repaired[/#]");
+                    AttributeSet(this.charID,"impulse" + which,"Offline");
+                    outputCard.body.push("[#ff0000]Impulse Engines were Hit[/#]");
+                    if (oneEngine === true) {
+                        outputCard.body.push("[#ff0000]They are now Offline and the Ship will Drift until repaired[/#]");
                         this.token.set(SM.nopower,true);
                     } else {
                         outputCard.body.push("[#ff0000]Thrusters and Turn are Halved[/#]");
                     }
-                    damagedSystems.push("Impulse Engines");
+                    damagedSystems.push("Impulse Engines " + which);
                     outputCard.body.push("[hr]");
                 }
             }
@@ -938,9 +952,7 @@ log("new Crew: " +newCrew)
                         if (current === 0) {
                             if (system === "Shield Generator") {
                                 outputCard.body.push("[#ff0000]Shields are now Offline[/#]");
-                                AttributeSet(this.charID,"shields",0);
-                                this.token.set("bar2_value",0);
-                                this.token.set("aura1_color","transparent");
+                                this.SetShields(0);
                             }
                             if (system === "Fire Control") {
                                 outputCard.body.push("[#ff0000]Weapons cannot fire[/#]");
@@ -954,8 +966,8 @@ log("new Crew: " +newCrew)
             
             //systems with Nominal vs Offline
             systems = {
-                "Sensors": "sensors",
                 "Warp Drive": "warpdrive",
+                "Cloaking Device": "cloak",
             }
             keys = Object.keys(systems);
             for (let i=0;i<keys.length;i++) {
