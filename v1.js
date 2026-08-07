@@ -1709,12 +1709,16 @@ log(fc)
         if (order === "Cloak/Decloak") {
             if (ship.token.get("tint_color") === "transparent") {
                 ship.token.set("tint_color","#000000");
-                verb = " Cloaks"
+                outputCard.body.push("The Ship is now Cloaked");
+                outputCard.body.push("Shields and Weapons do not function while cloaked");
             } else {
                 ship.token.set("tint_color","transparent");
-                verb = " Decloaks";
+                outputCard.body.push("Shields and Weapons are back Online");
             }
-            outputCard.body.push("The Ship " + verb);
+
+
+
+
         }
 
 
