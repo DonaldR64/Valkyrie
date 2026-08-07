@@ -1529,6 +1529,10 @@ log(fc)
 
                 AttributeSet(ship.charID,"damagedsystems","");
 
+                let torps = parseInt(Attribute(ship.charID,"torpedo",true)) || 0;
+                AttributeSet(ship.charID,"torpedo",torps);
+
+
                 let hullID = AttributeID(ship.charID,"hull");
                 let shieldID = AttributeID(ship.charID,"shields");
                 let speedID = AttributeID(ship.charID,"speed");
@@ -1603,9 +1607,9 @@ log(fc)
                 AttributeSet(ship.charID,"warpdrive","Offline");
 
 
-                let cloak = Attribute(ship.charID,"cloaking",true);
+                let cloak = Attribute(ship.charID,"cloak",true);
                 if (cloak === "1") {
-                    AttributeSet(ship.charID,"cloaking","Offline");
+                    AttributeSet(ship.charID,"cloak","Offline");
                 }
 
                 AttributeSet(ship.charID,"screens",0);
