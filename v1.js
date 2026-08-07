@@ -619,6 +619,7 @@ const Main = (() => {
             this.player = player;
             this.token = token;
             this.type = aa.type;
+            this.mass = parseInt(aa.mass);
 
             this.hullMax = parseInt(aa.hull_max) || 0;
 
@@ -1024,11 +1025,21 @@ log("new Crew: " +newCrew)
                 //warp explosion, check for damage in area, 200x200
                 //remove at start of next turn using name 
                 summonToken("-Oz3qbaCI9NYUvt2iNwB",this.token.get("left"),this.token.get("top"),200,0,"map");
-                let damage = Math.round(Math.sqrt(parseInt(Attribute(this.charID,"mass"))));
+                let dice = Math.round(this.mass/25);
                 _.each(ShipArray,ship => {
                     if (ship.id !== this.id) {
                         let d = this.Distance(ship);
                         if (d <= 1) {
+                            let blastDamage = 0;
+                            for (let i=0;i<dice;i++) {
+                                blastDamage += randomInteger(6);
+                            }
+                            let info = {
+                                normal: 0,
+                                sap: blastDamage,
+                                ap: 0,
+                                pen: 0,
+                            }
                             outputCard.body.push("[hr]");
                             outputCard.body.push(ship.name + " is caught by the Explosion of the Warp Core, taking " + damage + " Damage");
                             ship.Damage(damage);
@@ -1601,7 +1612,7 @@ log(thrusters)
                 let fc = parseInt(Attribute(ship.charID,"firecontrol",true)) || 1;
                 AttributeSet(ship.charID,"firecontrol",fc);
 log(fc)
-                let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
+                let crew = Math.ceil(ship.mass/20);
                 AttributeSet(ship.charID,"crew",crew);
                 AttributeSet(ship.charID,"crew",crew,true);
 
@@ -1697,12 +1708,6 @@ log(fc)
                 }
 
                 AttributeSet(ship.charID,"screens",0);
-
-                
-
-                let crew = Math.ceil(parseInt(Attribute(ship.charID,"mass"))/20);
-                AttributeSet(ship.charID,"crew",crew);
-                AttributeSet(ship.charID,"crew",crew,true);
 
                 AttributeSet(ship.charID,"damagedsystems","");
 
