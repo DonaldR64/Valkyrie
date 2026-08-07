@@ -343,6 +343,7 @@ input[type="hidden"][value="None"].d10-status ~ .d10status{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: black;
 }
 
 /* Box Positions for Weapon Pics */
