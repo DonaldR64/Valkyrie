@@ -1663,6 +1663,7 @@ log(fc)
                 state.FullThrust.shipState[ship.id] = {
                     damageControl: "Vital",
                     shields: shieldsMax,
+                    emergencyThrusts: 0,
                 }
 
 
@@ -1753,14 +1754,22 @@ log(fc)
             outputCard.body.push("The Ship is Dead in the Water and cannot do this");
             order = "None";
         }
+        if (order === "Emergency Thrust" && ship.token.get("tint_color") === "#000000") {
+            outputCard.body.push("Pushing the Engines this way will remove our Cloak!");
+            order = "None";
+        }
         if (order === 'Dead Stop') {
             outputCard.body.push("The Ship comes to a Dead Stop");
             outputCard.body.push("Max turn " + (turnPts + 1) + " Points");
         } 
 
         if (order === "Emergency Thrust") {
+log("Here")
             let newSpeed, newTurnPts;
             let roll = randomInteger(6);
+            let mod = state.FullThrust.shipState[ship.id].emergencyThrusts;
+log(mod)
+            roll += mod;
             let which = "";
             if (roll < 6) {
                 newSpeed = Math.round(speed * 1.5);
@@ -1773,7 +1782,7 @@ log(fc)
                     which = ship.ImpulseDamage();
                 }
             }
-            if (roll === 6) {
+            if (roll >= 6) {
                 newSpeed = Math.round(speed /2);
                 newTurnPts = Math.round(newSpeed/turn);
                 outputCard.body.push("The Impulse Engines are pushed, but immediately take damage");
@@ -1782,8 +1791,9 @@ log(fc)
             if (which !== "") {
                 let ds = Attribute(this.charID,"damagedsystems");
                 ds += "," + "Impulse Engine " + which;
-                AttributeSet(this.charID,"damagedsystems",ds);
+                AttributeSet(ship.charID,"damagedsystems",ds);
             }
+            state.FullThrust.shipState[ship.id].emergencyThrusts++;
         }
 
         if (order === "Damage Control") {
