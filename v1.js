@@ -1970,9 +1970,25 @@ log(weapon)
             }
 
 
-            let pt1 = HexMap[shooter.hexLabel].centre;
-            let pt2 = HexMap[target.hexLabel].centre;
-            spawnFxBetweenPoints(pt1, pt2,"missile-fire",Campaign().get("playerpageid"));
+            let fxName;
+            if (weaponType.includes("Photon")) {
+                if (mode.includes("Spread")) {
+                    fxName = "PhotonSpread";
+                } else {
+                    fxName = "Photon";
+                }
+            }
+
+
+            if (fxName) {
+                let fxObj =  findObjs({type: "custfx", name: fxName})[0];
+                let pt1 = HexMap[shooter.hexLabel].centre;
+                let pt2 = HexMap[target.hexLabel].centre;
+log(pt1)
+log(pt2)
+
+
+                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));            }
         } else {
             //Beams etc
 
@@ -1994,21 +2010,6 @@ log(weapon)
 
 
         }
-
-        if (hits > 0) {
-            weaponTip = '[' + hits + '](#" class="showtip" title="' + weaponTip + ')';
-            let s = (hits === 1) ? "":"s";
-            outputCard.body.push(weaponTip + " hit" + s + ", doing " + totalDamage + " Damage");
-            target.Damage(totalDamage);
-        } else {
-            weaponTip = '[No Hits](#" class="showtip" title="' + weaponTip + ')';
-            let s = (weaponNum === 1) ? "":"s";
-            outputCard.body.push(weaponTip + " with " + weaponType + s)
-        }
-
-        _.each(weaponsFiring,number => {
-            AttributeSet(shooter.charID,"weapon" + number + "status","Fired");
-        })
 
 
         PrintCard();
