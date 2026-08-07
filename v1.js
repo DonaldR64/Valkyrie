@@ -690,40 +690,79 @@ const Main = (() => {
             return arcs;
         }
 
-        Damage(damage) {
+        Damage(info) {
+            //info => {normal: X, sap: Y, ap: Z, pen: P};
+            //do normal first until shields exhausted then apply to armour and then hull
+            //SAP is similar, 1/2 rnd to shields etc
+            //AP is 1 to shields, then 1 to armour, then hull
+            //pen is straight to hull
             let shields = parseInt(this.token.get("bar2_value"));
             let shieldsMax = parseInt(this.token.get("bar2_max"));
+            if (shields/shieldsMax < 0.5) {
+                //if shields buckling then becomes SAP
+                info.sap += info.normal;
+                info.normal = 0;
+            }
+            let hullDamage = 0;
+            let armourDamage = 0;
+            let hull = parseInt(this.token.get("bar1_value"));
+            let armour = parseInt(Attribute(this.charID,"armour")) || 0;
             let shieldDamage = 0;
-            if (shields > 0) {
-                if (shields > Math.floor(shieldsMax/2)) {
-                    shieldDamage = Math.min(shields,damage);
-                } else {
-                    outputCard.body.push("Shields are Buckling!");
-                    shieldDamage = Math.min(shields,Math.round(damage/2));
-                }
-            }
-            let hullDamage = Math.max(0,(damage - shieldDamage));
 
-            if (shieldDamage > 0 && hullDamage === 0) {
-                outputCard.body.push("Shields Absorb all the Damage");
+            if (info.normal > 0) {
+                shieldDamage = Math.min(info.normal,shields);
+                info.normal -= shieldDamage;
+                shields -= shieldDamage;
+                armourDamage = Math.min(info.normal,armour);
+                armour -= armourDamage;
+                info.normal -= armourDamage;
+                hullDamage += info.normal;
             }
-            if (shieldDamage > 0 && hullDamage > 0) {
-                outputCard.body.push("Shields Absorb " + shieldDamage + " Damage");
-                outputCard.body.push("The remaining " + hullDamage + " Damage is on the Hull");
+            if (info.sap > 0) {
+                shieldDamage = Math.min(Math.round(info.sap/2),shields);
+                info.sap -= shieldDamage;
+                shields -= shieldDamage;
+                armourDamage = Math.min(info.sap,armour);
+                armour -= armourDamage;
+                info.sap -= armourDamage;
+                hullDamage += info.sap;
             }
-            if (shieldDamage === 0) {
-                outputCard.body.push("All the Damage is taken on the Hull")
-            } else {
-                shields = shields - shieldDamage;
-                this.SetShields(shields);
-                if (shields === 0) {
-                    outputCard.body.push("Shields are Down!");
-                }
+            if (info.ap > 0) {
+                shieldDamage = Math.min(1,shields);
+                info.ap -= shieldDamage;
+                shields -= shieldDamage;
+                armourDamage = Math.min(1,armour);
+                armour -= armourDamage;
+                info.ap -= armourDamage;
+                hullDamage += info.ap;
+            }
+            if (info.pen > 0) {
+                armourDamage = Math.min(info.pen,armour);
+                armour -= armourDamage;
+                info.pen -= armourDamage;
+                hullDamage += info.pen;
             }
 
+            if (shieldDamage > 0) {
+                let n = shieldDamage;
+                if (armourDamage === 0 && hullDamage === 0) {
+                    n = " All the "
+                }
+                outputCard.body.push("Shields took " + n + " Damage");
+                SetShields(shields);
+            }
+            if (armourDamage > 0) {
+                outputCard.body.push("Armour took " + armourDamage + " Damage");
+                AttributeSet(this.charID,"armour",level);
+            }
             if (hullDamage > 0) {
-                this.HullDamage(hullDamage);
+                outputCard.body.push(hullDamage + " went through to the Hull");
+                //this.HullDamage(hullDamage);
             }
+
+
+
+            
         }
 
         SetShields(level) {
@@ -737,6 +776,8 @@ const Main = (() => {
             if (shieldPercent === 0) {shieldstatus = "transparent"};
             this.token.set("aura1_color",shieldstatus);
         }
+
+ 
 
 
 
@@ -1864,16 +1905,32 @@ log(weapon)
             let s = (mode === "Spread [3]") ? "s":"";
             let o = (s === "s") ? "spread of 3 ":"single ";
             let miss = (s === "s") ? " miss":" misses";
-            let hit = (s === "s") ? " Hit!":"Hits!";
+            let hit = (s === "s") ? " Hit!":" Hits!";
             let weaponName = weaponType;
             outputCard.body.push(shooter.name + " fires a " + o + weaponName + s + " at " + target.name);
 
             let hitRoll = randomInteger(6);
             if (hitRoll >= toHit) {
                 outputCard.body.push("The " + weaponName + s + hit);
-
-
-                 
+                let damageRoll1 = randomInteger(6);
+                let damageRoll2 = randomInteger(6);
+                let damage;
+                let info = {
+                    normal: 0,
+                    sap: 0,
+                    ap: 0,
+                    pen: 0,
+                }
+                let damageType = "Normal";
+                if (s === "s") {
+                    damage = Math.max(damageRoll1,damageRoll2);
+                    info.normal = damage;
+                } else {
+                    damage = damageRoll1;
+                    info.sap = damage;
+                }
+                outputCard.body.push(damage + " Damage is done");
+                target.Damage(info);
             } else {
                 outputCard.body.push("The " + weaponName + s + miss);
             }
@@ -1892,6 +1949,10 @@ return;
             spawnFxBetweenPoints(pt1, pt2,"missile-fire",Campaign().get("playerpageid"));
         } else {
       
+
+
+
+
                 let fxObj =  findObjs({type: "custfx", name: "Beam2"})[0];
                 let pt1 = HexMap[shooter.hexLabel].centre;
                 let pt2 = HexMap[target.hexLabel].centre;
