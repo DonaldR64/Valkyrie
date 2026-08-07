@@ -1069,17 +1069,20 @@ log("new Crew: " +newCrew)
             abilArray[a].remove();
         } 
         //Weapon Types
-        let types = [];
+        let types = {};
         _.each(ship.weaponArray, weapon => {
-            if (types.includes(weapon.type) === false) {
-
-                types.push(weapon.type);
+            if (!types[weapon.type]) {
+                types[weapon.type] = 1;
+            } else {
+                types[weapon.type]++;
             }
         })
         let order = "?{Fire";
-        _.each(types,type => {
-            order += "|" + type;
-        })
+        let types = Object.keys(types);
+        for (let i=0;i<types.length;i++) {
+            let s = (types[i] > 1) ? "s":"";
+            order += "|" + type + s;
+        }
         order += "}"
         action = "!Fire;@{selected|token_id};@{target|token_id};" + order;
         AddAbility("Tactical",action,ship.charID);
