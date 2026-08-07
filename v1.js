@@ -716,24 +716,32 @@ const Main = (() => {
                 outputCard.body.push("All the Damage is taken on the Hull")
             } else {
                 shields = shields - shieldDamage;
-                this.token.set("bar2_value",shields);
-                this.shields = shields;
-                let shieldstatus = "#00ff00";
-                let shieldPercent = Math.round(shields/shieldsMax * 100);
-                if (shieldPercent <= 75) {shieldstatus = "#ffff00"};
-                if (shieldPercent <= 50) {shieldstatus = "#FFA500"};
-                if (shieldPercent <= 25) {shieldstatus = "#ff0000"};
-                if (shieldPercent === 0) {
+                this.SetShields(shields);
+                if (shields === 0) {
                     outputCard.body.push("Shields are Down!");
-                    shieldstatus = "transparent";
-                };
-                this.token.set("aura1_color",shieldstatus);
+                }
             }
 
             if (hullDamage > 0) {
                 this.HullDamage(hullDamage);
             }
         }
+
+        SetShields(level) {
+            this.token.set("bar2_value",number);
+            this.shields = number;
+            let shieldstatus = "#00ff00";
+            let shieldPercent = Math.round(level/this.shieldsMax * 100);
+            if (shieldPercent <= 75) {shieldstatus = "#ffff00"};
+            if (shieldPercent <= 50) {shieldstatus = "#FFA500"};
+            if (shieldPercent <= 25) {shieldstatus = "#ff0000"};
+            if (shieldPercent === 0) {shieldstatus = "transparent"};
+            this.token.set("aura1_color",shieldstatus);
+        }
+
+
+
+
 
         HullDamage(damage) {
             let startingHull = parseInt(this.token.get("bar1_value"));
@@ -1391,7 +1399,7 @@ log("new Crew: " +newCrew)
 
     const StartGame = () => {
         _.each(ShipArray,ship => {
-            state.FullThrust.damageControl[ship.id] = "Vital";
+            state.FullThrust.shipState[ship.id].damageControl = "Vital";
         })
 
     }
@@ -1702,7 +1710,7 @@ log(fc)
 
         if (order === "Damage Control") {
             let priority = Tag[3]; //Vital Systems, Defensive, Weapons, Impusle Engines, Fire Control
-            state.FullThrust.damageControl[id] = priority;
+            state.FullThrust.shipState[id].damageControl = priority;
             outputCard.body.push(priority + " Systems will be given priority for Damage Control Teams");
         }
 
@@ -1711,9 +1719,13 @@ log(fc)
                 ship.token.set("tint_color","#000000");
                 outputCard.body.push("The Ship is now Cloaked");
                 outputCard.body.push("Shields and Weapons do not function while cloaked");
+                state.FullThrust.shipState[id].shields = parseInt(ship.token.get("bar2_value"));
+                ship.SetShields(0);
             } else {
                 ship.token.set("tint_color","transparent");
                 outputCard.body.push("Shields and Weapons are back Online");
+                let shields = state.FullThrust.shipState[id].shields;
+                ship.SetShields(shields);
             }
 
 
@@ -2028,7 +2040,7 @@ log(fc)
             turn: 1,
             losLines: [],
             phase: 0,
-            damageControl: {},
+            shipState: {},
 
         }
 
