@@ -20,7 +20,7 @@ const Main = (() => {
     }
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
-    const Projectiles = ["Photon Torpedo", "Photon Torpedo (SR)", "Photon Torpedo (LR)"]
+    const Projectiles = ["Photon Torpedo", "Short Range Photon Torpedo", "Long Range Photon Torpedo"]
 
 
     const DefineHexInfo = () => {
@@ -633,12 +633,12 @@ const Main = (() => {
                 if (weaponType === "Phaser I") {maxRange = 12};
                 if (weaponType === "Phaser II") {maxRange = 24};
                 if (weaponType === "Phaser III") {maxRange = 36};
-                if (weaponType === "Disruptor I") {maxRange = 12};
-                if (weaponType === "Disruptor II") {maxRange = 24};
+                if (weaponType === "Disruptor") {maxRange = 12};
+                if (weaponType === "Heavy Disruptor") {maxRange = 24};
                 if (weaponType === "Phaser Bank") {maxRange = 24};
                 if (weaponType === "Photon Torpedo") {maxRange = 30};
-                if (weaponType === "Photon Torpedo (SR)") {maxRange = 20};
-                if (weaponType === "Photon Torpedo (LR)") {maxRange = 45};
+                if (weaponType === "Short Range Photon Torpedo") {maxRange = 20};
+                if (weaponType === "Long Range Photon Torpedo") {maxRange = 45};
 
 
                 let weapon = {
@@ -1098,6 +1098,9 @@ log("new Crew: " +newCrew)
             action = "!Fire;@{selected|token_id};@{target|token_id};";
             action += macros[keys[i]].toString();
             abilityName = (i+1) + ": Fire " + keys[i];
+            if (keys[i].includes("Photon")) {
+                action += ";" + "?{Mode|Single|Spread [3]}";
+            }
             AddAbility(abilityName,action,ship.charID);
         }
 
@@ -1760,6 +1763,7 @@ log(fc)
         let shooter = ShipArray[Tag[1]];
         let target = ShipArray[Tag[2]];
         let weaponPos = Tag[3].split(",");
+        let mode = Tag[4] || "None"; //Single, Spread or Proximity for Photons
 
         if (!shooter) {
             sendChat("","Not valid shooter");
@@ -1774,7 +1778,7 @@ log(fc)
             return;
         }
 
-        SetupCard(shooter.name,target.name,shooter.faction);
+        SetupCard(shooter.name,"Tactical Station",shooter.faction);
 
         if (SM.ooc === true) {
             errorMsg.push("Ship is Out of Control and Cannot Fire");
@@ -1795,27 +1799,44 @@ log(fc)
 
         let weaponsFiring = [];
         let weaponType;
-
-
-
+        let conditions = [];
 
         for (let i=0;i<weaponPos.length;i++) {
             let pos = weaponPos[i];
             let weapon = shooter.weaponArray[pos];
+log(weapon)
             weaponType = weapon.type;
             let facing = weapon.facing; //will be an array of facing #s
             let inArc = facing.some(item => shooterArcs.includes(item));
             let status = weapon.status;
-            if (losResult.distance <= weapon.maxRange && inArc === true && weapon.status !== "Fired") {
-                weaponsFiring.push(pos);
+            if (inArc === false) {
+                conditions.push("Arc");
+                continue;
             }
+            if (losResult.distance > weapon.maxRange) {
+                conditions.push("Range");
+                break;
+            }
+            if (weapon.status === "Fired") {
+                conditions.push("Fired");
+                continue;
+            }
+            weaponsFiring.push(pos);
         }
 
         let s = (weaponsFiring.length === 1) ? "":"s";
         let s2 = (weaponsFiring.length === 1) ? "s":"";
 
         if (weaponsFiring.length === 0) {
-            errorMsg.push("No Weapons of this Class with Range/Arc/Power");
+            if (conditions.includes("Range")) {
+                errorMsg.push("Target is out of Range of this Weapon");
+            }
+            if (conditions.includes("Arc")) {
+                errorMsg.push("One or More Weapons are Out of Arc");
+            }
+            if (conditions.includes("Fired")) {
+                errorMsg.push("One or More Weapons have Already Fired");
+            }
         }
 
         if (ErrorMsg(errorMsg)) {
@@ -1825,31 +1846,42 @@ log(fc)
 
 
 
-        outputCard.body.push(weaponsFiring.length + " " + weaponType + s + " fire" + s2 + " at the Target");
         let totalDamage = 0;
         let hits = 0;
         let weaponTip = "";
-
-log(weaponType)
-PrintCard()
-return
-
 
         if (Projectiles.includes(weaponType)) {
             //roll to hit, then damage
             let rangeCharts = {
                 "Photon Torpedo": [6,12,18,24,30],
-                "Photon Torpedo (SR)": [4,8,12,16,20],
-                "Photon Torpedo (LR)": [9,18,27,36,45],
+                "Short Range Photon Torpedo": [4,8,12,16,20],
+                "Long Range Photon Torpedo": [9,18,27,36,45],
                 //others
             }
             let index = rangeCharts[weaponType].findIndex(num => losResult.distance <= num); //finds first element <= distance to target
-            let toHit = index + 2;
-            if (weaponType.includes("Photon Torpedo")) {toHit = index+1};
+            let bonuses = ["Spread [3]","Single","None"]; //none will catch non-Photons without guidance system
+            let toHit = index + bonuses.indexOf(mode);
+            let s = (mode === "Spread [3]") ? "s":"";
+            let o = (s === "s") ? "spread of 3 ":"single ";
+            let miss = (s === "s") ? " miss":" misses";
+            let hit = (s === "s") ? " Hit!":"Hits!";
+            let weaponName = weaponType;
+            outputCard.body.push(shooter.name + " fires a " + o + weaponName + s + " at " + target.name);
+
+            let hitRoll = randomInteger(6);
+            if (hitRoll >= toHit) {
+                outputCard.body.push("The " + weaponName + s + hit);
+
+
+                 
+            } else {
+                outputCard.body.push("The " + weaponName + s + miss);
+            }
 
 
 
-
+PrintCard();
+return;
 
 
 
@@ -1859,65 +1891,12 @@ return
             let pt2 = HexMap[target.hexLabel].centre;
             spawnFxBetweenPoints(pt1, pt2,"missile-fire",Campaign().get("playerpageid"));
         } else {
-            //phasers, disruptors
-            let diceArray = {
-                "Class 1 Phaser": [1,1],
-                "Class 2 Phaser": [2,2,1,1],
-                "Class 3 Phaser": [3,3,2,2,1,1],
-                "Disruptor": [3,2,1],
-                "Disruptor Mk.2": [4,3,2,1],
-            }
-            let interval = Math.max(0,Math.ceil(losResult.distance / 3) - 1);
-            dice = diceArray[weaponType][interval];
-            let baseDamage = (weaponType.includes("Phaser")) ? 1:2;
-
-            for (let w=1;w<=weaponNum;w++) {
-                let rolls = [];
-                let weaponHits = false;
-                let weaponDamage = 0;
-                for (let i=0;i<dice;i++) {
-                    let roll = randomInteger(6);
-                    if (roll < 4) {
-                        rolls.push(roll);
-                    } else if ((roll > 3 && roll < 6 && sensorsOffline === false) || (roll === 6 && sensorsOffline)) {
-                        weaponHits = true;
-                        weaponDamage += baseDamage;
-                        rolls.push(roll);
-                    } else if (roll === 6 && sensorsOffline === false) {
-                        weaponHits = true;
-                        weaponDamage += (baseDamage * 2);
-                        if (weaponType.includes("Phaser")) {
-                            let extraRoll;
-                            do {
-                                extraRoll = randomInteger(6);
-                                if (extraRoll > 3 && extraRoll < 6) {
-                                    roll += "/" + extraRoll;
-                                    weaponDamage++;
-                                } else if (extraRoll === 6) {
-                                    weaponDamage += 2;
-                                    roll += "/6";
-                                }
-                            } while (extraRoll === 6);
-                        }
-                        rolls.push(roll);
-                    }
-                }
-                if (weaponHits === true) {
-                    hits++;
-                }
-                weaponTip += w + ": " + rolls.toString() + " vs. 4+ To Hit<br>";
-                if (sensorsOffline) {
-                    weaponTip += w + ": " + rolls.toString() + " vs. 6+ To Hit<br>";
-                }
-                if (weaponDamage > 0) {
-                    weaponTip += "Damage: " + weaponDamage + "<br>";
-                }                
-                totalDamage += weaponDamage;
+      
                 let fxObj =  findObjs({type: "custfx", name: "Beam2"})[0];
                 let pt1 = HexMap[shooter.hexLabel].centre;
                 let pt2 = HexMap[target.hexLabel].centre;
                 spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
-            }
+            
 
 
 
