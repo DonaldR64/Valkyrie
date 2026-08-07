@@ -1706,6 +1706,18 @@ log(fc)
             outputCard.body.push(priority + " Systems will be given priority for Damage Control Teams");
         }
 
+        if (order === "Cloak/Decloak") {
+            if (ship.token.get("tint_color") === "transparent") {
+                ship.token.set("tint_color","#000000");
+                verb = " Cloaks"
+            } else {
+                ship.token.set("tint_color","transparent");
+                verb = " Decloaks";
+            }
+            outputCard.body.push("The Ship " + verb);
+        }
+
+
 
 
         
