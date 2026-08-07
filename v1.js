@@ -1078,10 +1078,10 @@ log("new Crew: " +newCrew)
             }
         })
         let order = "?{Fire";
-        let types = Object.keys(types);
-        for (let i=0;i<types.length;i++) {
-            let s = (types[i] > 1) ? "s":"";
-            order += "|" + type + s;
+        let typeKeys = Object.keys(types);
+        for (let i=0;i<typeKeys.length;i++) {
+            let s = (types[typeKeys[i]] > 1) ? "(" + types[typeKeys[i]] + ")":"";
+            order += "|" + s + typeKeys[i];
         }
         order += "}"
         action = "!Fire;@{selected|token_id};@{target|token_id};" + order;
