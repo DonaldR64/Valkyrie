@@ -20,7 +20,7 @@ const Main = (() => {
     }
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
-    const Projectiles = ["Photon Torpedo", "Photon Torpedo (SR)"]
+    const Projectiles = ["Photon Torpedo", "Photon Torpedo (SR)", "Photon Torpedo (LR)"]
 
 
     const DefineHexInfo = () => {
@@ -635,7 +635,6 @@ const Main = (() => {
                 if (weaponType === "Phaser III") {maxRange = 36};
                 if (weaponType === "Disruptor I") {maxRange = 12};
                 if (weaponType === "Disruptor II") {maxRange = 24};
-                if (weaponType === "Disruptor III") {maxRange = 36};
                 if (weaponType === "Phaser Bank") {maxRange = 24};
                 if (weaponType === "Photon Torpedo") {maxRange = 30};
                 if (weaponType === "Photon Torpedo (SR)") {maxRange = 20};
@@ -728,8 +727,8 @@ const Main = (() => {
         }
 
         SetShields(level) {
-            this.token.set("bar2_value",number);
-            this.shields = number;
+            this.token.set("bar2_value",level);
+            this.shields = level;
             let shieldstatus = "#00ff00";
             let shieldPercent = Math.round(level/this.shieldsMax * 100);
             if (shieldPercent <= 75) {shieldstatus = "#ffff00"};
@@ -1077,23 +1076,25 @@ log("new Crew: " +newCrew)
             abilArray[a].remove();
         } 
         //Weapon Types
-        let types = {};
+        let types = [];
+        let fireNum = 1;
         _.each(ship.weaponArray, weapon => {
-            if (!types[weapon.type]) {
-                types[weapon.type] = 1;
-            } else {
-                types[weapon.type]++;
+            let add = false;
+            if (Projectiles.includes(weapon.type)) {
+                add = true;
+                phrase = weapon.name + " " + weapon.type;
+            } else if (types.includes(weapon.type) === false) {
+                add = true;
+                types.push(weapon.type);
+                phrase = "Avail " + weapon.type + "s";
+            }
+            if (add === true) {
+                action = "!Fire;@{selected|token_id};@{target|token_id};" + phrase
+                abilityName = fireNum + ": Fire " + phrase;
+                AddAbility(abilityName,action,ship.charID);
             }
         })
-        let order = "?{Fire";
-        let typeKeys = Object.keys(types);
-        for (let i=0;i<typeKeys.length;i++) {
-            let s = (types[typeKeys[i]] > 1) ? "(" + types[typeKeys[i]] + ") ":"";
-            order += "|" + s + typeKeys[i];
-        }
-        order += "}"
-        action = "!Fire;@{selected|token_id};@{target|token_id};" + order;
-        AddAbility("Tactical",action,ship.charID);
+
 
         action = "!Orders;@{selected|token_id};?{Order|Dead Stop|Emergency Thrust";
         if (Attribute(ship.charID,"cloak",true) === "1") {
@@ -1398,9 +1399,7 @@ log("new Crew: " +newCrew)
 
 
     const StartGame = () => {
-        _.each(ShipArray,ship => {
-            state.FullThrust.shipState[ship.id].damageControl = "Vital";
-        })
+
 
     }
 
@@ -1589,6 +1588,12 @@ log(fc)
 
                 AddAbilities2(ship);
 
+                state.FullThrust.shipState[ship.id] = {
+                    damageControl: "Vital",
+                    shields: shieldsMax,
+                }
+
+
             }
 
         });
@@ -1749,7 +1754,13 @@ log(fc)
         let Tag = msg.content.split(";");
         let shooter = ShipArray[Tag[1]];
         let target = ShipArray[Tag[2]];
-        let weaponType = Tag[3];
+        let weaponType = Tag[3].trim();
+        if (weaponType.includes("Avail")) {
+            weaponType = weaponType.replace("Avail ","");
+        } 
+
+log(weaponType)
+return
 
         if (!shooter) {
             sendChat("","Not valid shooter");
@@ -1772,7 +1783,9 @@ log(fc)
         if (SM.nopower === true) {
             errorMsg.push("Ship has no Power and Cannot Fire");
         }
-
+        if (shooter.token.get("tint_color") === "#000000") {
+            errorMsg.push("Ship is Cloaked and cannot Fire");
+        }
 
         let losResult = LOS(shooter,target);
         let errorMsg = [];
@@ -1819,36 +1832,23 @@ log(fc)
 
         if (Projectiles.includes(weaponType)) {
             //roll to hit, then damage
-            let toHit = 2;
-            if (losResult.distance > 6) {toHit = 3};
-            if (losResult.distance > 9) {toHit = 4};
-            if (losResult.distance > 12) {toHit = 5};
-            if (sensorsOffline) {
-                toHit = 6;
-                weaponTip = "Sensors Offline";
+            let rangeCharts = {
+                "Photon Torpedo": [6,12,18,24,30],
+                "Photon Torpedo (SR)": [4,8,12,16,20],
+                "Photon Torpedo (LR)": [9,18,27,36,45],
+                //others
             }
-            for (let w=1;w<=weaponNum;w++) {
-                let roll = randomInteger(6);
-                let weaponDamage = 0;
-                let damageRolls = [];
-                if (roll >= toHit) {   
-                    hits++;            
-                    if (weaponType === "Pulse Torpedo") {
-                        damageRolls.push(randomInteger(6));
-                    }
-                    if (weaponType === "Photon Torpedo") {
-                        damageRolls.push(randomInteger(6));
-                        damageRolls.push(randomInteger(6));
-                    }
-                    damageRolls.sort().reverse();
-                    weaponDamage = damageRolls[0];
-                }
-                weaponTip += w + ": " + roll + " vs. " + toHit + "+ To Hit<br>";
-                if (weaponDamage > 0) {
-                    weaponTip += "Damage: " + weaponDamage + " [" + damageRolls.toString() + "]";
-                }
-                totalDamage += weaponDamage;
-            }
+            let index = rangeCharts[weaponType].findIndex(num => losResult.distance <= num); //finds first element <= distance to target
+            let toHit = index + 2;
+            if (weaponType.includes("Photon Torpedo")) {toHit = index+1};
+
+
+
+
+
+
+
+
 
             let pt1 = HexMap[shooter.hexLabel].centre;
             let pt2 = HexMap[target.hexLabel].centre;
