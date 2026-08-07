@@ -864,7 +864,7 @@ log("new Crew: " +newCrew)
             roll = randomInteger(6);
             roll2 = randomInteger(6);
             if (roll < needed && lifesupport === "Nominal") {
-                outputCard.body.push("[#ff0000]Lifesupport was hit, and will fail in " + roll2 + " turns[/#]")
+                outputCard.body.push("[#ff0000]Life Support was hit, and will fail in " + roll2 + " turns[/#]")
                 outputCard.body.push("[#ff0000]If not repaired before then, the crew will abandon ship[/#]");    
                 AttributeSet(this.charID,"lifesupport","Failing");
                 this.token.set(SM.nolife,roll2);
