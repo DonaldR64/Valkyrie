@@ -1831,6 +1831,15 @@ log(mod)
 
     }
 
+    const Ping = (msg) => {
+        let Tag = msg.content.split(";");
+        let x = Tag[1];
+        let y = Tag[2];
+        sendPing(x,y, Campaign().get('playerpageid'), null, true); 
+    }
+
+
+
 
 
     const Fire = (msg) => {
@@ -1972,31 +1981,18 @@ log(weapon)
 
             let fxName;
             if (weaponType.includes("Photon")) {
-                if (mode.includes("Spread")) {
-                    fxName = "PhotonSpread";
-                } else {
-                    fxName = "Photon";
-                }
+                fxName = "Photon";
             }
-
 
             if (fxName) {
                 let fxObj =  findObjs({type: "custfx", name: fxName})[0];
                 let pt1 = HexMap[shooter.hexLabel].centre;
                 let pt2 = HexMap[target.hexLabel].centre;
-log(pt1)
-log(pt2)
-
-
                 spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));            }
         } else {
             //Beams etc
 
-
-
-
-
-                let fxObj =  findObjs({type: "custfx", name: "Beam2"})[0];
+                let fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
                 let pt1 = HexMap[shooter.hexLabel].centre;
                 let pt2 = HexMap[target.hexLabel].centre;
                 spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
@@ -2032,6 +2028,7 @@ log(pt2)
         let hex = HexMap[label];
         SetupCard(ship.name,"Info",ship.faction);
         outputCard.body.push("Hex Label: " + label);
+        outputCard.body.push("X: " + hex.centre.x + " Y: " + hex.centre.y);
 
 
         PrintCard();
@@ -2390,7 +2387,9 @@ log(pt2)
             case '!Orders':
                 Orders(msg);
                 break;
-
+            case '!Ping':
+                Ping(msg);
+                break;
 
         }
     };

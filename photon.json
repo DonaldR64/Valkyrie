@@ -1,20 +1,37 @@
 {
-    "angle": -1,
-    "angleRandom": 0,
-    "duration": 20,
-    "emissionRate": 1000,
-    "speed": 40,
-    "speedRandom": 2,
-    "lifeSpan": 40,
-    "lifeSpanRandom": 1,
-    "maxParticles": 3,
-    "size": 20,
-    "sizeRandom": 0,
-    "startColour": [220, 20, 20, 1],
-    "startColourRandom": [0, 0, 0, 0],
-    "endColour": [220, 20, 20, 1],
-    "endColourRandom": [0, 0, 0, 0],
-    "gravity": {"x": 0, "y": 0},
-    "sharpness": 0,
-    "sharpnessRandom": 0
+
+	"additionalEmissionRatePerPixel": 0.35,
+
+	"additionalSpeedPerPixel": 0.085,
+
+	"alignParticles": true,
+
+	"angle": -1,
+
+	"angleRandom": 0,
+
+	"duration": 12,
+
+	"emissionRate": 12,
+
+	"emitRateGradients": [{"factor":1, "gradient":0}, {"factor":0.2, "gradient":0.25}, {"factor":0, "gradient":1}],
+
+	"emitterSize": 4,
+
+	"lifeSpan": 13,
+
+	"lifeSpanRandom": 0,
+
+	"maxParticles": 50,
+
+	"rulerType": "line",
+
+	"size": 40,
+
+	"sizeRandom": 15,
+
+	"speed": 0,
+
+	"speedRandom": 0
+
 }
