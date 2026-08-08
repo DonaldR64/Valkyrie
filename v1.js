@@ -630,9 +630,18 @@ const Main = (() => {
             for (let w=1;w<13;w++) {
                 let weaponStatus = aa["weapon" + w + "status"];
                 let weaponName = aa["weapon" + w + "name"];
-                if (!weaponStatus || weaponStatus === "Off") {continue};
+                if (!weaponStatus || weaponStatus === "Off" || weaponStatus === "undefined") {continue};
                 let weaponType = aa["weapon" + w + "type"];
-                let weaponFacing = aa["weapon" + w + 'facing'].split("/").map((e) => parseInt(e));
+                let weaponFacing = aa["weapon" + w + 'facing'];
+                if (!weaponFacing) {
+                    log("W: " + w)
+                    log(weaponName)
+                    log(weaponType)
+                    log(weaponStatus)
+                } else {
+                    weaponFacing = weaponFacing.toString().split("/").map((e) => parseInt(e));
+                }
+
                 let maxRange;
                 if (weaponType === "Phaser I") {maxRange = 12};
                 if (weaponType === "Phaser II") {maxRange = 24};
@@ -1850,7 +1859,7 @@ log(mod)
         let shooter = ShipArray[Tag[1]];
         let target = ShipArray[Tag[2]];
         let weaponPos = Tag[3].split(",");
-        let mode = Tag[4] || "None"; //Single, Spread or Proximity for Photons
+        let mode = Tag[4] || "None"; //Single, Spread  for Photons
 
         if (!shooter) {
             sendChat("","Not valid shooter");
@@ -1887,6 +1896,9 @@ log(mod)
         let weaponsFiring = [];
         let weaponType;
         let conditions = [];
+        let magazine = parseInt(Attribute(shooter.charID,"torpedo")) || 0;
+
+
 
         for (let i=0;i<weaponPos.length;i++) {
             let pos = weaponPos[i];
@@ -1896,6 +1908,15 @@ log(weapon)
             let facing = weapon.facing; //will be an array of facing #s
             let inArc = facing.some(item => shooterArcs.includes(item));
             let status = weapon.status;
+            if (Projectiles.includes(weaponType)) {
+                if (magazine === 0) {
+                    conditions.push("No Ammo");
+                }
+                if (magazine < 3 && mode.includes("Spread")) {
+                    conditions.push("Low Ammo");
+                }
+            }
+
             if (inArc === false) {
                 conditions.push("Arc");
                 continue;
@@ -1923,6 +1944,12 @@ log(weapon)
             }
             if (conditions.includes("Fired")) {
                 errorMsg.push("One or More Weapons have Already Fired");
+            }
+            if (conditions.includes("No Ammo")) {
+                errorMsg.push("Out of Ammunition");
+            }
+            if (conditions.includes("Low Ammo")) {
+                errorMsg.push("Low in Ammunition for a Spread");
             }
         }
 
@@ -1997,11 +2024,23 @@ log(weapon)
                 outputCard.body.push("The " + weaponName + s + hitTip);
             }
 
+            let ammo = (mode.includes("Spread")) ? 3:1;
+            magazine -= ammo;
+            AttributeSet(shooter.charID,"torpedo",magazine);
 
             let fxName;
             if (weaponType.includes("Photon")) {
                 fxName = "Photon";
+                if (mode.includes("Spread")) {
+                    PlaySound("Spread");
+                } else {
+                    PlaySound("Photon");
+                }
+
             }
+
+
+
 
             if (fxName) {
                 let fxObj =  findObjs({type: "custfx", name: fxName})[0];
@@ -2051,9 +2090,11 @@ log(weapon)
             if (weaponType.includes("Phaser")) {
                 masterType = "Phaser";
                 fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
+                PlaySound("Phasers");
             }
             if (weaponType.includes("Disruptor")) {
                 masterType = "Disruptor";
+                PlaySound("Disruptor");
                 //fxObj
             }
 
@@ -2137,6 +2178,16 @@ log(weapon)
 
 
         }
+
+
+        _.each(weaponsFiring,pos => {
+            log(pos)
+            let numm = parseInt(pos) + 1;
+            shooter.weaponArray[parseInt(pos)].status = "Fired";
+            AttributeSet(shooter.charID,"weapon" + numm + "status","Fired");
+        })
+
+
 
 
         PrintCard();
