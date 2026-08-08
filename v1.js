@@ -1770,6 +1770,12 @@ log(fc)
             outputCard.body.push("Pushing the Engines this way will remove our Cloak!");
             order = "None";
         }
+        if (order === "Cloak/Decloak" && Attribute(ship.charID,"cloak") === "Offline") {
+            outputCard.body.push("Cloaking Device is Offline!");
+            order = "None";
+        }
+
+
         if (order === 'Dead Stop') {
             outputCard.body.push("The Ship comes to a Dead Stop");
             outputCard.body.push("Max turn " + (turnPts + 1) + " Points");
@@ -1827,7 +1833,7 @@ log(mod)
                 let shields = state.FullThrust.shipState[id].shields;
                 ship.SetShields(shields);
             }
-
+            PlaySound("Cloak");
 
 
 
