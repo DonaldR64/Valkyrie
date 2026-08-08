@@ -52,13 +52,12 @@
             <label>Starting Armour (0+):</label><input type="number" name="attr_armour_max">  
             <label>Max Hull:</label><input type="number" name="attr_hull_max">  
             <label>Advanced Hull:</label><input type="checkbox" name="attr_advancedhull" value="1">
-            <label for="attr_screens_max">Starting Shield Generators:</label>
+            <label for="attr_screens_max">Starting Shield Generators/Level:</label>
             <select name="attr_screens_max">
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
-            <label>Advanced Shield Generators ?:</label><input type="checkbox" name="attr_advancedscreens" value="1">
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloak_max" value="1">   
             <label>Torpedo Magazine:</label><input type="number" name="attr_torpedo_max">  
         </div>  
@@ -673,7 +672,7 @@
     });
 
     on("change:attrs sheet:opened", function(eventInfo) { 
-        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advanceddrive","advancedscreens","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak","torpedo","torpedo_max"], function(values) {
+        getAttrs(["faction","command","lifesupport","warpcore","hull","hull_max","advancedhull","screens","screens_max","advanceddrive","shields","shields_max","firecontrol","firecontrol_max","advancedfirecontrol", "armour","armour_max","damagedsystems", "thrusters","impulse1","impulse2", "crew","crew_max","warpdrive","weapon1location","weapon2location","weapon3location","weapon4location","weapon5location","weapon6location","weapon7location","weapon8location","weapon9location","weapon10location","weapon11location","weapon12location","bridgeloc","lifeloc","warpcoreloc","impulse1loc","impulse2loc","warpdriveloc","screenloc","sensorloc","fireconloc","cloakloc","cloak","torpedo","torpedo_max"], function(values) {
             let commandstatus = "Green";
             let command = values.command || "Nominal";
             if (command === "Destroyed") {commandstatus = "Red"};
@@ -710,7 +709,10 @@
             let screens = parseInt(values.screens) || 0;
             let screensMax = parseInt(values.screens_max) || 0;
             let screenstatus = "Green";
-            let screendisplay;
+            let screendisplay = "Level 1";
+            if (screens === 2 && screensMax === 2) {
+                screendisplay = "Level 2";
+            }
             if (screensMax === 0) {
                 screenstatus = "None";
                 screendisplay = "";
@@ -721,9 +723,6 @@
             if (screens === 0 && screensMax > 0) {
                 screenstatus = "Red";
                 screendisplay = "Shield Generators: Offline";
-            }
-            if (values.advancedscreens === "1") {
-                screendisplay = "Adv. " + screendisplay;
             }
 
             let armourMax = parseInt(values.armour_max) || 0;
