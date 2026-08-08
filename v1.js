@@ -1981,7 +1981,7 @@ log(weapon)
                     damageTip = "Damage Rolls: " + damageRoll1 + "/" + damageRoll2;
                 } else {
                     damage = damageRoll1;
-                    damageTip += "<br>Damage Rolls: " + damageRoll1 + "/" + damageRoll2;
+                    damageTip += "<br>Damage Roll: " + damageRoll1;
                     if (shieldGens === 2) {damage = Math.max(0,damage - 1)};
                     info.sap = damage;
                 }
@@ -2028,7 +2028,6 @@ log(weapon)
             let dice = diceChart[weaponType][rangeBand] || 1;
             let fxObj;
 
-            let rolls = [];
             let info = {
                 normal: 0,
                 sap: 0,
@@ -2059,6 +2058,7 @@ log(weapon)
             }
 
             let damageList = damageChart[masterType][shieldGens];
+            let displayList = damageList.slice(1);
 
             for (let i=0;i<weaponsFiring.length;i++) {
                 let weapon = shooter.weaponArray[weaponsFiring[i]];
@@ -2088,8 +2088,13 @@ log(weapon)
                     rolls.push(roll);
                 }
                 let line;
+                let tip = "Rolls: " + rolls.toString();
+                tip += "<br>Dice: " + dice;
+                tip += "<br>Chart: " + displayList;
+                let hitTip = '[ Hits](#" class="showtip" title="' + tip + ')';       
+                let missTip = '[ Misses](#" class="showtip" title="' + tip + ')';       
                 if (hit === false) {
-                    line = weaponType + " Misses";
+                    line = weaponType + missTip;
                     if (weapon.name) {
                         line = weapon.name + " " + line;
                     }
@@ -2098,7 +2103,7 @@ log(weapon)
                         damage += penDamage;
                         penDamage = 0;
                     }
-                    line = weaponType + " Hits, doing " + (damage + penDamage) + " Damage";
+                    line = weaponType + hitTip + ", doing " + (damage + penDamage) + " Damage";
                     if (weapon.name) {
                         line = weapon.name + " " + line;
                     }
