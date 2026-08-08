@@ -620,6 +620,9 @@ const Main = (() => {
             this.token = token;
             this.type = aa.type;
             this.mass = parseInt(aa.mass);
+            this.advShields = (aa.advancedscreens === "1") ? true:false;
+            this.advHull = (aa.advancedhull === "1") ? true:false;
+            this.advFC = (aa.advancedfirecontrol === "1") ? true:false;
 
             this.hullMax = parseInt(aa.hull_max) || 0;
 
@@ -791,7 +794,7 @@ const Main = (() => {
             this.hull = hull;
             if (hull > 0) {
                 let levels = 4;
-                if (Attribute(this.charID,"advancedhull") === 1) {
+                if (this.advHull === 1) {
                     levels = 3;
                 }
                 let startingLevel = levels - Math.ceil(startingHull/hullMax * levels);
@@ -1996,10 +1999,35 @@ log(weapon)
         } else {
             //Beams etc 
             //to hit and damage are same roll
+            //weaponsFiring length is # of weapons firing
+            let diceChart = {
+                "Phaser I": [1],
+                "Phaser II": [2,1],
+                "Phaser III": [3,2,1],
+                "Disruptor": [1],
+                "Heavy Disruptor": [2,1],
+            }
+            let rangeBand = Math.floor(losResult.distance/12);
+            let dice = diceChart[weaponType][rangeBand] || 1;
+            dice = dice * weaponsFiring.length;
+
+            let rolls = [];
+            let info = {
+                normal: 0,
+                sap: 0,
+                ap: 0,
+                pen: 0,
+            }            
+            let shieldsUp = (target.token.get("bar1_value") > 0) ? true:false;
+            //no shields: 4,5 = 1, 6 = 2
+            //shields: 5 = 1, 6 = 2
+            for (let i=0;i<dice;i++) {
+                let roll = randomInteger(6);
 
 
 
-            
+
+            }
 
 
 
@@ -2007,11 +2035,11 @@ log(weapon)
 
 
 
-                let fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
-                let pt1 = HexMap[shooter.hexLabel].centre;
-                let pt2 = HexMap[target.hexLabel].centre;
-                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
-            
+            let fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
+            let pt1 = HexMap[shooter.hexLabel].centre;
+            let pt2 = HexMap[target.hexLabel].centre;
+            spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
+        
 
 
 
