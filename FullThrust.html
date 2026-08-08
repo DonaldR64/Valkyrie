@@ -709,9 +709,9 @@
             let screens = parseInt(values.screens) || 0;
             let screensMax = parseInt(values.screens_max) || 0;
             let screenstatus = "Green";
-            let screendisplay = "Shields: Nominal";
+            let screendisplay = "Shield Generators: Nominal";
             if (screens === 2 && screensMax === 2) {
-                screendisplay = "Shields: Reinforced";
+                screendisplay = "Shield Generators: Reinforced";
             }
             if (screensMax === 0) {
                 screenstatus = "None";
@@ -719,7 +719,7 @@
             } 
             if (screens === 1 && screensMax === 2) {
                 screenstatus = "Yellow";
-                screendisplay = "Shields: Level 1";
+                screendisplay = "Shield Generators: Level 1";
             }
             if (screens === 0 && screensMax > 0) {
                 screenstatus = "Red";
