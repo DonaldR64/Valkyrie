@@ -1994,7 +1994,18 @@ log(weapon)
 
             }
         } else {
-            //Beams etc
+            //Beams etc 
+            //to hit and damage are same roll
+
+
+
+            
+
+
+
+
+
+
 
                 let fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
                 let pt1 = HexMap[shooter.hexLabel].centre;
@@ -2391,9 +2402,7 @@ log(weapon)
             case '!Orders':
                 Orders(msg);
                 break;
-            case '!Ping':
-                Ping(msg);
-                break;
+
 
         }
     };
