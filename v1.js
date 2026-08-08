@@ -21,7 +21,7 @@ const Main = (() => {
 
     const ArcNames = ["","Fore","Starboard Fore","Starboard Aft","Aft","Port Aft","Port Fore"];
     const Projectiles = ["Photon Torpedo", "Short Range Photon Torpedo", "Long Range Photon Torpedo"]
-
+    const BeamWeapons = ["Phaser I","Phaser II","Phaser III","Phaser Bank","Disruptor","Heavy Disruptor"];
 
     const DefineHexInfo = () => {
         HexSize = (70 * pageInfo.scale)/M.f0;
@@ -1931,8 +1931,7 @@ log(weapon)
             return;
         }
 
-
-
+        let shieldGens = parseInt(Attribute(target.charID,"screens")) || 0;
         let totalDamage = 0;
         let hits = 0;
         let weaponTip = "";
@@ -1946,8 +1945,9 @@ log(weapon)
                 //others
             }
             let index = rangeCharts[weaponType].findIndex(num => losResult.distance <= num); //finds first element <= distance to target
-            let bonuses = ["Spread [3]","Single","None"]; //none will catch non-Photons without guidance system
-            let toHit = index + bonuses.indexOf(mode);
+            let mod = 2;
+            if (mode.includes("Spread")) {mod = 1};
+            let toHit = index + mod;
             let s = (mode === "Spread [3]") ? "s":"";
             let o = (s === "s") ? "spread of 3 ":"single ";
             let miss = (s === "s") ? " miss":" misses";
@@ -1970,12 +1970,19 @@ log(weapon)
                 let damageType = "Normal";
                 if (s === "s") {
                     damage = Math.max(damageRoll1,damageRoll2);
+                    if (shieldGens === 2) {damage = Math.max(0,damage - 1)};
                     info.normal = damage;
                 } else {
                     damage = damageRoll1;
+                    if (shieldGens === 2) {damage = Math.max(0,damage - 1)};
                     info.sap = damage;
                 }
-                outputCard.body.push(damage + " Damage is done");
+                let codicil = "";
+                if (shieldGens === 2) {
+                    codicil = "[Reinforced Shields]";
+                }
+                outputCard.body.push(damage + " Damage is done" + codicil);
+                outputCard.body.push("[hr]");
                 target.Damage(info);
             } else {
                 outputCard.body.push("The " + weaponName + s + miss);
@@ -1996,20 +2003,21 @@ log(weapon)
 
 
             }
-        } else {
+        } else if (BeamWeapons.includes(weaponType)) {
             //Beams etc 
             //to hit and damage are same roll
             //weaponsFiring length is # of weapons firing
             let diceChart = {
                 "Phaser I": [1],
                 "Phaser II": [2,1],
+                "Phaser Bank": [2,1],
                 "Phaser III": [3,2,1],
                 "Disruptor": [1],
                 "Heavy Disruptor": [2,1],
             }
             let rangeBand = Math.floor(losResult.distance/12);
             let dice = diceChart[weaponType][rangeBand] || 1;
-            dice = dice * weaponsFiring.length;
+            let fxObj;
 
             let rolls = [];
             let info = {
@@ -2018,27 +2026,93 @@ log(weapon)
                 ap: 0,
                 pen: 0,
             }            
-            let shieldsUp = (target.token.get("bar1_value") > 0) ? true:false;
-            //no shields: 4,5 = 1, 6 = 2
-            //shields: 5 = 1, 6 = 2
-            for (let i=0;i<dice;i++) {
-                let roll = randomInteger(6);
+            let damageChart = {
+                Phaser: {
+                    0: [0,0,0,0,1,1,2],
+                    1: [0,0,0,0,0,1,2],
+                    2: [0,0,0,0,0,1,1],
+                },
+                Disruptor: {
+                    0: [0,0,0,1,2,3,4],
+                    1: [0,0,0,0,1,2,3],
+                    2: [0,0,0,0,0,1,2],
+                }
+            }
+            let masterType;
 
-
-
-
+            if (weaponType.includes("Phaser")) {
+                masterType = "Phaser";
+                fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
+            }
+            if (weaponType.includes("Disruptor")) {
+                masterType = "Disruptor";
+                //fxObj
             }
 
+            let damageList = damageChart[masterType][shieldGens];
+
+            for (let i=0;i<weaponsFiring.length;i++) {
+                let weapon = shooter.weaponArray[weaponsFiring[i]];
+                let rolls = [];
+                let hit = false;
+                let damage = 0;
+                let penDamage = 0;
+                for (let j=0;j<dice;j++) {
+                    let roll = randomInteger(6);
+                    let d = damageList[roll];
+                    if (d > 0) {
+                        hit = true;
+                    }
+                    damage += d;
+                    //penetrating damage
+                    if (roll === 6) {
+                        let rolls2 = "";
+                        let roll2;
+                        do {
+                            roll2 = randomInteger(6);
+                            let p = damageChart[masterType][0][roll2];
+                            penDamage += p;
+                            rolls2 += "/" + roll2;
+                        } while (roll2 === 6)
+                        roll += rolls2;
+                    }
+                    rolls.push(roll);
+                }
+                let line;
+                if (hit === false) {
+                    line = weaponType + " Misses";
+                    if (weapon.name) {
+                        line = weapon.name + " " + line;
+                    }
+                } else {
+                    if (parseInt(target.token.get("bar2_value")) === 0) {
+                        damage += penDamage;
+                        penDamage = 0;
+                    }
+                    line = weaponType + " Hits, doing " + (damage + penDamage) + " Damage";
+                    if (weapon.name) {
+                        line = weapon.name + " " + line;
+                    }
+                }
+                outputCard.body.push(line);
+                if (penDamage > 0) {
+                    outputCard.body.push("[#ff0000][Shields Penetrated for " + penDamage + "][/#]");
+
+                }
+                info.normal += damage;
+                info.pen += penDamage;
+            }
+            outputCard.body.push("[hr]");
+            target.Damage(info);
 
 
 
 
-
-
-            let fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
-            let pt1 = HexMap[shooter.hexLabel].centre;
-            let pt2 = HexMap[target.hexLabel].centre;
-            spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
+            if (fxObj) {
+                let pt1 = HexMap[shooter.hexLabel].centre;
+                let pt2 = HexMap[target.hexLabel].centre;
+                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
+            }
         
 
 
