@@ -1934,10 +1934,11 @@ log(weapon)
         let shieldGens = parseInt(Attribute(target.charID,"screens")) || 0;
         let totalDamage = 0;
         let hits = 0;
-        let weaponTip = "";
 
         if (Projectiles.includes(weaponType)) {
             //roll to hit, then damage
+            let hitTip = "";
+            let damageTip = "";
             let rangeCharts = {
                 "Photon Torpedo": [6,12,18,24,30],
                 "Short Range Photon Torpedo": [4,8,12,16,20],
@@ -1946,7 +1947,10 @@ log(weapon)
             }
             let index = rangeCharts[weaponType].findIndex(num => losResult.distance <= num); //finds first element <= distance to target
             let mod = 2;
-            if (mode.includes("Spread")) {mod = 1};
+            if (mode.includes("Spread")) {
+                mod = 1
+                hitTip = "<br>Spread = +1 to Hit";
+            };
             let toHit = index + mod;
             let s = (mode === "Spread [3]") ? "s":"";
             let o = (s === "s") ? "spread of 3 ":"single ";
@@ -1956,8 +1960,10 @@ log(weapon)
             outputCard.body.push(shooter.name + " fires a " + o + weaponName + s + " at " + target.name);
 
             let hitRoll = randomInteger(6);
+            hitTip = "Roll To Hit: " + hitRoll + " vs. " + toHit + "+" + hitTip;
             if (hitRoll >= toHit) {
-                outputCard.body.push("The " + weaponName + s + hit);
+                hitTip = '['+ hit + ' ](#" class="showtip" title="' + hitTip + ')';                
+                outputCard.body.push("The " + weaponName + s + hitTip);
                 let damageRoll1 = randomInteger(6);
                 let damageRoll2 = randomInteger(6);
                 let damage;
@@ -1972,20 +1978,23 @@ log(weapon)
                     damage = Math.max(damageRoll1,damageRoll2);
                     if (shieldGens === 2) {damage = Math.max(0,damage - 1)};
                     info.normal = damage;
+                    damageTip = "Damage Rolls: " + damageRoll1 + "/" + damageRoll2;
                 } else {
                     damage = damageRoll1;
+                    damageTip += "<br>Damage Rolls: " + damageRoll1 + "/" + damageRoll2;
                     if (shieldGens === 2) {damage = Math.max(0,damage - 1)};
                     info.sap = damage;
                 }
-                let codicil = "";
                 if (shieldGens === 2) {
-                    codicil = "[Reinforced Shields]";
+                    damageTip += "<br>Reinforced Shields = -1 Damage";
                 }
-                outputCard.body.push(damage + " Damage is done" + codicil);
+                damageTip = '[' + damage + '](#" class="showtip" title="' + damageTip + ')';
+                outputCard.body.push(damageTip + " Damage is done");
                 outputCard.body.push("[hr]");
                 target.Damage(info);
             } else {
-                outputCard.body.push("The " + weaponName + s + miss);
+                hitTip = '['+ miss + ' ](#" class="showtip" title="' + hitTip + ')';                
+                outputCard.body.push("The " + weaponName + s + hitTip);
             }
 
 
