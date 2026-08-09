@@ -1,37 +1,21 @@
 {
-
-	"additionalEmissionRatePerPixel": 0.35,
-
-	"additionalSpeedPerPixel": 0.085,
-
 	"alignParticles": true,
-
 	"angle": -1,
-
 	"angleRandom": 0,
-
-	"duration": 12,
-
-	"emissionRate": 12,
-
-	"emitRateGradients": [{"factor":1, "gradient":0}, {"factor":0.2, "gradient":0.25}, {"factor":0, "gradient":1}],
-
-	"emitterSize": 4,
-
-	"lifeSpan": 13,
-
-	"lifeSpanRandom": 0,
-
-	"maxParticles": 50,
-
-	"rulerType": "line",
-
-	"size": 40,
-
-	"sizeRandom": 15,
-
-	"speed": 0,
-
-	"speedRandom": 0
-
+	"duration": 10,
+	"emissionRate": 500,
+	"emitterSize": 2,
+	"endColour": [154, 205, 50, 0.7],
+	"endColourRandom": [60, 60, 60, 0],
+	"isPointtoPoint": true,
+	"lifeSpan": 50,
+	"lifeSpanRandom": 3,
+	"maxParticles": 500,
+	"rulerType": "beam",
+	"size": 10,
+	"sizeRandom": 1,
+	"speed": 100,
+	"speedRandom": 50,
+	"startColour": [0, 120, 0, 1],
+	"startColourRandom": [0, 0, 50, 0.25]
 }

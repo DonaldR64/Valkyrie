@@ -1174,9 +1174,18 @@ log("new Crew: " +newCrew)
             action = "!Fire;@{selected|token_id};@{target|token_id};";
             action += macros[keys[i]].toString();
             abilityName = (i+1) + ": Fire " + keys[i];
+            let fx;
             if (keys[i].includes("Photon")) {
                 action += ";" + "?{Mode|Single|Spread [3]}";
+                fx = "/fx Photon @{selected|token_id} @{target|token_id}";            
             }
+            if (keys[i].includes("Phaser")) {
+                fx = "/fx Phaser @{selected|token_id} @{target|token_id}";            
+            }
+            if (keys[i].includes("Disruptor")) {
+                fx = "/fx Disruptor @{selected|token_id} @{target|token_id}";            
+            }
+            action += '\n' + fx;
             AddAbility(abilityName,action,ship.charID);
         }
 
@@ -2095,29 +2104,6 @@ log(weapon)
             magazine -= ammo;
             AttributeSet(shooter.charID,"torpedo",magazine);
 
-            let fxName;
-            if (weaponType.includes("Photon")) {
-                fxName = "Photon";
-                if (mode.includes("Spread")) {
-                    PlaySound("Spread");
-                } else {
-                    PlaySound("Photon");
-                }
-
-            }
-
-
-
-
-            if (fxName) {
-                let fxObj =  findObjs({type: "custfx", name: fxName})[0];
-                let pt1 = HexMap[shooter.hexLabel].centre;
-                let pt2 = HexMap[target.hexLabel].centre;
-                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));            
-///maybe if spread do a delayed fire using stuff re mortar fx in forum
-
-
-            }
         } else if (BeamWeapons.includes(weaponType)) {
             //Beams etc 
             //to hit and damage are same roll
@@ -2162,7 +2148,7 @@ log(weapon)
             if (weaponType.includes("Disruptor")) {
                 masterType = "Disruptor";
                 PlaySound("Disruptor");
-                //fxObj
+                fxObj =  findObjs({type: "custfx", name: "Disruptor"})[0];
             }
 
             let damageList = damageChart[masterType][shieldGens];
@@ -2228,14 +2214,6 @@ log(weapon)
             target.Damage(info);
 
 
-
-
-            if (fxObj) {
-                let pt1 = HexMap[shooter.hexLabel].centre;
-                let pt2 = HexMap[target.hexLabel].centre;
-                spawnFxBetweenPoints(pt1, pt2, fxObj.get("id"),Campaign().get("playerpageid"));
-            }
-        
 
 
 
