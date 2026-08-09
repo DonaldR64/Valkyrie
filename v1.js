@@ -1613,6 +1613,21 @@ log(status)
 
 
     const SetFleets = () => {
+        tokens = findObjs({
+            _pageid: Campaign().get("playerpageid"),
+            _type: "graphic",
+            _subtype: "token",
+            layer: "map",
+        });
+        _.each(tokens,token => {
+            log(token.get("name"))
+            let name = token.get("name");
+            if (name && (name === "Ship Debris" || name.includes("Explosion"))) {
+                token.remove();
+            }
+        })
+
+
         AddTokens();
         _.each(ShipArray,ship => {
             if (ship.type === "Asteroid") {
@@ -1935,7 +1950,7 @@ log(repaired)
                 {name: "Shields", priority: shieldPriority},
             ]
             let weapons = ship.weaponList;
-            let weaponPriority = (ship.faction === "Klingon") ? 3:1;
+            let weaponPriority = (ship.faction === "Klingon") ? 3:2;
             if (priority === "Weapons") {
                 weaponPriority = 5;
             }
@@ -2139,7 +2154,7 @@ log(weapon)
             weaponType = weapon.type;
             let facing = weapon.facing; //will be an array of facing #s
             let inArc = facing.some(item => shooterArcs.includes(item));
-            let status = weapon.status;
+            let status = Attribute(shooter.charID,"weapon" + (weapon.pos + 1) + "status");
             if (Projectiles.includes(weaponType)) {
                 if (magazine === 0) {
                     conditions.push("No Ammo");
@@ -2155,10 +2170,14 @@ log(weapon)
             }
             if (losResult.distance > weapon.maxRange) {
                 conditions.push("Range");
-                break;
+                break; //as all same range for that type
             }
             if (weapon.status === "Fired") {
                 conditions.push("Fired");
+                continue;
+            }
+            if (weapon.status === "Offline") {
+                conditions.push("Offline");
                 continue;
             }
             weaponsFiring.push(pos);
@@ -2182,6 +2201,9 @@ log(weapon)
             }
             if (conditions.includes("Low Ammo")) {
                 errorMsg.push("Low in Ammunition for a Spread");
+            }
+            if (conditions.includes("Offline")) {
+                errorMsg.push("One or More Weapons are Offline");
             }
         }
 
