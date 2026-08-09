@@ -1187,10 +1187,8 @@ log("new Crew: " +newCrew)
         action += "}";
         AddAbility("Helm",action,ship.charID);
 
-        action = "!Orders;@{selected|token_id};Damage Control;?{System to Prioritze|Vital Systems|Defensive|Weapons|Impulse Engines|Fire Control}";
-        AddAbility("Damage Control",action,ship.charID);
-
-
+        action = "!Orders;@{selected|token_id};Engineering;?{Choose|Conduct Repairs,Repairs|Assign Teams,?{System to Prioritize&#124;Vital Systems&#124;Defensive Systems&#124;Weapons&#124;Impulse Engines&#124;Fire Control&#125;}"
+        AddAbility("Engineering",action,ship.charID);
 
 
     }
@@ -1673,9 +1671,10 @@ log(fc)
                 AddAbilities2(ship);
 
                 state.FullThrust.shipState[ship.id] = {
-                    damageControl: "Vital",
-                    shields: shieldsMax,
-                    emergencyThrusts: 0,
+                    damageControl: "Vital", //which system is currently prioritized
+                    shields: shieldsMax, //mainly used by cloaking ships
+                    emergencyThrusts: 0, //how many it has done this game
+                    repairs: false, //flag for ship having done repairs this turn
                 }
 
 
@@ -1814,11 +1813,6 @@ log(mod)
             state.FullThrust.shipState[ship.id].emergencyThrusts++;
         }
 
-        if (order === "Damage Control") {
-            let priority = Tag[3]; //Vital Systems, Defensive, Weapons, Impusle Engines, Fire Control
-            state.FullThrust.shipState[id].damageControl = priority;
-            outputCard.body.push(priority + " Systems will be given priority for Damage Control Teams");
-        }
 
         if (order === "Cloak/Decloak") {
             if (ship.token.get("tint_color") === "transparent") {
@@ -1834,13 +1828,18 @@ log(mod)
                 ship.SetShields(shields);
             }
             PlaySound("Cloak");
-
-
-
         }
 
 
-
+        if (order === "Engineering") {
+            let suborder = Tag[3]; //Repairs or a System
+            if (suborder === "Repairs") {
+                Repairs(ship);
+            } else {
+                state.FullThrust.shipState[id].damageControl = suborder;
+                outputCard.body.push(suborder + " Systems will be given priority for Damage Control Teams");
+            }
+        }
 
         
         PrintCard();
@@ -1848,6 +1847,68 @@ log(mod)
 
 
     }
+
+    const Repairs = (ship) => {
+        let repaired = state.FullThrust.shipState[ship.id].repairs;
+        if (repaired === true) {
+            outputCard.body.push("Ship has already conducted Repairs this Turn");
+            return;
+        }
+        let dct = parseInt(Attribute(ship.charID,"crew"));
+        let ds = Attribute(this.charID,"damagedsystems").split(",");
+        let damagedSystems = [];
+        _.each(ds,d => {
+            if (d && d !== "None" && d !== "") {
+                damagedSystems.push(d);
+            }
+        })
+        let shields = parseInt(ship.token.get("bar2_value"));
+        let shieldsMax = parseInt(ship.token.get("bar2_max"));
+
+        if (damagedSystems.length === 0) {
+            if (shields === shieldsMax) {
+                outputCard.body.push("There is nothing to repair, Captain!");
+            } else {
+                ShieldRepair(ship);
+            }
+        } else {
+            let priority = state.FullThrust.shipState[ship.id].damageControl;
+            if (!priority) {priority === "Vital Systems"};
+            //Vital Systems, Defensive Systems, Weapons, Impulse Engines, Fire Control
+            //any remaining teams go onto other systems or shields
+
+
+
+
+
+
+
+        }
+    }
+
+
+    const ShieldRepair = (ship) => {
+        let shields = parseInt(ship.token.get("bar2_value"));
+        let shieldsMax = parseInt(ship.token.get("bar2_max"));
+        let rnd = 1;
+        let rep = 0;
+        if (shields < shieldsMax/2) {
+            rnd = 3;
+        }
+        for (let i=0;i<dct;i++) {
+            rep += randomInteger(rnd);
+        }
+        rep = Math.min(rep,shieldsMax - shields);
+        shields += rep;
+        ship.SetShields(shields);
+        outputCard.body.push("Crews Restored " + rep + " Shield Pts");
+        if (shields === shieldsMax) {
+            outputCard.body.push("Shields are now at Max");
+        }
+    }
+
+
+
 
     const Ping = (msg) => {
         let Tag = msg.content.split(";");
