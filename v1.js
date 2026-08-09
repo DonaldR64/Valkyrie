@@ -627,6 +627,7 @@ const Main = (() => {
             this.hullMax = parseInt(aa.hull_max) || 0;
 
             let weaponArray = [];
+            let weaponList = [];
             for (let w=1;w<13;w++) {
                 let weaponStatus = aa["weapon" + w + "status"];
                 let weaponName = aa["weapon" + w + "name"];
@@ -663,6 +664,7 @@ const Main = (() => {
                     maxRange: maxRange,
                 }
                 weaponArray.push(weapon);
+                weaponList.push(weaponName + " " + weaponType);
             }
             this.weaponArray = weaponArray;
             this.hull = parseInt(token.get("bar1_value")) || 0;
@@ -921,7 +923,7 @@ log("new Crew: " +newCrew)
 
             //systems with #s
             let systems = {
-                "Shield Generator": "shieldgenerator",
+                "Shield Generator": "screens",
                 "Fire Control": "firecontrol",
 
             }
@@ -1882,15 +1884,35 @@ log(mod)
             }
         } else {
             let priority = state.FullThrust.shipState[ship.id].damageControl;
-            if (!priority) {priority === "Vital Systems"};
             //Vital Systems, Defensive Systems, Weapons, Impulse Engines, Fire Control
-            //any remaining teams go onto other systems or shields
-
-
-
-
-
-
+            let vital = ["Command","Life Support","Warp Core"];
+            let weapons = ship.weaponsList;
+            let PrioritySystems;
+            if (priority === "Vital Systems") {
+                PrioritySystems = vital;
+            }
+            if (priority === "Defensive Systems") {
+                PrioritySystems = ["Shield Generator"];
+            }
+            if (priority === "Weapons") {
+                PrioritySystems = weapons;
+            }
+            if (priority === "Impulse Engines") {
+                PrioritySystems = ["Impulse Engines 1","Impulse Engines 2"];
+            }
+            if (priority === "Fire Control") {
+                PrioritySystems = ["Fire Control"];
+            }
+            let sortedDamagedSystems = [];
+            _.each(damagedSystems,sys => {
+                if (PrioritySystems.includes(sys)) {
+                    sortedDamagedSystems.unshift(sys);
+                } else {
+                    sortedDamagedSystems.push(sys);
+                }
+            })
+            sortedDamagedSystems = sortedDamagedSystems.map((e) => ({system: e, teams: 0}));
+////
 
         }
     }
