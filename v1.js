@@ -1241,42 +1241,49 @@ log(status)
 
     }
 
-const CreateHelmAbility = (ship) => {
-	let helmID = state.FullThrust.shipState[ship.id].helmID;
-	if (helmID) {
-		let helmObj = findObjs({_type: "ability", _characterid: ship.charID, _id: helmID});
-		helmObj.remove();
-	}
-	let currentSpeed = parseInt(ship.token.get("bar3_value"));
-	let thrust = parseInt(ship.maxThrust);
-    let turn = parseInt(ship.turn);
-	let impulse1 = Attribute(ship.charID,"impulse1") === "Offline" ? false:true;
-	let impulse2 = Attribute(ship.charID,"impulse2") === "Offline" ? false:true;
-	if (impulse1 === false || impulse2 === false) {
-		thrust = Math.round(thrust/2);
-	}
-	if (impulse1 === false && impulse2 === false) {
-		thrust = 0;
-	}
-	let turnPts = Math.round(thrust/turn);
+    const CreateHelmAbility = (ship) => {
+        let helmID = state.FullThrust.shipState[ship.id].helmID;
+        if (helmID) {
+            let helmObj = findObjs({_type: "ability", _characterid: ship.charID, _id: helmID});
+            helmObj.remove();
+        }
+        let currentSpeed = parseInt(ship.token.get("bar3_value"));
+        let thrust = parseInt(ship.maxThrust);
+        let turn = parseInt(ship.turn);
+        let impulse1 = Attribute(ship.charID,"impulse1") === "Offline" ? false:true;
+        let impulse2 = Attribute(ship.charID,"impulse2") === "Offline" ? false:true;
+        if (impulse1 === false || impulse2 === false) {
+            thrust = Math.round(thrust/2); //one engine down
+        }
+        if (impulse1 === false && impulse2 === false) {
+            thrust = 0; //no engines
+        }
+        if (ship.token.get("tint_color") === "#000000") {
+            thrust = Math.round(thrust/2); //cloaked
+        }
 
-	let part = "?{Thrust - Current Speed: " + currentSpeed;
-	for (let i=thrust;i>= (-thrust);i--) {
-		part += "|" + i;
-	}
-	part += "};?{Course|Ahead,Ahead|Port,?{Points";
-	for (let i=1;i<=turnPts;i++) {
-		part += "&#124;Port " + i + " Point(s)";
-	}
-	part += "&#125;|Starboard,?{Points";
-	for (let i=1;i<=turnPts;i++) {
-		part += "&#124;Stbd " + i + " Point(s)";
-	}
-	part += "&#125;}";
-	action = "!Helm;@{selected|token_id};" + part;
-	helmID = AddAbility("Helm",action,ship.charID);
-	state.FullThrust.shipState[ship.id].helmID = helmID;
-}
+
+        let turnPts = Math.round(thrust/turn);
+
+        let part = thrust + "?{Thrust - Current Speed: " + currentSpeed;
+        for (let i=thrust;i>= (-thrust);i--) {
+            part += "|" + i;
+        }
+        part += "};?{Course|Ahead,Ahead|Port,?{Points";
+        for (let i=1;i<=turnPts;i++) {
+            let s = (i===1) ? "":"s"
+            part += "&#124;Port " + i + " Point" + s;
+        }
+        part += "&#125;|Starboard,?{Points";
+        for (let i=1;i<=turnPts;i++) {
+            let s = (i===1) ? "":"s"
+            part += "&#124;Stbd " + i + " Point" + s;
+        }
+        part += "&#125;}";
+        action = "!Helm;@{selected|token_id};" + part;
+        helmID = AddAbility("Helm",action,ship.charID);
+        state.FullThrust.shipState[ship.id].helmID = helmID;
+    }
 
 
 
@@ -1956,7 +1963,6 @@ log(mod)
 
     const Repairs = (ship) => {
         let repaired = state.FullThrust.shipState[ship.id].repairs;
-log(repaired)
         if (repaired === true) {
             outputCard.body.push("Ship has already conducted Repairs this Turn");
             return;
@@ -2140,6 +2146,50 @@ log(repaired)
             outputCard.body.push("Shields are now at Max");
         }
     }
+
+    const Helm = (msg) => {
+        let Tag = msg.content.split(';');
+        let ship = ShipArray[Tag[1]];
+        if (!ship) {return};
+        let maxThrust = parseInt(Tag[2]);
+        let thrustChoice = parseInt(Tag[3]) || 0;
+        let thrustSign = Math.sign(thrustChoice);
+        let thrust = Math.abs(thrustChoice);
+        let course = Tag[4];
+        //course might be Ahead, or Port X Points or Stbd X Points
+        let coursePoints = course.replace(/[^\d]/g,"");
+        thrust = Math.max(Math.min(maxThrust - coursePts, thrust),0);
+        let currentSpeed = parseInt(ship.token.get("bar3_value"));
+        let newSpeed = Math.max(currentSpeed + (thrustSign * thrust),0);
+        //need to move ship, one hex at a time
+        //if turning, half rounded down of coursePoints at start, remainder at halfway mark
+        //later check if run into anything
+
+
+
+        
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
