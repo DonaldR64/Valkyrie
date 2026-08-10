@@ -1141,7 +1141,7 @@ log(status)
 
 //later check re collisions
                 this.token.set({
-                    left: nexHex.centrex.x,
+                    left: newHex.centrex.x,
                     top: newHex.centre.y,
                 })
                 let index = currentHex.tokenIDs.indexOf(this.id);
