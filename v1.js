@@ -1727,6 +1727,7 @@ log(fc)
                     emergencyThrusts: 0, //how many it has done this game
                     repairs: false, //flag for ship having done repairs this turn
                     systemRepairs: {}, //systems being repaired
+                    targets: [], //tracks targets fired on this turn
                 }
 
 
@@ -2107,6 +2108,7 @@ log(repaired)
         let target = ShipArray[Tag[2]];
         let weaponPos = Tag[3].split(",");
         let mode = Tag[4] || "None"; //Single, Spread  for Photons
+        let errorMsg = [];
 
         if (!shooter) {
             sendChat("","Not valid shooter");
@@ -2123,6 +2125,27 @@ log(repaired)
 
         SetupCard(shooter.name,"Tactical Station",shooter.faction);
 
+        let availableFC = parseInt(Attribute(shooter.charID,"firecontrol")) || 0;
+
+log("FC: " + availableFC)
+
+        let advFC = (Attribute(shooter.charID,"advancedfirecontrol") === "1") ? true:false;
+log("Adv?  " + advFC)
+        if (advFC === true) {
+            availableFC *= 2;
+        }
+        if (availableFC === 0) {
+            errorMsg.push("Fire Control is offline, ship cannot fire");
+        } else {
+            let targetsFiredOn = state.FullThrust.shipState[shooter.id].targets;
+log("Target #s: " + targetsFiredOn.length)
+            availableFC -= targetsFiredOn.length;
+            if (targetsFiredOn.includes(target.id) === false && availableFC === 0) {
+                errorMsg.push("All Fire Controls have been used this turn");
+            } 
+        }
+
+
         if (SM.ooc === true) {
             errorMsg.push("Ship is Out of Control and Cannot Fire");
         }
@@ -2134,7 +2157,6 @@ log(repaired)
         }
 
         let losResult = LOS(shooter,target);
-        let errorMsg = [];
         if (losResult.los === false) {
             errorMsg.push("No LOS - " + losResult.losReason);
         }
@@ -2158,9 +2180,11 @@ log(weapon)
             if (Projectiles.includes(weaponType)) {
                 if (magazine === 0) {
                     conditions.push("No Ammo");
+                    continue;
                 }
                 if (magazine < 3 && mode.includes("Spread")) {
                     conditions.push("Low Ammo");
+                    continue;
                 }
             }
 
@@ -2409,10 +2433,9 @@ log(weapon)
             shooter.weaponArray[parseInt(pos)].status = "Fired";
             AttributeSet(shooter.charID,"weapon" + numm + "status","Fired");
         })
-
-
-
-
+        if (state.FullThrust.shipState[shooter.id].targets.includes(target.id) === false) {
+            state.FullThrust.shipState[shooter.id].targets.push(target.id);
+        }
         PrintCard();
 
     }
@@ -2567,6 +2590,7 @@ log(weapon)
                 }
             })
             state.FullThrust.shipState[ship.id].repairs = false;
+            state.FullThrust.shipState[ship.id].targets = [];
         })
 
 
