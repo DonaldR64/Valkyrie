@@ -1265,7 +1265,7 @@ log(status)
 
         let turnPts = Math.round(thrust/turn);
 
-        let part = thrust + "?{Thrust - Current Speed: " + currentSpeed;
+        let part = thrust + ";?{Thrust - Current Speed: " + currentSpeed;
         for (let i=thrust;i>= (-thrust);i--) {
             part += "|" + i;
         }
@@ -2156,18 +2156,21 @@ log(mod)
         let thrustSign = Math.sign(thrustChoice);
         let thrust = Math.abs(thrustChoice);
         let course = Tag[4];
+        let coursePoints = 0;
         //course might be Ahead, or Port X Points or Stbd X Points
-        let coursePoints = course.replace(/[^\d]/g,"");
-        thrust = Math.max(Math.min(maxThrust - coursePts, thrust),0);
+        if (course.includes("Port") || course.includes("Stbd")) {
+            coursePoints = parseInt(course.replace(/[^\d]/g,""));
+        } 
+        course = (course.includes("Ahead")) ? "Ahead":(course.includes("Port")) ? "Port":"Stbd";
+        thrust = Math.max(Math.min(maxThrust - coursePoints, thrust),0);
         let currentSpeed = parseInt(ship.token.get("bar3_value"));
         let newSpeed = Math.max(currentSpeed + (thrustSign * thrust),0);
         //need to move ship, one hex at a time
         //if turning, half rounded down of coursePoints at start, remainder at halfway mark
-        //later check if run into anything
+//later check if run into anything
 
 
 
-        
 
 
 
@@ -2937,7 +2940,9 @@ log(weapon)
             case '!Orders':
                 Orders(msg);
                 break;
-
+            case '!Helm':
+                Helm(msg);
+                break;
 
         }
     };
