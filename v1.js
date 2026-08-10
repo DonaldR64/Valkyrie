@@ -77,6 +77,12 @@ const Main = (() => {
 
     let ShipArray = {};
 
+    function isEven(number) {
+        return number % 2 === 0;
+    }
+    let flipFlop = true;
+
+
     let outputCard = {title: "",subtitle: "",side: "",body: [],buttons: [],};
 
     const Factions = {
@@ -1115,20 +1121,43 @@ log(status)
         }
 
 
-        Move(heading) {
+        Move() {
             let currentHex = HexMap[this.hexLabel];
-            let course = Math.round(Angle(this.token.get("rotation"))/30)
-            if (course.includes("Port")) {
-            currentHeading -= Math.floor(coursePoints/2);
-            } else if (course.includes("Stbd")) {
-                currentHeading += Math.floor(coursePoints/2);
+            let heading = Math.round(Angle(this.token.get("rotation"))/30)
+            if (isEven(heading)) {
+                heading = heading/2;
+            } else {
+                if (flipFlop === true) {
+                    heading = (heading - 1)/2;
+                } else {
+                    heading = (heading + 1)/2;
+                }
+                flipFlop = (flipFlop === true) ? false:true;
+            }
+            let direction = DIRECTIONS[heading];
+            let newHex = HexMap[currentHex.cube.neighbour(direction).label()];
+
+            if (newHex) {
+
+//later check re collisions
+                this.token.set({
+                    left: nexHex.centrex.x,
+                    top: newHex.centre.y,
+                })
+                let index = currentHex.tokenIDs.indexOf(this.id);
+                if (index > -1) {
+                    currentHex.tokenIDs.splice(index,1);
+                }
+                newHex.tokenIDs.push(this.id);
+
+
+
+            } else {
+//off map
+
+
             }
 
-
-
-
-
-            
 
         }
 
@@ -2184,12 +2213,12 @@ log(mod)
         let newSpeed = Math.max(currentSpeed + (finalThrust * thrust),0);
         //need to move ship, one hex at a time
         //if turning, half rounded down of coursePoints at start, remainder at halfway mark
-//later check if run into anything
 
         SetupCard(ship.name,"Impulse",ship.faction);
         outputCard.body.push("New Speed: " + newSpeed);
         if (finalThrust !== thrust) {
             outputCard.body.push("Thrust reduced to " + finalThrust + " due to Turning");
+            outputCard.body.push("[hr]");
         }
         
         let currentHeading =  Math.round(Angle(ship.token.get("rotation"))/30)
@@ -2205,14 +2234,26 @@ log(mod)
         let secondHalf = finalThrust - firstHalf;
         let currentHex = HexMap[ship.hexLabel];
         for (let i=0;i<firstHalf;i++) {
-
-
-
-
+            ship.Move();
+        }
+        if (course.includes("Port")) {
+            currentHeading -= Math.ceil(coursePoints/2);
+        } else if (course.includes("Stbd")) {
+            currentHeading += Math.ceil(coursePoints/2);
+        }
+        if (currentHeading < 0) {currentHeading = 12 - currentHeading};
+        if (currentHeading > 11) {currentHeading -= 12};
+        ship.token.set("rotation",(currentHeading * 30));
+        for (let i=0;i<secondHalf;i++) {
+            ship.Move();
         }
 
-
-
+        let adv = (thrustSign > 0) ? " increased ":" decreased ";
+        outputCard.body.push("Speed " + adv + " to " + newSpeed);
+        if (course !== "Ahead") {
+            outputCard.body.push("Course changed to a bearing of " + ship.token.get("rotation"));
+        }
+        ship.token.set("bar3_value",newSpeed);
         PrintCard()
     }
 
