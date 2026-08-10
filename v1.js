@@ -1115,6 +1115,25 @@ log(status)
         }
 
 
+        Move(heading) {
+            let currentHex = HexMap[this.hexLabel];
+            let course = Math.round(Angle(this.token.get("rotation"))/30)
+            if (course.includes("Port")) {
+            currentHeading -= Math.floor(coursePoints/2);
+            } else if (course.includes("Stbd")) {
+                currentHeading += Math.floor(coursePoints/2);
+            }
+
+
+
+
+
+            
+
+        }
+
+
+
 
 
     }
@@ -2182,7 +2201,15 @@ log(mod)
         if (currentHeading < 0) {currentHeading = 12 - currentHeading};
         if (currentHeading > 11) {currentHeading -= 12};
         ship.token.set("rotation",(currentHeading * 30));
+        let firstHalf = Math.floor(finalThrust/2);
+        let secondHalf = finalThrust - firstHalf;
+        let currentHex = HexMap[ship.hexLabel];
+        for (let i=0;i<firstHalf;i++) {
 
+
+
+
+        }
 
 
 
