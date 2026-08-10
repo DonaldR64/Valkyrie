@@ -1,21 +1,13 @@
-{
-	"alignParticles": true,
-	"angle": -1,
-	"angleRandom": 0,
-	"duration": 10,
-	"emissionRate": 500,
-	"emitterSize": 2,
-	"endColour": [154, 205, 50, 0.7],
-	"endColourRandom": [60, 60, 60, 0],
-	"isPointtoPoint": true,
-	"lifeSpan": 50,
-	"lifeSpanRandom": 3,
-	"maxParticles": 500,
-	"rulerType": "beam",
-	"size": 10,
-	"sizeRandom": 1,
-	"speed": 100,
-	"speedRandom": 50,
-	"startColour": [0, 120, 0, 1],
-	"startColourRandom": [0, 0, 50, 0.25]
+//Helm;?{Thrust - Current Speed 4|+3|+2|+1|0|-1|-2|-3};?{Course|Ahead,Ahead|Port,?{Points&#124;1&#124;2&#124;3&#124&#125;|Starboard,?{Points&#124;1&#124;2&#124;3&#124&#125;}
+
+
+const CreateHelmOrder = (ship) => {
+	let currentSpeed = parseInt(ship.token.get())
+
+
+
+
+
+
+
 }

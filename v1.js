@@ -620,6 +620,8 @@ const Main = (() => {
             this.token = token;
             this.type = aa.type;
             this.mass = parseInt(aa.mass);
+            this.maxThrust = parseInt(aa.thrusters_max);
+            this.turn = (aa.advanceddrive === "1") ? 1:2;
             this.advShields = (aa.advancedscreens === "1") ? true:false;
             this.advHull = (aa.advancedhull === "1") ? true:false;
             this.advFC = (aa.advancedfirecontrol === "1") ? true:false;
@@ -675,7 +677,7 @@ const Main = (() => {
             this.shieldsMax = parseInt(token.get("bar2_max")) || 0;
 
 
-            
+
 
             ShipArray[id] = this;
             let index = HexMap[label].tokenIDs.indexOf(id);
@@ -1229,7 +1231,7 @@ log(status)
         action = "!Orders;@{selected|token_id};Engineering;?{Choose|Conduct Repairs,Repairs|Assign Teams,?{System to Prioritize&#124;Default&#124;Shields&#124;Weapons&#124;Impulse Engines&#124;Fire Control&#125;}"
         AddAbility("Engineering",action,ship.charID);
 
-
+        CreateHelmAbility(ship);
 
 
 
@@ -1239,6 +1241,45 @@ log(status)
 
     }
 
+const CreateHelmAbility = (ship) => {
+	let helmID = state.FullThrust.shipState[ship.id].helmID;
+	if (helmID) {
+		let helmObj = findObjs({_type: "ability", _characterid: ship.charID, _id: helmID});
+		helmObj.remove();
+	}
+	let currentSpeed = parseInt(ship.token.get("bar3_value"));
+	let thrust = parseInt(ship.maxThrust);
+	let impulse1 = Attribute(values.impulse1) === "Offline" ? false:true;
+	let impulse2 = Attribute(values.impulse2) === "Offline" ? false:true;
+	if (impulse1 === false || impulse2 === false) {
+		thrust = Math.round(thrust/2);
+	}
+	if (impulse1 === false && impulse2 === false) {
+		thrust = 0;
+	}
+	let turnPts = Math.round(thrust/turn);
+
+	let part = "?{Thrust - Current Speed: " + currentSpeed;
+	for (let i=thrust;i>= (-thrust);i--) {
+		part += "|" + i;
+	}
+	part += "};?{Course|Ahead,Ahead|Port,?{Points";
+	for (let i=1;i<=turnPts;i++) {
+		part += "&#124;" + i;
+	}
+	part += "&#125;|Starboard,?{Points";
+	for (let i=1;i<=turnPts;i++) {
+		part += "&#124;" + i;
+	}
+	part += "&#125;}";
+	action = "!Helm;@{selected|token_id};" + part;
+	helmID = AddAbility("Helm",action,ship.charID);
+	state.FullThrust.shipState[ship.id].helmID = helmID;
+}
+
+
+
+    
 
     const InlineButtons = (array) => {
         let output = "";
@@ -1729,8 +1770,6 @@ log(fc)
                     AttributeSet(ship.charID,"weapon" + (i+1) + "status","Normal");
                 }
 
-                AddAbilities2(ship);
-
                 state.FullThrust.shipState[ship.id] = {
                     damageControl: "Vital", //which system is currently prioritized
                     shields: shieldsMax, //mainly used by cloaking ships
@@ -1738,7 +1777,10 @@ log(fc)
                     repairs: false, //flag for ship having done repairs this turn
                     systemRepairs: {}, //systems being repaired
                     targets: [], //tracks targets fired on this turn
+                    helmID: "",
                 }
+
+                AddAbilities2(ship);
 
 
             }
