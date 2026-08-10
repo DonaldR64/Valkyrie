@@ -1249,8 +1249,9 @@ const CreateHelmAbility = (ship) => {
 	}
 	let currentSpeed = parseInt(ship.token.get("bar3_value"));
 	let thrust = parseInt(ship.maxThrust);
-	let impulse1 = Attribute(values.impulse1) === "Offline" ? false:true;
-	let impulse2 = Attribute(values.impulse2) === "Offline" ? false:true;
+    let turn = parseInt(ship.turn);
+	let impulse1 = Attribute(ship.charID,"impulse1") === "Offline" ? false:true;
+	let impulse2 = Attribute(ship.charID,"impulse2") === "Offline" ? false:true;
 	if (impulse1 === false || impulse2 === false) {
 		thrust = Math.round(thrust/2);
 	}
@@ -1265,11 +1266,11 @@ const CreateHelmAbility = (ship) => {
 	}
 	part += "};?{Course|Ahead,Ahead|Port,?{Points";
 	for (let i=1;i<=turnPts;i++) {
-		part += "&#124;" + i;
+		part += "&#124;Port " + i + " Point(s)";
 	}
 	part += "&#125;|Starboard,?{Points";
 	for (let i=1;i<=turnPts;i++) {
-		part += "&#124;" + i;
+		part += "&#124;Stbd " + i + " Point(s)";
 	}
 	part += "&#125;}";
 	action = "!Helm;@{selected|token_id};" + part;
