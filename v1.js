@@ -674,6 +674,9 @@ const Main = (() => {
             this.shields = parseInt(token.get("bar2_value")) || 0;
             this.shieldsMax = parseInt(token.get("bar2_max")) || 0;
 
+
+            
+
             ShipArray[id] = this;
             let index = HexMap[label].tokenIDs.indexOf(id);
             if (index < 0) {
@@ -1221,10 +1224,17 @@ log(status)
             action += "|Cloak/Decloak";
         }
         action += "}";
-        AddAbility("Helm",action,ship.charID);
+        AddAbility("Special",action,ship.charID);
 
         action = "!Orders;@{selected|token_id};Engineering;?{Choose|Conduct Repairs,Repairs|Assign Teams,?{System to Prioritize&#124;Default&#124;Shields&#124;Weapons&#124;Impulse Engines&#124;Fire Control&#125;}"
         AddAbility("Engineering",action,ship.charID);
+
+
+
+
+
+
+
 
 
     }
@@ -2601,6 +2611,10 @@ log(weapon)
 
 
     }
+
+    
+
+
 
 
 
