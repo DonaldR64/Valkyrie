@@ -1130,6 +1130,7 @@ log(status)
                 left: HexMap[newLabel].centre.x,
                 top: HexMap[newLabel].centre.y,
             })
+            this.hexLabel = newLabel;
         }
 
 
@@ -1140,7 +1141,11 @@ log(status)
     }
 
 
-
+    const Heading = (heading) => {
+        if (heading > 11) {heading = 12 - heading};
+        if (heading < 0) {heading = 12 + heading};
+        return heading;
+    }
 
 
 
@@ -2205,7 +2210,7 @@ log(mod)
         //1st half of movement - do 1/2 (rnd down) turn then move ahead
         //2nd half of movement - do 1/2 (rnd up) turn then move ahead
 
-        let currentHeading =  Math.round(Angle(ship.token.get("rotation"))/30)
+        let currentHeading =  Heading(Math.round(Angle(ship.token.get("rotation"))/30));
         let halves = [],turns = [];
         turns[0] = course.includes("Port") ? -Math.floor(coursePoints/2) : course === "Ahead" ? 0:Math.floor(coursePoints/2);
         turns[1] = course.includes("Port") ? -Math.ceil(coursePoints/2) : course === "Ahead" ? 0:Math.ceil(coursePoints/2);
@@ -2215,12 +2220,12 @@ log(newSpeed)
 log(halves)
 log(turns)
 
-
+let path = [];
+path.push(ship.hexLabel);
         let currentCube = HexMap[ship.hexLabel].cube;
-        let path = [];
+
         for (let half=0;half<2;half++) {
-            currentHeading += turns[half];
-            currentHeading = (currentHeading < 0) ? currentHeading + 12: (currentHeading > 11) ? currentHeading - 12: currentHeading;
+            currentHeading = Heading(currentHeading + turns[half]);
             ship.token.set("rotation",(currentHeading * 30));
 
             for (let i=0;i<halves[half];i++) {
@@ -2229,15 +2234,17 @@ log(turns)
                     d = currentHeading/2;
                 } else {
                     if (flipFlop === true) {
-                        d = (currentHeading + 1) / 2;
+                        d = Heading(currentHeading + 1) / 2;
                     } else {
-                        d = (currentHeading - 1) / 2;
+                        d = Heading(currentHeading - 1) / 2;
                     }
                     flipFlop = (flipFlop === true) ? false:true;
                 }
                 let direction = DIRECTIONS[d];
                 currentCube = currentCube.neighbour(direction);
-                ship.Move(currentCube.label());
+                let newLabel = currentCube.label();
+                ship.Move(newLabel);
+path.push(newLabel)
             }
         }
 
@@ -2255,6 +2262,11 @@ log(turns)
 
         outputCard.body.push("Course " + verb + " a bearing of "+ ship.token.get("rotation"))
         ship.token.set("bar3_value",newSpeed);
+
+outputCard.body.push("Path: " + path.toString());
+
+
+
         PrintCard()
     }
 
@@ -2273,11 +2285,8 @@ log(turns)
 
 
 
-    const Ping = (msg) => {
-        let Tag = msg.content.split(";");
-        let x = Tag[1];
-        let y = Tag[2];
-        sendPing(x,y, Campaign().get('playerpageid'), null, true); 
+    const Ping = (point) => {
+        sendPing(point.x,point.y, Campaign().get('playerpageid'), null, true); 
     }
 
 
@@ -2537,6 +2546,7 @@ log(weapon)
 
             let damageList = damageChart[masterType][shieldGens];
             let displayList = damageList.slice(1);
+            let penList = damageChart[masterType][0].slice(1);
 
             for (let i=0;i<weaponsFiring.length;i++) {
                 let weapon = shooter.weaponArray[weaponsFiring[i]];
@@ -2569,6 +2579,9 @@ log(weapon)
                 let tip = "Rolls: " + rolls.toString();
                 tip += "<br>Dice: " + dice;
                 tip += "<br>Chart: " + displayList;
+                if (penDamage > 0) {
+                    tip += "<br>Pen Chart: " + penList;
+                }
                 let hitTip = '[ Hits](#" class="showtip" title="' + tip + ')';       
                 let missTip = '[ Misses](#" class="showtip" title="' + tip + ')';       
                 if (hit === false) {
@@ -2599,7 +2612,13 @@ log(weapon)
 
 
 
-
+        let point1 = new Point(shooter.token.get("left"),shooter.token.get("top"));
+        let point2 = new Point(target.token.get("left"),target.token.get("top"));
+        let type = "beam-magic";
+        let pageid = pageInfo.page.get('id');
+        spawnFxBetweenPoints(point1, point2, fxObj.get("id"), pageid);
+log(point1)
+Ping(point2);
 
 
 
@@ -2618,6 +2637,9 @@ log(weapon)
         if (state.FullThrust.shipState[shooter.id].targets.includes(target.id) === false) {
             state.FullThrust.shipState[shooter.id].targets.push(target.id);
         }
+
+
+
         PrintCard();
 
     }
