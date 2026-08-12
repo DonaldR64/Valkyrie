@@ -1133,7 +1133,11 @@ log(status)
             this.hexLabel = newLabel;
         }
 
+        StartTurn() {
 
+
+
+        }
 
 
 
@@ -1596,13 +1600,7 @@ log(status)
 
 
 
-    const StartGame = () => {
-
-
-    }
-
-    
-    
+  
 
 
 
@@ -1611,15 +1609,6 @@ log(status)
         
     }
 
-
-
-
-  
-
-
-    const Activate = (msg) => {
-        
-    }
 
 
     const RemoveLines2 = () => {
@@ -2693,7 +2682,35 @@ log(weapon)
 
 
 
+    const Combat = () => {
+        turnorder = JSON.parse(Campaign().get("turnorder"));
+        if (!turnorder) {return};
+        //advance
+        turnorder = JSON.parse(Campaign().get("turnorder"));
+        let currentTurnItem = turnorder[0];
+        if (!currentTurnItem) {return};
 
+        let id = currentTurnItem.id;
+        let ship = ShipArray[id];
+        if (currentTurnItem.custom === "Turn") {
+            state.FullThrust.turn = currentTurnItem.pr
+        }
+        //ping model's token
+        if (ship) {
+            //skip if on GM Layer
+            if (ship.token.get("layer") === "objects") {
+                toFront(ship.token);
+                sendPing(ship.token.get("left"),ship.token.get("top"),Campaign().get("playerpageid"),null,true);
+                SetupCard(ship.name,"Turn " + state.FullThrust.turn,ship.faction);
+                ship.StartTurn();
+                PrintCard();
+            }
+        } else {
+            SetupCard("Turn " + state.FullThrust.turn,"","Neutral");
+            //Start of Turn things
+            PrintCard();
+        }
+    }
 
     const ClearState = (msg) => {
         let Tag = msg.content.split(";");
@@ -2727,7 +2744,7 @@ log(weapon)
             playerIDs: [],
             players: {},
             factions: [],
-            turn: 1,
+            turn: 0,
             losLines: [],
             phase: 0,
             shipState: {},
@@ -2736,6 +2753,7 @@ log(weapon)
 
         
 
+        Campaign().set("initiativepage",false);
 
 
 
@@ -2772,8 +2790,14 @@ log(weapon)
 
     const NextTurn = () => {
 
+        let turn = state.FullThrust.turn;
+        turn++;
+
+
         //reset weapons on ships
-//will need mod for plasma torpedos/romulans later
+        //reset repairs flag, target #s flag
+        //build up array of ids and masses
+        let shipMasses = []
         _.each(ShipArray,ship => {
             _.each(ship.weaponArray,weapon => {
                 if (weapon.status === "Fired") {
@@ -2785,16 +2809,59 @@ log(weapon)
             state.FullThrust.shipState[ship.id].targets = [];
         })
 
+        //sort shipMasses
+        shipMasses = shipMasses.sort((a,b) => a.mass - b.mass);
+        
+        turnorder = [];
+        Campaign().set("initiativepage",true);
+        let init = shipMasses.length;
+        for (let i=0;i<init;i++) {
+            turnorder.push({
+                _pageid:    Campaign().get("playerpageid"),
+                id:         shipMasses[i].id,
+                pr:         (init - i),
+            })
+        }
+        Campaign().set("turnorder", JSON.stringify(turnorder));
 
+        SetupCard("Turn " + turn,"","Neutral");
+        PrintCard();
 
-
-
-
-
-
+        
     }
 
-    
+    const StartGame = () => {
+        let shipMasses = [];
+        _.each(ShipArray,ship => {
+            let info = {
+                id: ship.id,
+                mass: ship.mass,
+            }
+            shipMasses.push(info);
+        })
+
+
+        //sort shipMasses
+        shipMasses = shipMasses.sort((a,b) => a.mass - b.mass);
+        
+        turnorder = [];
+        Campaign().set("initiativepage",true);
+        for (let i=0;i<shipMasses.length;i++) {
+            turnorder.push({
+                _pageid:    Campaign().get("playerpageid"),
+                id:         shipMasses[i].id,
+                pr:         shipMasses[i].mass,
+            })
+        }
+        turnorder.unshift({
+            _pageid:    Campaign().get("playerpageid"),
+            id:         "-1",
+            custom: "Turn",
+            pr:         1,
+            formula:    "+1",
+        })
+        Campaign().set("turnorder", JSON.stringify(turnorder));
+    }
 
 
 
@@ -2998,8 +3065,8 @@ log(weapon)
             case '!AddAbilities':
                 AddAbilities(msg);
                 break;
-            case '!NextTurn':
-                NextTurn();
+            case '!StartGame':
+                StartGame();
                 break;
             case '!SetFleets':
                 SetFleets();
@@ -3042,6 +3109,7 @@ log(weapon)
         //on("add:graphic", addGraphic);
         on('change:graphic',changeGraphic);
         on('destroy:graphic',destroyGraphic);
+        on('change:campaign:turnorder',Combat);
     };
     on('ready', () => {
         log("===>FullThrust<===");
