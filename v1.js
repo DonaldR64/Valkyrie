@@ -1120,46 +1120,18 @@ log(status)
             return HexMap[this.hexLabel].distance(HexMap[b.hexLabel]);
         }
 
-
-        Move() {
-            let currentHex = HexMap[this.hexLabel];
-            let heading = Math.round(Angle(this.token.get("rotation"))/30)
-            if (isEven(heading)) {
-                heading = heading/2;
-            } else {
-                if (flipFlop === true) {
-                    heading = (heading - 1)/2;
-                } else {
-                    heading = (heading + 1)/2;
-                }
-                flipFlop = (flipFlop === true) ? false:true;
+        Move(newLabel) {
+            let index = HexMap[this.hexLabel].tokenIDs.indexOf(this.id);
+            if (index > -1) {
+                HexMap[this.hexLabel].tokenIDs.splice(index,1);
             }
-            let direction = DIRECTIONS[heading];
-            let newHex = HexMap[currentHex.cube.neighbour(direction).label()];
-
-            if (newHex) {
-
-//later check re collisions
-                this.token.set({
-                    left: newHex.centre.x,
-                    top: newHex.centre.y,
-                })
-                let index = currentHex.tokenIDs.indexOf(this.id);
-                if (index > -1) {
-                    currentHex.tokenIDs.splice(index,1);
-                }
-                newHex.tokenIDs.push(this.id);
-
-
-
-            } else {
-//off map
-
-
-            }
-
-
+            HexMap[newLabel].tokenIDs.push(newLabel);
+            this.token.set({
+                left: HexMap[newLabel].centre.x,
+                top: HexMap[newLabel].centre.y,
+            })
         }
+
 
 
 
@@ -1313,9 +1285,15 @@ log(status)
         let turnPts = Math.round(thrust/turn);
 
         let part = thrust + ";?{Thrust - Current Speed: " + currentSpeed;
-        for (let i=thrust;i>= (-thrust);i--) {
-            part += "|" + i;
+        part += "|Maintain Speed,0|Increase Speed,?{Increase";
+        for (let i=1;i<=thrust;i++) {
+            part += "&#124;Increase Speed by " + i;
         }
+        part += "&#125;|Decrease Speed,?{Decrease";
+        for (let i=1;i<=thrust;i++) {
+            part += "&#124;Decrease Speed by " + i;
+        }
+        part += "&#125;";
         part += "};?{Course|Ahead,Ahead|Port,?{Points";
         for (let i=1;i<=turnPts;i++) {
             let s = (i===1) ? "":"s"
@@ -2195,13 +2173,15 @@ log(mod)
     }
 
     const Helm = (msg) => {
+
+//["!Helm","-OzcDRbtvA4HNItU93Vy","6","Increase Speed by 2","Ahead"]
+
         let Tag = msg.content.split(';');
         let ship = ShipArray[Tag[1]];
         if (!ship) {return};
         let maxThrust = parseInt(Tag[2]);
-        let thrustChoice = parseInt(Tag[3]) || 0;
-        let thrustSign = Math.sign(thrustChoice);
-        let thrust = Math.abs(thrustChoice);
+        let thrustChoice = Tag[3] || "0";
+        let thrust = parseInt(thrustChoice.replace(/[^\d]/g,"")) || 0;
         let course = Tag[4];
         let coursePoints = 0;
         //course might be Ahead, or Port X Points or Stbd X Points
@@ -2209,50 +2189,71 @@ log(mod)
             coursePoints = parseInt(course.replace(/[^\d]/g,""));
         } 
         let finalThrust = Math.max(Math.min(maxThrust - coursePoints, thrust),0);
+        let newSpeed;
         let currentSpeed = parseInt(ship.token.get("bar3_value"));
-        let newSpeed = Math.max(currentSpeed + (finalThrust * thrust),0);
-        //need to move ship, one hex at a time
-        //if turning, half rounded down of coursePoints at start, remainder at halfway mark
-
+        if (thrustChoice.includes("Decrease")) {
+            newSpeed = currentSpeed - thrust;
+        } else {
+            newSpeed = currentSpeed + thrust;
+        }
         SetupCard(ship.name,"Impulse",ship.faction);
-        outputCard.body.push("New Speed: " + newSpeed);
         if (finalThrust !== thrust) {
-            outputCard.body.push("Thrust reduced to " + finalThrust + " due to Turning");
+            outputCard.body.push("Thrust was reduced to " + finalThrust + " due to Turning");
             outputCard.body.push("[hr]");
         }
         
+        //1st half of movement - do 1/2 (rnd down) turn then move ahead
+        //2nd half of movement - do 1/2 (rnd up) turn then move ahead
+
         let currentHeading =  Math.round(Angle(ship.token.get("rotation"))/30)
-        if (course.includes("Port")) {
-            currentHeading -= Math.floor(coursePoints/2);
-        } else if (course.includes("Stbd")) {
-            currentHeading += Math.floor(coursePoints/2);
-        }
-        if (currentHeading < 0) {currentHeading = 12 - currentHeading};
-        if (currentHeading > 11) {currentHeading -= 12};
-        ship.token.set("rotation",(currentHeading * 30));
-        let firstHalf = Math.floor(finalThrust/2);
-        let secondHalf = finalThrust - firstHalf;
-        let currentHex = HexMap[ship.hexLabel];
-        for (let i=0;i<firstHalf;i++) {
-            ship.Move();
-        }
-        if (course.includes("Port")) {
-            currentHeading -= Math.ceil(coursePoints/2);
-        } else if (course.includes("Stbd")) {
-            currentHeading += Math.ceil(coursePoints/2);
-        }
-        if (currentHeading < 0) {currentHeading = 12 - currentHeading};
-        if (currentHeading > 11) {currentHeading -= 12};
-        ship.token.set("rotation",(currentHeading * 30));
-        for (let i=0;i<secondHalf;i++) {
-            ship.Move();
+        let halves = [],turns = [];
+        turns[0] = course.includes("Port") ? -Math.floor(coursePoints/2) : course === "Ahead" ? 0:Math.floor(coursePoints/2);
+        turns[1] = course.includes("Port") ? -Math.ceil(coursePoints/2) : course === "Ahead" ? 0:Math.ceil(coursePoints/2);
+        halves[0] = Math.floor(newSpeed/2);
+        halves[1] = newSpeed - halves[0];
+log(newSpeed)
+log(halves)
+log(turns)
+
+
+        let currentCube = HexMap[ship.hexLabel].cube;
+        let path = [];
+        for (let half=0;half<2;half++) {
+            currentHeading += turns[half];
+            currentHeading = (currentHeading < 0) ? currentHeading + 12: (currentHeading > 11) ? currentHeading - 12: currentHeading;
+            ship.token.set("rotation",(currentHeading * 30));
+
+            for (let i=0;i<halves[half];i++) {
+                let d;
+                if (currentHeading % 2 === 0) {
+                    d = currentHeading/2;
+                } else {
+                    if (flipFlop === true) {
+                        d = (currentHeading + 1) / 2;
+                    } else {
+                        d = (currentHeading - 1) / 2;
+                    }
+                    flipFlop = (flipFlop === true) ? false:true;
+                }
+                let direction = DIRECTIONS[d];
+                currentCube = currentCube.neighbour(direction);
+                ship.Move(currentCube.label());
+            }
         }
 
-        let adv = (thrustSign > 0) ? " increased ":" decreased ";
-        outputCard.body.push("Speed " + adv + " to " + newSpeed);
+
+
+
+        
+
+        let adv = (thrustChoice.includes("Increase")) ? " increased to ": (thrustChoice.includes("Decrease")) ? " decreased to ":" maintained at ";
+        outputCard.body.push("Speed " + adv + newSpeed);
+        let verb = "maintained at"
         if (course !== "Ahead") {
-            outputCard.body.push("Course changed to a bearing of " + ship.token.get("rotation"));
+            verb = "changed to"   
         }
+
+        outputCard.body.push("Course " + verb + " a bearing of "+ ship.token.get("rotation"))
         ship.token.set("bar3_value",newSpeed);
         PrintCard()
     }
