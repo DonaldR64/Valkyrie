@@ -1230,18 +1230,9 @@ log(status)
             action = "!Fire;@{selected|token_id};@{target|token_id};";
             action += macros[keys[i]].toString();
             abilityName = (i+1) + ": Fire " + keys[i];
-            let fx;
             if (keys[i].includes("Photon")) {
                 action += ";" + "?{Mode|Single|Spread [3]}";
-                fx = "/fx Photon @{selected|token_id} @{target|token_id}";            
             }
-            if (keys[i].includes("Phaser")) {
-                fx = "/fx Phaser @{selected|token_id} @{target|token_id}";            
-            }
-            if (keys[i].includes("Disruptor")) {
-                fx = "/fx Disruptor @{selected|token_id} @{target|token_id}";            
-            }
-            action += '\n' + fx;
             AddAbility(abilityName,action,ship.charID);
         }
 
@@ -2431,6 +2422,9 @@ log(weapon)
         let totalDamage = 0;
         let hits = 0;
 
+        let fxObj;
+        let sound;
+
         if (Projectiles.includes(weaponType)) {
             //roll to hit, then damage
             let hitTip = "";
@@ -2497,6 +2491,9 @@ log(weapon)
             magazine -= ammo;
             AttributeSet(shooter.charID,"torpedo",magazine);
 
+            fxObj = findObjs({type: "custfx", name: "Photon"})[0];
+            sound = (mode.includes("Spread")) ? "Spread": (weaponType.includes("Short")) ? "Short Range Photon":"Photon";
+
         } else if (BeamWeapons.includes(weaponType)) {
             //Beams etc 
             //to hit and damage are same roll
@@ -2511,7 +2508,6 @@ log(weapon)
             }
             let rangeBand = Math.floor(losResult.distance/12);
             let dice = diceChart[weaponType][rangeBand] || 1;
-            let fxObj;
 
             let info = {
                 normal: 0,
@@ -2536,11 +2532,12 @@ log(weapon)
             if (weaponType.includes("Phaser")) {
                 masterType = "Phaser";
                 fxObj =  findObjs({type: "custfx", name: "Phaser"})[0];
+                sound = "Phasers";
                 PlaySound("Phasers");
             }
             if (weaponType.includes("Disruptor")) {
                 masterType = "Disruptor";
-                PlaySound("Disruptor");
+                sound = "Disruptor"
                 fxObj =  findObjs({type: "custfx", name: "Disruptor"})[0];
             }
 
@@ -2609,22 +2606,6 @@ log(weapon)
             }
             outputCard.body.push("[hr]");
             target.Damage(info);
-
-
-
-        let point1 = new Point(shooter.token.get("left"),shooter.token.get("top"));
-        let point2 = new Point(target.token.get("left"),target.token.get("top"));
-        let type = "beam-magic";
-        let pageid = pageInfo.page.get('id');
-        spawnFxBetweenPoints(point1, point2, fxObj.get("id"), pageid);
-log(point1)
-Ping(point2);
-
-
-
-
-
-
         }
 
 
@@ -2637,6 +2618,13 @@ Ping(point2);
         if (state.FullThrust.shipState[shooter.id].targets.includes(target.id) === false) {
             state.FullThrust.shipState[shooter.id].targets.push(target.id);
         }
+
+        let point1 = new Point(shooter.token.get("left"),shooter.token.get("top"));
+        let point2 = new Point(target.token.get("left"),target.token.get("top"));
+        let pageid = pageInfo.page.get('id');
+        spawnFxBetweenPoints(point1, point2, fxObj.get("id"), pageid);
+
+        PlaySound(sound);
 
 
 
