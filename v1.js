@@ -1134,9 +1134,15 @@ log(status)
         }
 
         StartTurn() {
-
-
-
+            //things to do at start of turn
+            _.each(this.weaponArray,weapon => {
+                if (weapon.status === "Fired") {
+                    weapon.status = "Normal";
+                    AttributeSet(this.charID,"weapon" + (weapon.pos + 1) + "status","Normal");
+                }
+            })
+            state.FullThrust.shipState[this.id].repairs = false;
+            state.FullThrust.shipState[this.id].targets = [];
         }
 
 
@@ -2788,47 +2794,7 @@ log(weapon)
         return;
     }
 
-    const NextTurn = () => {
-
-        let turn = state.FullThrust.turn;
-        turn++;
-
-
-        //reset weapons on ships
-        //reset repairs flag, target #s flag
-        //build up array of ids and masses
-        let shipMasses = []
-        _.each(ShipArray,ship => {
-            _.each(ship.weaponArray,weapon => {
-                if (weapon.status === "Fired") {
-                    weapon.status = "Normal";
-                    AttributeSet(ship.charID,"weapon" + (weapon.pos + 1) + "status","Normal");
-                }
-            })
-            state.FullThrust.shipState[ship.id].repairs = false;
-            state.FullThrust.shipState[ship.id].targets = [];
-        })
-
-        //sort shipMasses
-        shipMasses = shipMasses.sort((a,b) => a.mass - b.mass);
-        
-        turnorder = [];
-        Campaign().set("initiativepage",true);
-        let init = shipMasses.length;
-        for (let i=0;i<init;i++) {
-            turnorder.push({
-                _pageid:    Campaign().get("playerpageid"),
-                id:         shipMasses[i].id,
-                pr:         (init - i),
-            })
-        }
-        Campaign().set("turnorder", JSON.stringify(turnorder));
-
-        SetupCard("Turn " + turn,"","Neutral");
-        PrintCard();
-
-        
-    }
+   
 
     const StartGame = () => {
         let shipMasses = [];
