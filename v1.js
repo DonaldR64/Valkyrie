@@ -799,11 +799,13 @@ const Main = (() => {
             
         }
 
-        SetShields(level) {
-            this.token.set("bar2_value",level);
-            this.shields = level;
+        SetShields(change) {
+            let shields = parseInt(this.token.get("bar2_value"));
+            shields += change;
+            this.token.set("bar2_value",shields);
+            this.shields = shields;
             let shieldstatus = "#00ff00";
-            let shieldPercent = Math.round(level/this.shieldsMax * 100);
+            let shieldPercent = Math.round(shields/this.shieldsMax * 100);
             if (shieldPercent <= 75) {shieldstatus = "#ffff00"};
             if (shieldPercent <= 50) {shieldstatus = "#FFA500"};
             if (shieldPercent <= 25) {shieldstatus = "#ff0000"};
@@ -1143,8 +1145,78 @@ log(status)
             })
             state.FullThrust.shipState[this.id].repairs = false;
             state.FullThrust.shipState[this.id].targets = [];
+            this.Repairs();
+
+
+
+
         }
 
+        Repairs() {
+            let dct = parseInt(Attribute(this.charID,"crew"));
+            let ds = Attribute(this.charID,"damagedsystems").split(",");
+             damagedSystems = [];
+            _.each(ds,d => {
+                if (d && d !== "None" && d !== "") {
+                    damagedSystems.push(d);
+                }
+            })
+
+            let shields = parseInt(this.token.get("bar2_value"));
+            let shieldsMax = parseInt(this.token.get("bar2_max"));
+            let difference = shieldsMax - shields;
+            let shieldFix = (shields < shieldsMax/2) ? 3:1;
+            if (damagedSystems.length === 0) {
+                if (shields !== shieldsMax) {
+                    this.ShieldRepair(dct,difference,shieldFix);
+                }
+            } else {
+                //if more than one system damaged, put up options to prioritize one
+                if (damagedSystems.length > 1) {
+
+
+
+                } else {
+                    let dctAssigned = Math.minX(dct,3);
+                    RepairSystem(damagedSystems[0],dctAssigned);
+                    //if any dct remain, assign them to shield repair
+                    if (dct > dctAssigned) {
+                        this.ShieldRepair((dct-dctAssigned),difference,shieldFix);
+                    }
+                }
+            }
+        }
+
+        Repairs2() {
+            //more than one system was damaged, feeds back from priority
+
+        }
+
+
+        RepairSystem(system,dct) {
+            
+
+
+
+        }
+
+
+
+
+
+
+        ShieldRepair(dct,max,num) {
+            let rep = 0;
+            for (let i=0;i<dct;i++) {
+                rep += randomInteger(num);
+            }
+            rep = Math.min(rep,max);
+            ship.SetShields(rep);
+            outputCard.body.push("Crews Restored " + rep + " Shield Pts");
+            if (rep === max) {
+                outputCard.body.push("Shields are now at Full");
+            }
+        }
 
 
 
@@ -2142,26 +2214,6 @@ log(mod)
         }
     }
 
-
-    const ShieldRepair = (ship,dctAssigned) => {
-        let shields = parseInt(ship.token.get("bar2_value"));
-        let shieldsMax = parseInt(ship.token.get("bar2_max"));
-        let rnd = 1;
-        let rep = 0;
-        if (shields < shieldsMax/2) {
-            rnd = 3;
-        }
-        for (let i=0;i<dctAssigned;i++) {
-            rep += randomInteger(rnd);
-        }
-        rep = Math.min(rep,shieldsMax - shields);
-        shields += rep;
-        ship.SetShields(shields);
-        outputCard.body.push("Crews Restored " + rep + " Shield Pts");
-        if (shields === shieldsMax) {
-            outputCard.body.push("Shields are now at Max");
-        }
-    }
 
     const Helm = (msg) => {
 ///needs work if keeping
