@@ -1173,15 +1173,16 @@ log(status)
             } else {
                 //if more than one system damaged, put up options to prioritize one
                 if (damagedSystems.length > 1) {
-
+outputCard("Multiple Systems Damaged")
 
 
                 } else {
                     let dctAssigned = Math.minX(dct,3);
                     RepairSystem(damagedSystems[0],dctAssigned);
+                    dct -= dctAssigned
                     //if any dct remain, assign them to shield repair
-                    if (dct > dctAssigned) {
-                        this.ShieldRepair((dct-dctAssigned),difference,shieldFix);
+                    if (dct > 0) {
+                        this.ShieldRepair(dct,difference,shieldFix);
                     }
                 }
             }
@@ -1194,7 +1195,84 @@ log(status)
 
 
         RepairSystem(system,dct) {
-            
+            let s = (dct === 1) ? " Team is":" Teams are";
+            let s2 = (dct === 1) ? " Team was ": " Teams were ";
+            let repairRoll = randomInteger(6);  
+            let bonus = 0;
+            if (state.FullThrust.shipState[this.id].systemRepairs[system]) {
+                bonus = state.FullThrust.shipState[this.id].systemRepairs[system];
+            }
+            let needed = assignedDCT + bonus;
+            if (repairRoll > needed) {
+                let tip = "Roll: " + repairRoll + " > " + needed;
+                tip = '['+ assignedDCT + '](#" class="showtip" title="' + tip + ')';   
+                outputCard.body.push(tip + s + " still trying to fix " + system);
+                state.FullThrust.shipState[this.id].systemRepairs[system] = (bonus + 1);
+            } else {
+                let tip = "Roll: " + repairRoll + " <= " + needed;
+                let add = "";
+                if (system === "Fire Control" || system === "Shield Generator") {
+                    add = " a ";
+                }
+                tip = '['+ assignedDCT + '](#" class="showtip" title="' + tip + ')';   
+                outputCard.body.push(tip + s2 + " able to repair " + add + system);
+                let translateList = [
+                    {name: "Command", att: "command"},
+                    {name: "Life Support", att: "lifesupport"},
+                    {name: "Warp Core", att: "warpcore"},
+                    {name: "Impulse Engines 1", att: "impulse1"},
+                    {name: "Impulse Engines 2", att: "impulse2"},
+                    {name: "Shield Generator", att: "screens"},
+                    {name: "Fire Control", att: "firecontrol"},
+                    {name: "Cloaking Device", att: "cloak"},
+                    {name: "Warp Drive", att: "warpdrive"},
+                ]
+                let sys = translateList.find((e) => e.name === system);
+                if (sys) {  
+                    if (system === "Fire Control" || system === "Shield Generator") {
+                        let current = parseInt(Attribute(this.charID,sys.att));
+                        if (current === 0 && system === "Fire Control") {
+                            outputCard.body.push("The Ship can target its weapons now");
+                        }
+                        if (current === 0 && system === "Shield Generator") {
+                            let shields = state.FullThrust.shipState[ship.id].shields;
+                            ship.SetShields(shields);
+                            if (shields > 0) {
+                                outputCard.body.push("Shields have been restored");
+                            } else {
+                                outputCard.body.push("Shields can be repaired now");
+                            }                       
+                        }
+                        current++;
+                        AttributeSet(this.charID,sys.att,current);
+                    } else {
+                        AttributeSet(this.charID,sys.att,"Nominal");
+                        if (system === "Command") {this.token.set(SM.ooc,false)};
+                        if (system === "Life Support") {this.token.set(SM.nolife,false)};
+                        if (system === "Warp Core") {this.token.set(SM.warp,false)};
+                    }
+                } else {
+                    //is a weapon
+                    for (let i=0;i<ship.weaponArray;i++) {
+                        let weapon = this.weaponArray[i];
+                        let num = weapon.pos + 1;
+                        if (weapon.title === system) {
+                            AttributeSet(ship.charID,"weapon" + num + "status","Fired");
+                            break;
+                        }
+                    }
+                }
+
+
+                damagedSystems.splice(damagedSystems.indexOf(system),1);
+                let repaired = damagedSystems.toSpliced(damagedSystems.indexOf("Shields"),1).toString();
+                AttributeSet(this.charID,"damagedsystems",repaired);
+                state.FullThrust.shipState[this.id].systemRepairs[system] = 0;
+
+
+
+
+            }
 
 
 
