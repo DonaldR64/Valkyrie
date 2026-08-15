@@ -682,7 +682,7 @@ const Main = (() => {
             this.shields = parseInt(token.get("bar2_value")) || 0;
             this.shieldsMax = parseInt(token.get("bar2_max")) || 0;
 
-            let damagedSystems = aa.damagedsystems || "";
+            let damagedSystems = aa.damagedsystems || " ";
             damagedSystems = damagedSystems.split(",").filter((e) => e !== " ");
 
 log(name)
@@ -1165,8 +1165,7 @@ log(status)
             } else {
                 //if more than one system damaged, put up options to prioritize one
                 if (damagedSystems.length > 1) {
-outputCard("Multiple Systems Damaged")
-                    outputCard.body("Multiple Systems are damaged");
+                    outputCard.body.push("Multiple Systems are damaged");
                     outputCard.body.push("Choose one to Prioritize");
                     _.each(damagedSystems,system => {
                         let rep = state.FullThrust.shipState[this.id].systemRepairs[system] || 0;
@@ -1244,6 +1243,7 @@ outputCard("Multiple Systems Damaged")
                     {name: "Warp Drive", att: "warpdrive"},
                 ]
                 let sys = translateList.find((e) => e.name === system);
+log("Sys: " + sys)
                 if (sys) {  
                     if (system === "Fire Control" || system === "Shield Generator") {
                         let current = parseInt(Attribute(this.charID,sys.att));
@@ -1251,8 +1251,8 @@ outputCard("Multiple Systems Damaged")
                             outputCard.body.push("The Ship can target its weapons now");
                         }
                         if (current === 0 && system === "Shield Generator") {
-                            let shields = state.FullThrust.shipState[ship.id].shields;
-                            ship.SetShields(shields);
+                            let shields = state.FullThrust.shipState[this.id].shields;
+                            this.SetShields(shields);
                             if (shields > 0) {
                                 outputCard.body.push("Shields have been restored");
                             } else {
@@ -1269,8 +1269,12 @@ outputCard("Multiple Systems Damaged")
                     }
                 } else {
                     //is a weapon
-                    for (let i=0;i<this.weaponArray;i++) {
+log("Is a Weapon")
+                    for (let i=0;i<this.weaponArray.length;i++) {
                         let weapon = this.weaponArray[i];
+log("I:  " + i)
+log(weapon)
+log(system)
                         if (weapon.title === system) {
                             AttributeSet(this.charID,"weapon" + (i+1) + "status","Fired");
                             break;
@@ -1284,7 +1288,7 @@ outputCard("Multiple Systems Damaged")
                     damagedSystems.splice(damagedSystems.indexOf(system),1);
                 }
                 this.damagedSystems = damagedSystems;
-                AttributeSet(this.charID,"damagedsystems",damagedSystems);
+                AttributeSet(this.charID,"damagedsystems",damagedSystems.toString());
                 state.FullThrust.shipState[this.id].systemRepairs[system] = 0;
 
 
@@ -1414,15 +1418,11 @@ outputCard("Multiple Systems Damaged")
             AddAbility(abilityName,action,ship.charID);
         }
 
-        action = "!Orders;@{selected|token_id};?{Order|Dead Stop|Emergency Thrust";
-        if (Attribute(ship.charID,"cloak",true) === "1") {
-            action += "|Cloak/Decloak";
-        }
-        action += "}";
-        AddAbility("Special",action,ship.charID);
 
-        action = "!Orders;@{selected|token_id};Engineering;?{Choose|Conduct Repairs,Repairs|Assign Teams,?{System to Prioritize&#124;Default&#124;Shields&#124;Weapons&#124;Impulse Engines&#124;Fire Control&#125;}"
-        AddAbility("Engineering",action,ship.charID);
+        if (Attribute(ship.charID,"cloak",true) === "1") {
+            action += "!Orders;@{selected|token_id};Cloak/Decloak";
+            AddAbility("Cloak/Decloak",action,ship.charID);
+        }
 
         CreateHelmAbility(ship);
 
