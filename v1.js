@@ -1166,8 +1166,17 @@ log(status)
                 //if more than one system damaged, put up options to prioritize one
                 if (damagedSystems.length > 1) {
 outputCard("Multiple Systems Damaged")
-
-
+                    outputCard.body("Multiple Systems are damaged");
+                    outputCard.body.push("Choose one to Prioritize");
+                    _.each(damagedSystems,system => {
+                        let rep = state.FullThrust.shipState[this.id].systemRepairs[system] || 0;
+                        let button = "Priority: " + system;
+                        if (rep > 0) {
+                            button += "[Repair in Progress]";
+                        }
+                        let action = "!RepBack;" + this.id + ";" + system;
+                        ButtonInfo(button,action);
+                    })
                 } else {
                     let dctAssigned = Math.min(dct,3);
                     this.RepairSystem(damagedSystems[0],dctAssigned);
@@ -1180,9 +1189,24 @@ outputCard("Multiple Systems Damaged")
             }
         }
 
-        Repairs2() {
+        Repairs2(chosen) {
             //more than one system was damaged, feeds back from priority
-
+            let damagedSystems = this.damagedSystems;
+            damagedSystems.splice(damagedSystems.indexOf(chosen),1);
+            damagedSystems.unshift(chosen);
+            let dct = parseInt(Attribute(this.charID,"crew"));
+            let num = 0;
+            do {
+                let system = damagedSystems[num];
+                let dctAssigned = Math.min(dct,3);
+                this.RepairSystem(system,dctAssigned);
+                dct -= dctAssigned;
+                num++;
+            } while (dct > 0);
+            //if any dct remain, assign them to shield repair
+            if (dct > 0) {
+                this.ShieldRepair(dct,difference,shieldFix);
+            }
         }
 
 
@@ -2384,7 +2408,15 @@ outputCard.body.push("Path: " + path.toString());
 
 
 
-
+    const RepBack = (msg) => {
+        //the repair choice if multiple systems damaged
+        let Tag = msg.content.split(";");
+        let ship = ShipArray[Tag[1]];
+        let system = Tag[2];
+        SetupCard(ship.name,"Engineering",ship.faction);
+        ship.Repairs2(system);
+        PrintCard();
+    }
 
 
 
@@ -3186,6 +3218,9 @@ log(weapon)
                 break;
             case '!Helm':
                 Helm(msg);
+                break;
+            case '!RepBack':
+                RepBack(msg);
                 break;
 
         }
