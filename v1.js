@@ -682,8 +682,12 @@ const Main = (() => {
             this.shields = parseInt(token.get("bar2_value")) || 0;
             this.shieldsMax = parseInt(token.get("bar2_max")) || 0;
 
+            let damagedSystems = aa.damagedsystems || "";
+            damagedSystems = damagedSystems.split(",").filter((e) => e !== " ");
 
-
+log(name)
+            this.damagedSystems = damagedSystems;
+log(this.damagedSystems)
 
             ShipArray[id] = this;
             let index = HexMap[label].tokenIDs.indexOf(id);
@@ -777,7 +781,7 @@ const Main = (() => {
                     n = " All the "
                 }
                 outputCard.body.push("Shields took " + n + " Damage");
-                this.SetShields(shields);
+                this.SetShields(-shieldDamage);
                 if (shields === 0) {
                     outputCard.body.push("[#ff0000]Shields are Down![/#]");
                 }
@@ -861,14 +865,7 @@ log("new Crew: " +newCrew)
         }
 
         ThresholdDamage(startingLevel,finishLevel) {
-            let ds = Attribute(this.charID,"damagedsystems").split(",");
-            let damagedSystems = [];
-            _.each(ds,d => {
-                if (d && d !== "None" && d !== "") {
-                    damagedSystems.push(d);
-                }
-            })
-
+            let damagedSystems = this.damagedSystems;
             let needed = finishLevel + (finishLevel - 1 - startingLevel);
             let damaged = false;
 
@@ -971,8 +968,9 @@ log("new Crew: " +newCrew)
                         if (current === 0) {
                             if (system === "Shield Generator") {
                                 outputCard.body.push("[#ff0000]Shields are now Offline[/#]");
-                                state.FullThrust.shipState[this.id].shields = parseInt(this.token.get("bar2_value"));
-                                this.SetShields(0);
+                                let cs = parseInt(this.token.get("bar2_value"));
+                                state.FullThrust.shipState[this.id].shields = cs;
+                                this.SetShields(-cs);
                             }
                             if (system === "Fire Control") {
                                 outputCard.body.push("[#ff0000]Weapons cannot fire[/#]");
@@ -1027,6 +1025,7 @@ log(status)
 
 
             AttributeSet(this.charID,"damagedsystems",damagedSystems.toString());
+            this.damagedSystems = damagedSystems;
             if (damaged === true) {
                 outputCard.body.push("[hr]");
             }
@@ -1154,14 +1153,7 @@ log(status)
 
         Repairs() {
             let dct = parseInt(Attribute(this.charID,"crew"));
-            let ds = Attribute(this.charID,"damagedsystems").split(",");
-             damagedSystems = [];
-            _.each(ds,d => {
-                if (d && d !== "None" && d !== "") {
-                    damagedSystems.push(d);
-                }
-            })
-
+            let damagedSystems = this.damagedSystems;
             let shields = parseInt(this.token.get("bar2_value"));
             let shieldsMax = parseInt(this.token.get("bar2_max"));
             let difference = shieldsMax - shields;
@@ -1177,8 +1169,8 @@ outputCard("Multiple Systems Damaged")
 
 
                 } else {
-                    let dctAssigned = Math.minX(dct,3);
-                    RepairSystem(damagedSystems[0],dctAssigned);
+                    let dctAssigned = Math.min(dct,3);
+                    this.RepairSystem(damagedSystems[0],dctAssigned);
                     dct -= dctAssigned
                     //if any dct remain, assign them to shield repair
                     if (dct > 0) {
@@ -1194,9 +1186,9 @@ outputCard("Multiple Systems Damaged")
         }
 
 
-        RepairSystem(system,dct) {
-            let s = (dct === 1) ? " Team is":" Teams are";
-            let s2 = (dct === 1) ? " Team was ": " Teams were ";
+        RepairSystem(system,assignedDCT) {
+            let s = (assignedDCT === 1) ? " Team is":" Teams are";
+            let s2 = (assignedDCT === 1) ? " Team was ": " Teams were ";
             let repairRoll = randomInteger(6);  
             let bonus = 0;
             if (state.FullThrust.shipState[this.id].systemRepairs[system]) {
@@ -1253,20 +1245,22 @@ outputCard("Multiple Systems Damaged")
                     }
                 } else {
                     //is a weapon
-                    for (let i=0;i<ship.weaponArray;i++) {
+                    for (let i=0;i<this.weaponArray;i++) {
                         let weapon = this.weaponArray[i];
-                        let num = weapon.pos + 1;
                         if (weapon.title === system) {
-                            AttributeSet(ship.charID,"weapon" + num + "status","Fired");
+                            AttributeSet(this.charID,"weapon" + (i+1) + "status","Fired");
                             break;
                         }
                     }
                 }
 
-
-                damagedSystems.splice(damagedSystems.indexOf(system),1);
-                let repaired = damagedSystems.toSpliced(damagedSystems.indexOf("Shields"),1).toString();
-                AttributeSet(this.charID,"damagedsystems",repaired);
+                let damagedSystems = this.damagedSystems;
+                let index = damagedSystems.indexOf(system);
+                if (index > -1) {
+                    damagedSystems.splice(damagedSystems.indexOf(system),1);
+                }
+                this.damagedSystems = damagedSystems;
+                AttributeSet(this.charID,"damagedsystems",damagedSystems);
                 state.FullThrust.shipState[this.id].systemRepairs[system] = 0;
 
 
@@ -1289,7 +1283,7 @@ outputCard("Multiple Systems Damaged")
                 rep += randomInteger(num);
             }
             rep = Math.min(rep,max);
-            ship.SetShields(rep);
+            this.SetShields(rep);
             outputCard.body.push("Crews Restored " + rep + " Shield Pts");
             if (rep === max) {
                 outputCard.body.push("Shields are now at Full");
@@ -2098,8 +2092,9 @@ log(mod)
                 ship.token.set("tint_color","#000000");
                 outputCard.body.push("The Ship is now Cloaked");
                 outputCard.body.push("Shields and Weapons do not function while cloaked");
-                state.FullThrust.shipState[id].shields = parseInt(ship.token.get("bar2_value"));
-                ship.SetShields(0);
+                let cs = parseInt(ship.token.get("bar2_value"));
+                state.FullThrust.shipState[id].shields = cs
+                ship.SetShields(-cs);
             } else {
                 ship.token.set("tint_color","transparent");
                 outputCard.body.push("Shields and Weapons are back Online");
