@@ -1226,13 +1226,20 @@ log(status)
             if (impulse1 === false && impulse2 === false) {
                 thrust = 0; //no engines
             }
+            let cloaked = false;
             if (this.token.get("tint_color") === "#000000") {
+                cloaked = true;
+            }
+            if (cloaked) {
                 thrust = Math.round(thrust/2); //cloaked
             }
+
             let turnPts = Math.round(thrust/turn);
             outputCard.body.push("Current Speed: " + currentSpeed);
             outputCard.body.push("Thrust: " + thrust);
+            if (cloaked) {outputCard.body.push("[Reduced by Cloaking Device]")}
             outputCard.body.push("Turn Points: " + turn);
+            if (cloaked) {outputCard.body.push("[Maximum Speed is 24 while Cloaked]")};
             if (this.token.get(SM.ooc)) {
                 outputCard.body.push("The Ship is currently Out of Command and Drifts");
                 this.Drifts();
