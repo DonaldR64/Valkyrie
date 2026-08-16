@@ -120,10 +120,12 @@ const Main = (() => {
 
 
     const SM = {
-        ooc: "status_red", //ooc - change
-        nolife: "status_green", //life support - change
-        warp: "status_blue", //warp core critical
-        nopower: "status_brown", //no power, drifting
+        ooc: "status_red", //Temp out of Command - fixable
+        nobridge: "status_yellow", //Bridge Destroyed, fixable
+        nolife: "status_green", //life support - fixable
+        warp: "status_blue", //warp core critical - fixable
+        nopower: "status_brown", //no power, drifting, fixable
+        hulk: "status_purple", //a drifting hulk
     }
 
 
@@ -880,7 +882,7 @@ log("new Crew: " +newCrew)
                 if (roll2 === 6) {
                     outputCard.body.push("[#ff0000]The Command Bridge was Destroyed![/#]");
                     outputCard.body.push("[#ff0000]The Ship is Out of Control until this is Repaired[/#]");
-                    this.token.set(SM.ooc,true);
+                    this.token.set(SM.nobridge,true);
                     AttributeSet(this.charID,"command","Destroyed");
                 } else {
                     outputCard.body.push("[#ff0000]The Command Bridge was Damaged![/#]");
@@ -918,14 +920,12 @@ log("new Crew: " +newCrew)
                     return;
                 } else if (roll2 === 5) {
                     outputCard.body.push("[#ff0000]The Warp Core was damaged but the Chief Engineer was able to Jettison it before it went Critical[/#]");
-                    outputCard.body.push("[#ff0000]The Ship will drift, unable to take part in the rest of the battle[/#]");
+                    outputCard.body.push("[#ff0000]The Ship becomes a drifting Hulk, unable to take part in the rest of the battle[/#]");
                     AttributeSet(this.charID,"warpcore","Gone");
-                    //not added to damaged systems, so cant be repaired
-    //maybe make it so is essentially system unit, uncontrollable
-
+                    this.token.set(SM.hulk,true);
                 } else {
                     outputCard.body.push("[#ff0000]The Warp Core was damaged[/#]");
-                    outputCard.body.push("[#ff0000]If not repaired, there is an increasing chance each turn it will go critical and explode[/#]");
+                    outputCard.body.push("[#ff0000]If not repaired, there is a chance each turn it will go critical and explode[/#]");
                     AttributeSet(this.charID,"warpcore","Offline");
                     this.token.set(SM.warp,1);
                     damagedSystems.push("Warp Core");
@@ -1135,6 +1135,7 @@ log(status)
         }
 
         StartTurn() {
+
             //things to do at start of turn
             _.each(this.weaponArray,weapon => {
                 if (weapon.status === "Fired") {
@@ -1142,16 +1143,75 @@ log(status)
                     AttributeSet(this.charID,"weapon" + (weapon.pos + 1) + "status","Normal");
                 }
             })
-            state.FullThrust.shipState[this.id].targets = [];
-            let result = this.Repairs();
-            if (result === true) {
-                PrintCard();
-            } 
-            if (result !== "New") {
-                SetupCard(this.name,"Helm",this.faction);
-                this.Helm();
-                PrintCard();
+
+
+
+            SetupCard(this.name,"",this.faction);
+
+            let lineFlag = false;
+
+            if (this.token.get(SM.ooc) && this.token.get(SM.hulk) === false) {
+                let comTurns = parseInt(this.token.get(SM.ooc)) - 1;
+                if (comTurns === 0) {
+                    this.token.set(SM.ooc,false);
+                    AttributeSet(this.charID,"command","Nominal");
+                    this.damagedSystems.splice(this.damagedSystems.indexOf("Command"),1);
+                    AttributeSet(this.charID,"damagedsystems",this.damagedSystems.toString());
+                    outputCard.body.push("Command has been reestablished");
+                } else {
+                    this.token.set(SM.ooc,comTurns);
+                    outputCard.body.push("Ship Remains Out of Command");
+                }
+                lineFlag = true;
             }
+            if (this.token.get(SM.nobridge) === true) {
+                outputCard.body.push("Ship Remains Out of Command");
+                lineFlag = true;
+            }
+            if (this.token.get(SM.nolife) && this.token.get(SM.hulk) === false) {
+                let lifeTurns = parseInt(this.token.get(SM.nolife)) - 1;
+                if (lifeTurns === 0) {
+                    outputCard.body.push("[#ff0000]Life Support has Failed![/#]");
+                    outputCard.body.push("[#ff0000]All Crew have abandoned Ship![/#]")
+                    outputCard.body.push("[#ff0000]The ship becomes a drifting hulk[/#]")
+                    this.token.set(SM.hulk,true);
+                } else {
+                    outputCard.body.push("Life Support will fail in " + lifeTurns + " Turns"); 
+                }
+                lineFlag = true; 
+            }
+            if (this.token.get(SM.warp)) {
+                let flag = parseInt(this.token.get(SM.warp));
+                if (flag > 1) {
+                    let roll = randomInteger(6);
+                    if (roll > 4) {
+                        outputCard.body.push("[#ff0000]Warp Core Breach! The Ship is Destroyed![/#]");
+                        PrintCard();
+                        this.Destroyed("WarpCore");
+                        return;
+                    }
+                }
+                outputCard.body.push("The Warp Core remains Critical and may Breach at any time!");
+                this.token.set(SM.warp,2)
+                lineFlag = true;
+            }
+
+            if (lineFlag === true) {
+                outputCard.body.push("[hr]");
+            }
+            state.FullThrust.shipState[this.id].targets = [];
+            if (this.token.get(SM.hulk)) {
+                outputCard.body.push("The Ship Drifts, unable to do anything");
+                let abilArray = findObjs({_type: "ability", _characterid: this.charID});
+                //clear old abilities
+                for(let a=0;a<abilArray.length;a++) {
+                    abilArray[a].remove();
+                } 
+                this.Drifts();
+            } else {
+                this.Repairs();
+            }
+            PrintCard();
         }
 
         Helm() {
@@ -1173,8 +1233,41 @@ log(status)
             outputCard.body.push("Current Speed: " + currentSpeed);
             outputCard.body.push("Thrust: " + thrust);
             outputCard.body.push("Turn Points: " + turn);
+            if (this.token.get(SM.ooc)) {
+                outputCard.body.push("The Ship is currently Out of Command and Drifts");
+                this.Drifts();
+            }
         }
 
+        Drifts() {
+            let currentSpeed = parseInt(this.token.get("bar3_value"));
+            let currentHeading =  Heading(Math.round(Angle(this.token.get("rotation"))/30));
+            let currentCube = HexMap[this.hexLabel].cube;
+            for (let i=0;i<currentSpeed;i++) {
+                let d;
+                if (currentHeading % 2 === 0) {
+                    d = currentHeading/2;
+                } else {
+                    if (flipFlop === true) {
+                        d = Heading(currentHeading + 1) / 2;
+                    } else {
+                        d = Heading(currentHeading - 1) / 2;
+                    }
+                    flipFlop = (flipFlop === true) ? false:true;
+                }
+                let direction = DIRECTIONS[d];
+                currentCube = currentCube.neighbour(direction);
+                let newLabel = currentCube.label();
+                if (HexMap[newLabel]) {
+                    this.Move(newLabel);
+                } else {
+                    outputCard.body.push("The Ship Drifts out of the area...");
+                    this.token.remove();
+                    delete ShipArray[this.id];
+                    break;
+                }
+            }
+        }
 
 
 
@@ -1185,90 +1278,109 @@ log(status)
             let shieldsMax = parseInt(this.token.get("bar2_max"));
             let difference = shieldsMax - shields;
             let shieldFix = (shields < shieldsMax/2) ? 3:1;
-            if (damagedSystems.length === 0 && shields === shieldsMax) {
-                return false;
-            }
-            SetupCard(this.name,"Repairs",this.faction);
-
-            if (damagedSystems.length === 0) {
-                this.ShieldRepair(dct,difference,shieldFix);
-            } else {
-                //if more than one system damaged, put up options to prioritize one
-                if (damagedSystems.length > 1) {
-                    outputCard.body.push("Multiple Systems are damaged");
-                    outputCard.body.push("Choose one to Prioritize");
-                    _.each(damagedSystems,system => {
-                        let rep = state.FullThrust.shipState[this.id].systemRepairs[system] || 0;
-                        let button = "Priority: " + system;
-                        if (rep > 0) {
-                            button += "[Repair in Progress]";
-                        }
-                        let action = "!RepBack;" + this.id + ";" + system;
-                        ButtonInfo(button,action);
-                    })
-                    PrintCard();
-                    return "New";
+            if (damagedSystems.length !== 0 || shields !== shieldsMax) {
+                if (damagedSystems.length === 0) {
+                    this.ShieldRepair(dct,difference,shieldFix);
+                    outputCard.body.push("[hr]");
                 } else {
-                    let dctAssigned = Math.min(dct,3);
-                    this.RepairSystem(damagedSystems[0],dctAssigned);
-                    dct -= dctAssigned
-                    //if any dct remain, assign them to shield repair
-                    if (dct > 0) {
-                        this.ShieldRepair(dct,difference,shieldFix);
+                    if (this.token.get(SM.nobridge) || this.token.get(SM.ooc)) {
+                        this.Repairs2("Command");
+                    } else {
+                        if (damagedSystems.length > 1) { 
+                            outputCard.body.push("Multiple Systems are damaged");
+                            outputCard.body.push("Choose one to Prioritize");
+                            _.each(damagedSystems,system => {
+                                let rep = state.FullThrust.shipState[this.id].systemRepairs[system] || 0;
+                                let button = system;
+                                if (rep > 0) {
+                                    button += "[Repair in Progress]";
+                                }
+                                let action = "!RepBack;" + this.id + ";" + system;
+                                if (system === "Warp Core") {
+                                    let action2 = "!Jettison;" + this.id;
+                                    ButtonInfo("Repair Warp Core",action,true);
+                                    ButtonInfo("Jettison Warp Core",action2,true);
+                                } else {
+                                    ButtonInfo(button,action);
+                                }
+                            })
+                            return;
+                        } else {
+                            let system = damagedSystems[0];
+                            if (system === "Warp Core") {
+                                let action = "!RepBack;" + this.id + ";" + system;
+                                let action2 = "!Jettison;" + this.id;
+                                ButtonInfo("Repair Warp Core",action,true);
+                                ButtonInfo("Jettison Warp Core",action2,true);
+                            } else {
+                                this.Repairs2(system);
+                            }
+                        }
                     }
                 }
             }
-            return true;
+            this.Helm();
         }
 
         Repairs2(chosen) {
-            SetupCard(this.name,"Repairs",this.faction);
-            //more than one system was damaged, feeds back from priority
-            let damagedSystems = this.damagedSystems;
-            damagedSystems.splice(damagedSystems.indexOf(chosen),1);
-            damagedSystems.unshift(chosen);
+            let damagedSystems = DeepCopy(this.damagedSystems);
+            if (damagedSystems.length > 1) {
+                //places prioritized/chosen system at start of array
+                damagedSystems.splice(damagedSystems.indexOf(chosen),1);
+                damagedSystems.unshift(chosen);
+            }
             let dct = parseInt(Attribute(this.charID,"crew"));
             let num = 0;
+            let shields = parseInt(this.token.get("bar2_value"));
+            let shieldsMax = parseInt(this.token.get("bar2_max"));
+            let difference = shieldsMax - shields;
+            let shieldFix = (shields < shieldsMax/2) ? 3:1;
+
             do {
                 let system = damagedSystems[num];
                 let dctAssigned = Math.min(dct,3);
                 this.RepairSystem(system,dctAssigned);
                 dct -= dctAssigned;
                 num++;
-            } while (dct > 0);
+            } while (dct > 0 && num < damagedSystems.length);
             //if any dct remain, assign them to shield repair
-            if (dct > 0) {
+            if (dct > 0 && difference > 0) {
                 this.ShieldRepair(dct,difference,shieldFix);
             }
-            PrintCard();
-            SetupCard(this.name,"Helm",this.faction);
-            this.Helm();
-            PrintCard();
+            outputCard.body.push("[hr]");
         }
 
 
         RepairSystem(system,assignedDCT) {
-            let s = (assignedDCT === 1) ? " Team is":" Teams are";
-            let s2 = (assignedDCT === 1) ? " Team was ": " Teams were ";
             let repairRoll = randomInteger(6);  
             let bonus = 0;
             if (state.FullThrust.shipState[this.id].systemRepairs[system]) {
                 bonus = state.FullThrust.shipState[this.id].systemRepairs[system];
             }
             let needed = assignedDCT + bonus;
+            let tip = "Roll: " + repairRoll + " > " + needed + " Teams";
             if (repairRoll > needed) {
                 let tip = "Roll: " + repairRoll + " > " + needed;
-                tip = '['+ assignedDCT + '](#" class="showtip" title="' + tip + ')';   
-                outputCard.body.push(tip + s + " still trying to fix " + system);
+                if (system === "Command") {
+                    tip = '[Command](#" class="showtip" title="' + tip + ')';   
+                    outputCard.body.push(tip + " has not been Reestablished");
+                } else {
+                    tip = '[Engineering](#" class="showtip" title="' + tip + ')';   
+                    outputCard.body.push(tip + " is still trying to fix " + system);
+                }
                 state.FullThrust.shipState[this.id].systemRepairs[system] = (bonus + 1);
             } else {
-                let tip = "Roll: " + repairRoll + " <= " + needed;
                 let add = "";
                 if (system === "Fire Control" || system === "Shield Generator") {
                     add = " a ";
                 }
-                tip = '['+ assignedDCT + '](#" class="showtip" title="' + tip + ')';   
-                outputCard.body.push(tip + s2 + " able to repair " + add + system);
+                if (system === "Command") {
+                    tip = '[Command](#" class="showtip" title="' + tip + ')';   
+                    outputCard.body.push(tip + " has been Reestablished");
+                } else {
+                    tip = '[Engineering](#" class="showtip" title="' + tip + ')';   
+                    outputCard.body.push(tip + " was able to repair " + add + system);
+                }
                 let translateList = [
                     {name: "Command", att: "command"},
                     {name: "Life Support", att: "lifesupport"},
@@ -1281,7 +1393,6 @@ log(status)
                     {name: "Warp Drive", att: "warpdrive"},
                 ]
                 let sys = translateList.find((e) => e.name === system);
-log("Sys: " + sys)
                 if (sys) {  
                     if (system === "Fire Control" || system === "Shield Generator") {
                         let current = parseInt(Attribute(this.charID,sys.att));
@@ -1301,18 +1412,17 @@ log("Sys: " + sys)
                         AttributeSet(this.charID,sys.att,current);
                     } else {
                         AttributeSet(this.charID,sys.att,"Nominal");
-                        if (system === "Command") {this.token.set(SM.ooc,false)};
+                        if (system === "Command") {
+                            this.token.set(SM.ooc,false);
+                            this.token.set(SM.nobridge,false);
+                        };
                         if (system === "Life Support") {this.token.set(SM.nolife,false)};
                         if (system === "Warp Core") {this.token.set(SM.warp,false)};
                     }
                 } else {
                     //is a weapon
-log("Is a Weapon")
                     for (let i=0;i<this.weaponArray.length;i++) {
                         let weapon = this.weaponArray[i];
-log("I:  " + i)
-log(weapon)
-log(system)
                         if (weapon.title === system) {
                             AttributeSet(this.charID,"weapon" + (i+1) + "status","Fired");
                             break;
@@ -1350,12 +1460,11 @@ log(system)
             }
             rep = Math.min(rep,max);
             this.SetShields(rep);
-            outputCard.body.push("Crews Restored " + rep + " Shield Pts");
+            outputCard.body.push("Engineering Restored " + rep + " Shield Pts");
             if (rep === max) {
                 outputCard.body.push("Shields are now at Full");
             }
         }
-
 
 
     }
@@ -1523,7 +1632,50 @@ log(system)
     }
 
 
+    const Test = (msg) => {
+        //test items, change each time
 
+        //currently used to test damaged systems
+        let Tag = msg.content.split(";");
+        let id = Tag[1];
+        let ship = ShipArray[id];
+        let system = Tag[2];
+        let damagedSystems;
+        let roll2 = randomInteger(6);
+
+        SetupCard(ship.name,system,ship.faction);
+        if (system === "Command Destroyed") {
+            outputCard.body.push("[#ff0000]The Command Bridge was Destroyed![/#]");
+            outputCard.body.push("[#ff0000]The Ship is Out of Control until this is Repaired[/#]");
+            ship.token.set(SM.nobridge,true);
+            AttributeSet(ship.charID,"command","Destroyed");
+            damagedSystems = ["Command"];
+        }
+        if (system === "Command Damaged") {
+            outputCard.body.push("[#ff0000]The Command Bridge was Damaged![/#]");
+            outputCard.body.push("[#ff0000]The Ship is Out of Control for " + roll2 + " turns or until Repaired[/#]");
+            ship.token.set(SM.ooc,roll2);
+            AttributeSet(ship.charID,"command","Offline");
+            damagedSystems = ["Command"];
+        }
+        if (system === "Life Support") {
+            outputCard.body.push("[#ff0000]Life Support was hit, and will fail in " + roll2 + " turns[/#]")
+            outputCard.body.push("[#ff0000]If not repaired before then, the crew will abandon ship[/#]");    
+            AttributeSet(ship.charID,"lifesupport","Failing");
+            ship.token.set(SM.nolife,roll2);
+            damagedSystems = ["Life Support"];
+        }
+        if (system === "Warp Core") {
+            outputCard.body.push("[#ff0000]The Warp Core was damaged[/#]");
+            outputCard.body.push("[#ff0000]If not repaired, there is a chance each turn it will go critical and explode[/#]");
+            AttributeSet(ship.charID,"warpcore","Offline");
+            ship.token.set(SM.warp,1);
+            damagedSystems = ["Warp Core"];
+        }
+        PrintCard();
+        ship.damagedSystems = damagedSystems;
+        AttributeSet(ship.charID,"damagedsystems",damagedSystems.toString());
+    }
     
 
     const InlineButtons = (array) => {
@@ -2000,8 +2152,10 @@ log(fc)
                     AttributeSet(ship.charID,"weapon" + (i+1) + "status","Normal");
                 }
 
+                AttributeSet(ship.charID,"damagedsystems","");
+                ship.damagedSystems = [];
+
                 state.FullThrust.shipState[ship.id] = {
-                    damageControl: "Vital", //which system is currently prioritized
                     shields: shieldsMax, //mainly used by cloaking ships
                     emergencyThrusts: 0, //how many it has done this game
                     repairs: false, //flag for ship having done repairs this turn
@@ -2273,7 +2427,7 @@ log(mod)
                     if (repairRoll > needed) {
                         let tip = "Roll: " + repairRoll + " > " + needed;
                         tip = '['+ assignedDCT + '](#" class="showtip" title="' + tip + ')';   
-                        outputCard.body.push(tip + s + " still trying to fix " + system);
+                        outputCard.body.push(tip + s + " still trying to repair " + system);
                         state.FullThrust.shipState[ship.id].systemRepairs[system] = (bonus + 1);
                     } else {
                         let tip = "Roll: " + repairRoll + " <= " + needed;
@@ -2447,14 +2601,28 @@ outputCard.body.push("Path: " + path.toString());
 
 
     const RepBack = (msg) => {
-        //the repair choice if multiple systems damaged
+        //the repair choice if multiple systems damaged, feed to repairs then helm
         let Tag = msg.content.split(";");
         let ship = ShipArray[Tag[1]];
         let system = Tag[2];
+        SetupCard(ship.name,"",ship.faction);
         ship.Repairs2(system);
+        ship.Helm();
+        PrintCard();
     }
 
-
+    const Jettison = (msg) => {
+        let ship = ShipArray[msg.content.split(";")[1]];
+        if (ship) {
+            SetupCard(ship.name,"",ship.faction);
+            outputCard.body.push("[#ff0000]Jettisoning the Warp Core saves the ship and crew[/#]");
+            outputCard.body.push("[#ff0000]The Ship becomes a drifting Hulk, unable to take part in the rest of the battle[/#]");
+            AttributeSet(ship.charID,"warpcore","Gone");
+            ship.token.set(SM.hulk,true);
+            ship.token.set(SM.warp,false);
+            PrintCard();
+        }
+    }
 
 
 
@@ -3255,6 +3423,13 @@ log(weapon)
                 break;
             case '!RepBack':
                 RepBack(msg);
+                break;
+            case '!Jettison':
+                Jettison(msg);
+                break;
+
+            case '!Test':
+                Test(msg);
                 break;
 
         }
