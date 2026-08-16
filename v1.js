@@ -1142,14 +1142,41 @@ log(status)
                     AttributeSet(this.charID,"weapon" + (weapon.pos + 1) + "status","Normal");
                 }
             })
-            state.FullThrust.shipState[this.id].repairs = false;
             state.FullThrust.shipState[this.id].targets = [];
-            this.Repairs();
-
-
-
-
+            let result = this.Repairs();
+            if (result === true) {
+                PrintCard();
+            } 
+            if (result !== "New") {
+                SetupCard(this.name,"Helm",this.faction);
+                this.Helm();
+                PrintCard();
+            }
         }
+
+        Helm() {
+            let currentSpeed = parseInt(this.token.get("bar3_value"));
+            let thrust = parseInt(this.maxThrust);
+            let turn = parseInt(this.turn);
+            let impulse1 = Attribute(this.charID,"impulse1") === "Offline" ? false:true;
+            let impulse2 = Attribute(this.charID,"impulse2") === "Offline" ? false:true;
+            if (impulse1 === false || impulse2 === false) {
+                thrust = Math.round(thrust/2); //one engine down
+            }
+            if (impulse1 === false && impulse2 === false) {
+                thrust = 0; //no engines
+            }
+            if (this.token.get("tint_color") === "#000000") {
+                thrust = Math.round(thrust/2); //cloaked
+            }
+            let turnPts = Math.round(thrust/turn);
+            outputCard.body.push("Current Speed: " + currentSpeed);
+            outputCard.body.push("Thrust: " + thrust);
+            outputCard.body.push("Turn Points: " + turn);
+        }
+
+
+
 
         Repairs() {
             let dct = parseInt(Attribute(this.charID,"crew"));
@@ -1158,10 +1185,13 @@ log(status)
             let shieldsMax = parseInt(this.token.get("bar2_max"));
             let difference = shieldsMax - shields;
             let shieldFix = (shields < shieldsMax/2) ? 3:1;
+            if (damagedSystems.length === 0 && shields === shieldsMax) {
+                return false;
+            }
+            SetupCard(this.name,"Repairs",this.faction);
+
             if (damagedSystems.length === 0) {
-                if (shields !== shieldsMax) {
-                    this.ShieldRepair(dct,difference,shieldFix);
-                }
+                this.ShieldRepair(dct,difference,shieldFix);
             } else {
                 //if more than one system damaged, put up options to prioritize one
                 if (damagedSystems.length > 1) {
@@ -1176,6 +1206,8 @@ log(status)
                         let action = "!RepBack;" + this.id + ";" + system;
                         ButtonInfo(button,action);
                     })
+                    PrintCard();
+                    return "New";
                 } else {
                     let dctAssigned = Math.min(dct,3);
                     this.RepairSystem(damagedSystems[0],dctAssigned);
@@ -1186,9 +1218,11 @@ log(status)
                     }
                 }
             }
+            return true;
         }
 
         Repairs2(chosen) {
+            SetupCard(this.name,"Repairs",this.faction);
             //more than one system was damaged, feeds back from priority
             let damagedSystems = this.damagedSystems;
             damagedSystems.splice(damagedSystems.indexOf(chosen),1);
@@ -1206,6 +1240,10 @@ log(status)
             if (dct > 0) {
                 this.ShieldRepair(dct,difference,shieldFix);
             }
+            PrintCard();
+            SetupCard(this.name,"Helm",this.faction);
+            this.Helm();
+            PrintCard();
         }
 
 
@@ -2413,9 +2451,7 @@ outputCard.body.push("Path: " + path.toString());
         let Tag = msg.content.split(";");
         let ship = ShipArray[Tag[1]];
         let system = Tag[2];
-        SetupCard(ship.name,"Engineering",ship.faction);
         ship.Repairs2(system);
-        PrintCard();
     }
 
 
@@ -2864,9 +2900,7 @@ log(weapon)
             if (ship.token.get("layer") === "objects") {
                 toFront(ship.token);
                 sendPing(ship.token.get("left"),ship.token.get("top"),Campaign().get("playerpageid"),null,true);
-                SetupCard(ship.name,"Turn " + state.FullThrust.turn,ship.faction);
                 ship.StartTurn();
-                PrintCard();
             }
         } else {
             SetupCard("Turn " + state.FullThrust.turn,"","Neutral");
