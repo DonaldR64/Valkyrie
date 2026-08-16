@@ -2896,11 +2896,11 @@ log(weapon)
         }
         //ping model's token
         if (ship) {
-            //skip if on GM Layer
-            if (ship.token.get("layer") === "objects") {
-                toFront(ship.token);
-                sendPing(ship.token.get("left"),ship.token.get("top"),Campaign().get("playerpageid"),null,true);
-                ship.StartTurn();
+            if (ship.token) {
+                            sendPing(ship.token.get("left"),ship.token.get("top"),Campaign().get("playerpageid"),null,true);
+            ship.StartTurn();
+            } else {
+                delete ShipArray[id];
             }
         } else {
             SetupCard("Turn " + state.FullThrust.turn,"","Neutral");
