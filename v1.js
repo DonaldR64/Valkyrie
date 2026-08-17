@@ -126,6 +126,7 @@ const Main = (() => {
         warp: "status_blue", //warp core critical - fixable
         nopower: "status_brown", //no power, drifting, fixable
         hulk: "status_purple", //a drifting hulk
+        warpdrive: "status_overdrive",
     }
 
 
@@ -1211,6 +1212,10 @@ log(status)
             } else {
                 this.Repairs();
             }
+            if (this.token.get(SM.warpdrive)) {
+                this.Drifts(true);
+                this.WarpOut()
+            }
             PrintCard();
         }
 
@@ -1246,8 +1251,12 @@ log(status)
             }
         }
 
-        Drifts() {
+        Drifts(warp = false) {
             let currentSpeed = parseInt(this.token.get("bar3_value"));
+            if (warp === true) {
+                currentSpeed = Math.round(currentSpeed/2);
+            }
+log("Current Speed: " + currentSpeed)
             let currentHeading =  Heading(Math.round(Angle(this.token.get("rotation"))/30));
             let currentCube = HexMap[this.hexLabel].cube;
             for (let i=0;i<currentSpeed;i++) {
@@ -1463,7 +1472,49 @@ log(status)
 
         }
 
+        WarpOut() {
+            //check for nearby ships
+//later add planets/moons
+            let shipNearby = false;
+            let shipKeys = Object.keys(ShipArray);
+            for (let i=0;i<shipKeys.length;i++) {
+                if (shipKeys[i] === this.id) {continue};
+                let dist = this.Distance(ShipArray[shipKeys[i]]);
+                if (dist <= 6) {
+                    shipNearby = true;
+                    break;
+                }
+            }
 
+            if (shipNearby === true) {
+                let roll = randomInteger(6);
+                if (roll === 1) {
+                    outputCard.body.push("Warp Drive Fails to Engage due to the presence of nearby ship(s)");
+                    this.token.set(SM.warpdrive,false);
+                } else if (roll > 1 && roll < 5) {
+                    let damage = randomInteger(6);
+                    let hull = parseInt(this.token.get("bar1_value"));
+                    outputCard.body.push("Due to the presence of nearby ship(s), the Warp Bubble is disrupted and the ship takes damage to its hull");
+                    if (damage < hull) {
+                        outputCard.body.push("The ship manages to complete its Warp and leaves the area");
+                        this.token.remove();
+                        delete ShipArray[this.id];
+                        return;
+                    } else {
+                        this.Destroyed("Broken Up");
+                        return;
+                    }
+                } else if (roll > 4) {
+                    outputCard.body.push("As the Warp Engines engage, there is a severe disruption in time-space");
+                    outputCard.body.push("The ship's Warp Core explodes!");
+                    this.Destroyed("WarpCore");
+                    return;
+                }
+            }
+            outputCard.body.push("The ship engages its Warp Drive and leaves the area");
+            this.token.remove();
+            delete ShipArray[this.id];
+        }
 
 
 
@@ -1586,7 +1637,13 @@ log(status)
             AddAbility("Cloak/Decloak",action,ship.charID);
         }
 
-        CreateHelmAbility(ship);
+        action = "!Warp;@{selected|token_id}";
+        AddAbility("Warp",action,ship.charID);
+
+
+
+
+        //CreateHelmAbility(ship);
 
 
 
@@ -3202,8 +3259,17 @@ log(weapon)
     }
 
 
-
-
+    const Warp = (msg) => {
+        let id = msg.content.split(";")[1];
+        let ship = ShipArray[id];
+        if (ship) {
+            SetupCard(ship.name,"Warp",ship.faction);
+            outputCard.body.push(ship.name + " has engaged their Warp Drive");
+            outputCard.body.push("Next turn the ship will go to warp");
+            ship.token.set(SM.warpdrive,true);
+            PrintCard();
+        }
+    }
 
 
     const changeGraphic = (tok,prev) => {
@@ -3308,6 +3374,9 @@ log(weapon)
 
             case '!Test':
                 Test(msg);
+                break;
+            case '!Warp':
+                Warp(msg);
                 break;
 
         }
