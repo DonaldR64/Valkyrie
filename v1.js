@@ -1,6 +1,6 @@
 const Main = (() => {
     const version = '2026.8.3';
-    if (!state.FullThrust) {state.FullThrust = {}};
+    if (!state.FleetAdmiral) {state.FleetAdmiral = {}};
 
     const pageInfo = {};
     const rowLabels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ","BA","BB","BC","BD","BE","BF","BG","BH","BI"];
@@ -616,13 +616,13 @@ const Main = (() => {
             this.charID = charID;
             let faction = aa.faction || "Neutral";
             this.faction = faction;
-            let player = (state.FullThrust.factions.indexOf(faction));
+            let player = (state.FleetAdmiral.factions.indexOf(faction));
             if (player === -1) {
                 if (faction === "Neutral") {
                     player = 2
                 } else {
-                    state.FullThrust.factions.push(faction);
-                    player = state.FullThrust.factions.length - 1;
+                    state.FleetAdmiral.factions.push(faction);
+                    player = state.FleetAdmiral.factions.length - 1;
                 }
             }
             this.player = player;
@@ -970,7 +970,7 @@ log("new Crew: " +newCrew)
                             if (system === "Shield Generator") {
                                 outputCard.body.push("[#ff0000]Shields are now Offline[/#]");
                                 let cs = parseInt(this.token.get("bar2_value"));
-                                state.FullThrust.shipState[this.id].shields = cs;
+                                state.FleetAdmiral.shipState[this.id].shields = cs;
                                 this.SetShields(-cs);
                             }
                             if (system === "Fire Control") {
@@ -1200,7 +1200,7 @@ log(status)
             if (lineFlag === true) {
                 outputCard.body.push("[hr]");
             }
-            state.FullThrust.shipState[this.id].targets = [];
+            state.FleetAdmiral.shipState[this.id].targets = [];
             if (this.token.get(SM.hulk)) {
                 outputCard.body.push("The Ship Drifts, unable to do anything");
                 let abilArray = findObjs({_type: "ability", _characterid: this.charID});
@@ -1256,7 +1256,6 @@ log(status)
             if (warp === true) {
                 currentSpeed = Math.round(currentSpeed/2);
             }
-log("Current Speed: " + currentSpeed)
             let currentHeading =  Heading(Math.round(Angle(this.token.get("rotation"))/30));
             let currentCube = HexMap[this.hexLabel].cube;
             for (let i=0;i<currentSpeed;i++) {
@@ -1311,7 +1310,7 @@ log("Current Speed: " + currentSpeed)
                             outputCard.body.push("Multiple Systems are damaged");
                             outputCard.body.push("Choose one to Prioritize");
                             _.each(damagedSystems,system => {
-                                let rep = state.FullThrust.shipState[this.id].systemRepairs[system] || 0;
+                                let rep = state.FleetAdmiral.shipState[this.id].systemRepairs[system] || 0;
                                 let button = system;
                                 if (rep > 0) {
                                     button += "[Repair in Progress]";
@@ -1378,8 +1377,8 @@ log("Current Speed: " + currentSpeed)
         RepairSystem(system,assignedDCT) {
             let repairRoll = randomInteger(6);  
             let bonus = 0;
-            if (state.FullThrust.shipState[this.id].systemRepairs[system]) {
-                bonus = state.FullThrust.shipState[this.id].systemRepairs[system];
+            if (state.FleetAdmiral.shipState[this.id].systemRepairs[system]) {
+                bonus = state.FleetAdmiral.shipState[this.id].systemRepairs[system];
             }
             let needed = assignedDCT + bonus;
             let tip = "Roll: " + repairRoll + " > " + needed + " Teams";
@@ -1392,7 +1391,7 @@ log("Current Speed: " + currentSpeed)
                     tip = '[Engineering](#" class="showtip" title="' + tip + ')';   
                     outputCard.body.push(tip + " is still trying to fix " + system);
                 }
-                state.FullThrust.shipState[this.id].systemRepairs[system] = (bonus + 1);
+                state.FleetAdmiral.shipState[this.id].systemRepairs[system] = (bonus + 1);
             } else {
                 let add = "";
                 if (system === "Fire Control" || system === "Shield Generator") {
@@ -1424,7 +1423,7 @@ log("Current Speed: " + currentSpeed)
                             outputCard.body.push("The Ship can target its weapons now");
                         }
                         if (current === 0 && system === "Shield Generator") {
-                            let shields = state.FullThrust.shipState[this.id].shields;
+                            let shields = state.FleetAdmiral.shipState[this.id].shields;
                             this.SetShields(shields);
                             if (shields > 0) {
                                 outputCard.body.push("Shields have been restored");
@@ -1461,7 +1460,7 @@ log("Current Speed: " + currentSpeed)
                 }
                 this.damagedSystems = damagedSystems;
                 AttributeSet(this.charID,"damagedsystems",damagedSystems.toString());
-                state.FullThrust.shipState[this.id].systemRepairs[system] = 0;
+                state.FleetAdmiral.shipState[this.id].systemRepairs[system] = 0;
 
 
 
@@ -1498,6 +1497,8 @@ log("Current Speed: " + currentSpeed)
                     if (damage < hull) {
                         outputCard.body.push("The ship manages to complete its Warp and leaves the area");
                         this.token.remove();
+                        summonToken("-P-F8K3BOvsh6y4_4dII",this.token.get("left"),this.token.get("top"),200,0,"map");
+                        PlaySound("Warp");
                         delete ShipArray[this.id];
                         return;
                     } else {
@@ -1512,6 +1513,8 @@ log("Current Speed: " + currentSpeed)
                 }
             }
             outputCard.body.push("The ship engages its Warp Drive and leaves the area");
+            summonToken("-P-F8K3BOvsh6y4_4dII",this.token.get("left"),this.token.get("top"),200,0,"map");
+            PlaySound("Warp");
             this.token.remove();
             delete ShipArray[this.id];
         }
@@ -1550,10 +1553,12 @@ log("Current Speed: " + currentSpeed)
             sendChat("","No Character")
             return
         }
+log(character)
         let newToken;
         character.get('defaulttoken',function(defaulttoken){
             const dt = JSON.parse(defaulttoken);
-            let img = dt.imgsrc;
+log(dt)
+            let img = dt.imgsrc || "";
             img = tokenImage(img);
             if(dt && img){
                 dt.imgsrc=img;
@@ -1654,7 +1659,7 @@ log("Current Speed: " + currentSpeed)
     }
 
     const CreateHelmAbility = (ship) => {
-        let helmID = state.FullThrust.shipState[ship.id].helmID;
+        let helmID = state.FleetAdmiral.shipState[ship.id].helmID;
         if (helmID) {
             let helmObj = findObjs({_type: "ability", _characterid: ship.charID, _id: helmID});
             helmObj.remove();
@@ -1700,7 +1705,7 @@ log("Current Speed: " + currentSpeed)
         part += "&#125;}";
         action = "!Helm;@{selected|token_id};" + part;
         helmID = AddAbility("Helm",action,ship.charID);
-        state.FullThrust.shipState[ship.id].helmID = helmID;
+        state.FleetAdmiral.shipState[ship.id].helmID = helmID;
     }
 
 
@@ -2056,10 +2061,10 @@ log("Current Speed: " + currentSpeed)
         _.each(which,lines => {
             let array;
             if (lines === "LOS") {
-                array = state.FullThrust.losLines;
+                array = state.FleetAdmiral.losLines;
             }
             if (lines === "Deploy") {
-                array = state.FullThrust.deployLines;
+                array = state.FleetAdmiral.deployLines;
             }
             if (array) {
                 for (let i=0;i<array.length;i++) {
@@ -2104,9 +2109,9 @@ log("Current Speed: " + currentSpeed)
             if (line) {
                 toFront(line);
                 if (type === "LOS") {
-                    state.FullThrust.losLines.push(line.get("id"))
+                    state.FleetAdmiral.losLines.push(line.get("id"))
                 } else {
-                    state.FullThrust.deployLines.push(line.get("id"));
+                    state.FleetAdmiral.deployLines.push(line.get("id"));
                 }
             }
         }
@@ -2227,7 +2232,7 @@ log(fc)
                 AttributeSet(ship.charID,"damagedsystems","");
                 ship.damagedSystems = [];
 
-                state.FullThrust.shipState[ship.id] = {
+                state.FleetAdmiral.shipState[ship.id] = {
                     shields: shieldsMax, //mainly used by cloaking ships
                     emergencyThrusts: 0, //how many it has done this game
                     repairs: false, //flag for ship having done repairs this turn
@@ -2345,7 +2350,7 @@ log(fc)
 log("Here")
             let newSpeed, newTurnPts;
             let roll = randomInteger(6);
-            let mod = state.FullThrust.shipState[ship.id].emergencyThrusts;
+            let mod = state.FleetAdmiral.shipState[ship.id].emergencyThrusts;
 log(mod)
             roll += mod;
             let which = "";
@@ -2371,7 +2376,7 @@ log(mod)
                 ds += "," + "Impulse Engine " + which;
                 AttributeSet(ship.charID,"damagedsystems",ds);
             }
-            state.FullThrust.shipState[ship.id].emergencyThrusts++;
+            state.FleetAdmiral.shipState[ship.id].emergencyThrusts++;
         }
 
 
@@ -2381,12 +2386,12 @@ log(mod)
                 outputCard.body.push("The Ship is now Cloaked");
                 outputCard.body.push("Shields and Weapons do not function while cloaked");
                 let cs = parseInt(ship.token.get("bar2_value"));
-                state.FullThrust.shipState[id].shields = cs
+                state.FleetAdmiral.shipState[id].shields = cs
                 ship.SetShields(-cs);
             } else {
                 ship.token.set("tint_color","transparent");
                 outputCard.body.push("Shields and Weapons are back Online");
-                let shields = state.FullThrust.shipState[id].shields;
+                let shields = state.FleetAdmiral.shipState[id].shields;
                 ship.SetShields(shields);
             }
             PlaySound("Cloak");
@@ -2398,7 +2403,7 @@ log(mod)
             if (suborder === "Repairs") {
                 Repairs(ship);
             } else {
-                state.FullThrust.shipState[id].damageControl = suborder;
+                state.FleetAdmiral.shipState[id].damageControl = suborder;
                 outputCard.body.push(suborder + " Systems will be given priority for Damage Control Teams");
             }
         }
@@ -2582,7 +2587,7 @@ log("Adv?  " + advFC)
         if (availableFC === 0) {
             errorMsg.push("Fire Control is offline, ship cannot fire");
         } else {
-            let targetsFiredOn = state.FullThrust.shipState[shooter.id].targets;
+            let targetsFiredOn = state.FleetAdmiral.shipState[shooter.id].targets;
 log("Target #s: " + targetsFiredOn.length)
             availableFC -= targetsFiredOn.length;
             if (targetsFiredOn.includes(target.id) === false && availableFC === 0) {
@@ -2906,8 +2911,8 @@ log(weapon)
             shooter.weaponArray[parseInt(pos)].status = "Fired";
             AttributeSet(shooter.charID,"weapon" + numm + "status","Fired");
         })
-        if (state.FullThrust.shipState[shooter.id].targets.includes(target.id) === false) {
-            state.FullThrust.shipState[shooter.id].targets.push(target.id);
+        if (state.FleetAdmiral.shipState[shooter.id].targets.includes(target.id) === false) {
+            state.FleetAdmiral.shipState[shooter.id].targets.push(target.id);
         }
 
         let point1 = new Point(shooter.token.get("left"),shooter.token.get("top"));
@@ -2966,13 +2971,13 @@ log(weapon)
             }
         }
         if ((!id || !ship) && playerID) {
-            faction = state.FullThrust.players[playerID];
-            player = (state.FullThrust.factions[0] === faction) ? 0:1;
+            faction = state.FleetAdmiral.players[playerID];
+            player = (state.FleetAdmiral.factions[0] === faction) ? 0:1;
         }
 
-        if (!state.FullThrust.players[playerID] || state.FullThrust.players[playerID] === undefined) {
+        if (!state.FleetAdmiral.players[playerID] || state.FleetAdmiral.players[playerID] === undefined) {
             if (faction !== "Neutral") {    
-                state.FullThrust.players[playerID] = faction;
+                state.FleetAdmiral.players[playerID] = faction;
             } else {
                 sendChat("","Click on one of your tokens then select Roll again");
                 return;
@@ -2995,19 +3000,31 @@ log(weapon)
         let id = currentTurnItem.id;
         let ship = ShipArray[id];
         if (currentTurnItem.custom === "Turn") {
-            state.FullThrust.turn = currentTurnItem.pr
+            state.FleetAdmiral.turn = currentTurnItem.pr
         }
         //ping model's token
         if (ship) {
             if (ship.token) {
-                            sendPing(ship.token.get("left"),ship.token.get("top"),Campaign().get("playerpageid"),null,true);
-            ship.StartTurn();
+                sendPing(ship.token.get("left"),ship.token.get("top"),Campaign().get("playerpageid"),null,true);
+                ship.StartTurn();
             } else {
                 delete ShipArray[id];
             }
         } else {
-            SetupCard("Turn " + state.FullThrust.turn,"","Neutral");
+            SetupCard("Turn " + state.FleetAdmiral.turn,"","Neutral");
             //Start of Turn things
+            let tokens = findObjs({
+                _pageid: Campaign().get("playerpageid"),
+                _type: "graphic",
+                _subtype: "token",
+                layer: "map",
+            });
+            let list = ["Warp","Warp Explosion","Explosion"];
+            _.each(tokens,token => {
+                if (list.includes(token.get("name"))) {
+                    token.remove();
+                }
+            })
             PrintCard();
         }
     }
@@ -3040,7 +3057,7 @@ log(weapon)
         //clear arrays
         ShipArray = {};
 
-        state.FullThrust = {
+        state.FleetAdmiral = {
             playerIDs: [],
             players: {},
             factions: [],
@@ -3324,7 +3341,7 @@ log(weapon)
             case '!Dump':
                 log(HexMap)
                 log("State");
-                log(state.FullThrust);
+                log(state.FleetAdmiral);
                 log("Ship");
                 log(ShipArray)
                 break;
@@ -3394,7 +3411,7 @@ log(weapon)
         on('change:campaign:turnorder',Combat);
     };
     on('ready', () => {
-        log("===>FullThrust<===");
+        log("===>FleetAdmiral<===");
         log("===> Software Version: " + version + " <===")
         LoadPage();
         DefineHexInfo();
