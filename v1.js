@@ -1709,11 +1709,11 @@ log(dt)
         state.FleetAdmiral.shipState[ship.id].helmID = helmID;
     }
 
-    const MapAdjust = (msg) => {
+    const ShiftShips = (msg) => {
         let Tag = msg.content.split(";");
         let direction = Tag[1];
         //direction -> Up/Down/Left/Right
-        let deltaRow = 0,deltaColumn = 0;expandRows = false,expandColumns = false;
+        let deltaRow = 0,deltaColumn = 0;offmap = false;
 
         if (direction === "Up") {
             deltaRow = -6;
@@ -1730,60 +1730,23 @@ log(dt)
         _.each(ShipArray, ship => {
             let offset = HexMap[ship.hexLabel].offset;
             let newOffset = new Offset(offset.col + deltaColumn,offset.row + deltaRow)
-log(offset)
-log(newOffset)
-            if (newOffset.row < 0 || newOffset.row > maxRows) {
-                expandRows = true;
-            }
-            if (newOffset.col < 0 || newOffset.col > maxColumns) {
-                expandColumns = true;
+            if (newOffset.row < 0 || newOffset.row > maxRows || newOffset.col < 0 || newOffset.col > maxColumns) {
+                offmap = true;
             }
         })
 
-    //shift any terrain here
+        if (offmap === false) {
+            //shift any terrain here
 
 
-        let widthAdj = (expandColumns === true) ? (12 * HexInfo.xSpacing):0;
-        let heightAdj = (expandRows === true) ? (12 * HexInfo.ySpacing):0;
-log(widthAdj)
-log(heightAdj)
-
-        if (widthAdj !== 0 || heightAdj !== 0) {
-            let newWidth = pageInfo.width + widthAdj;
-            let newHeight = pageInfo.height + heightAdj;
-            pageInfo.page.set("width",newWidth);
-            pageInfo.page.set("height",newHeight);
-            let map = findObjs({
-                _pageid: Campaign().get("playerpageid"),
-                _type: "graphic",
-                _subtype: "token",
-                layer: "map",
-                name: "Map",
-            })[0];
-            map.set({
-                height: newHeight + 70,
-                width: newWidth + 70,
-                left: pageInfo.width/2,
-                top: pageInfo.height/2,
+            _.each(ShipArray, ship => {
+                let offset = HexMap[ship.hexLabel].offset;
+                let newOffset = new Offset(offset.col + deltaColumn,offset.row + deltaRow)
+                ship.Move(newOffset.label());
             })
-            LoadPage();
-            
-
-
-
+        } else {
+            sendChat("","This would put one or more ships Off Map");
         }
-/*
-        _.each(ShipArray, ship => {
-            let offset = HexMap[ship.hexLabel].offset;
-            let newOffset = new Offset(offset.col + deltaColumn,offset.row + deltaRow)
-            ship.Move(newOffset.label());
-        })
-*/
-
-
-
-
-
 
     }
 
@@ -3470,8 +3433,8 @@ log(weapon)
             case '!Jettison':
                 Jettison(msg);
                 break;
-            case '!MapAdjust':
-                MapAdjust(msg);
+            case '!ShiftShips':
+                ShiftShips(msg);
                 break;
             case '!Test':
                 Test(msg);
