@@ -6,7 +6,7 @@ const Main = (() => {
     const rowLabels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ","BA","BB","BC","BD","BE","BF","BG","BH","BI"];
 
     let HexSize, HexInfo, DIRECTIONS;
-    let maxRows,maxColumns;
+    let MapInfo = {};
 
     //math constants
     const M = {
@@ -701,6 +701,18 @@ log(this.damagedSystems)
 
 
         }
+
+        Offmap() {
+            let result = false;
+            let pt = HexMap[this.hexLabel].centre;
+            if (pt.x < MapInfo.top.x || pt.y < MapInfo.top.y || pt.x > MapInfo.bottom.x || pt.y > MapInfo.bottom.y) {
+                result = true;
+            }
+            return result;
+        }
+
+
+
 
         Arcs(b) {
             let phi = Angle(HexMap[this.hexLabel].cube.angle(HexMap[b.hexLabel].cube));
@@ -1726,14 +1738,17 @@ log(dt)
         }
 
         //check if any ships would be offmap with this if shifted
-
-        _.each(ShipArray, ship => {
+        let keys = Object.keys(ShipArray);
+        for (let i=0;i<keys.length;i++) {
+            let ship = ShipArray[keys[i]];
             let offset = HexMap[ship.hexLabel].offset;
             let newOffset = new Offset(offset.col + deltaColumn,offset.row + deltaRow)
-            if (newOffset.row < 0 || newOffset.row > maxRows || newOffset.col < 0 || newOffset.col > maxColumns) {
+            let newPt = newOffset.toPoint();
+            if (newPt.x < MapInfo.top.x || newPt.y < MapInfo.top.y || newPt.x > MapInfo.bottom.x || newPt.y > MapInfo.bottom.y) {
                 offmap = true;
+                break;
             }
-        })
+        }
 
         if (offmap === false) {
             //shift any terrain here
@@ -2039,8 +2054,8 @@ log(dt)
         }
         //AddTerrain();    
         AddTokens();
-        maxRows = Math.floor(pageInfo.height/HexInfo.ySpacing) - 1;
-        maxColumns = Math.floor(pageInfo.width/HexInfo.xSpacing) - 1;
+        DefineMap();
+log(MapInfo);
         let elapsed = Date.now()-startTime;
         log("Hex Map Built in " + elapsed/1000 + " seconds");
     };
@@ -2973,6 +2988,24 @@ log(weapon)
 
     }
 
+    const DefineMap = () => {
+        let map = findObjs({
+            _pageid: Campaign().get("playerpageid"),
+            _type: "graphic",
+            _subtype: "token",
+            layer: "map",
+            name: "Map",
+        })[0];
+        let w = map.get("width")/2;
+        let h = map.get("height")/2;
+        let x = map.get("left");
+        let y = map.get("top");
+        MapInfo.top = new Point(x-w,y-h);
+        MapInfo.bottom = new Point(x+w,y+h);
+        MapInfo.centre = new Point(x,y);
+    }
+
+
 
 
 
@@ -2991,9 +3024,16 @@ log(weapon)
         outputCard.body.push("Hex Label: " + label);
         outputCard.body.push("X: " + hex.centre.x + " Y: " + hex.centre.y);
         outputCard.body.push("Row: " + hex.offset.row + " Column: " + hex.offset.col);
+        if (ship.Offmap()) {
+            outputCard.body.push("Ship is Off Map");
+        }
+
 
         PrintCard();
     }
+
+
+
 
     const RollDice = (msg) => {
         PlaySound("Dice");
@@ -3297,6 +3337,15 @@ log(weapon)
                 finalLOSReason += " / " + losReason[1];
             }
             finalLOSReason = "Blocked by " + finalLOSReason;
+        }
+
+        if (shooter.Offmap() === true) {
+            finalLOS = false;
+            finalLOSReason = "Shooter is Offmap";
+        }
+        if (target.Offmap() === true) {
+            finalLOS = false;
+            finalLOSReason = "Target is Offmap";
         }
 
 
