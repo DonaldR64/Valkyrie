@@ -6,6 +6,7 @@ const Main = (() => {
     const rowLabels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ","BA","BB","BC","BD","BE","BF","BG","BH","BI"];
 
     let HexSize, HexInfo, DIRECTIONS;
+    let maxRows,maxColumns;
 
     //math constants
     const M = {
@@ -1708,6 +1709,85 @@ log(dt)
         state.FleetAdmiral.shipState[ship.id].helmID = helmID;
     }
 
+    const MapAdjust = (msg) => {
+        let Tag = msg.content.split(";");
+        let direction = Tag[1];
+        //direction -> Up/Down/Left/Right
+        let deltaRow = 0,deltaColumn = 0;expandRows = false,expandColumns = false;
+
+        if (direction === "Up") {
+            deltaRow = -6;
+        } else if (direction === "Down") {
+            deltaRow = 6;
+        } else if (direction === "Left") {
+            deltaColumn = -6;
+        } else if (direction === "Right") {
+            deltaColumn = 6;
+        }
+
+        //check if any ships would be offmap with this if shifted
+
+        _.each(ShipArray, ship => {
+            let offset = HexMap[ship.hexLabel].offset;
+            let newOffset = new Offset(offset.col + deltaColumn,offset.row + deltaRow)
+log(offset)
+log(newOffset)
+            if (newOffset.row < 0 || newOffset.row > maxRows) {
+                expandRows = true;
+            }
+            if (newOffset.col < 0 || newOffset.col > maxColumns) {
+                expandColumns = true;
+            }
+        })
+
+    //shift any terrain here
+
+
+        let widthAdj = (expandColumns === true) ? (12 * HexInfo.xSpacing):0;
+        let heightAdj = (expandRows === true) ? (12 * HexInfo.ySpacing):0;
+log(widthAdj)
+log(heightAdj)
+
+        if (widthAdj !== 0 || heightAdj !== 0) {
+            let newWidth = pageInfo.width + widthAdj;
+            let newHeight = pageInfo.height + heightAdj;
+            pageInfo.page.set("width",newWidth);
+            pageInfo.page.set("height",newHeight);
+            let map = findObjs({
+                _pageid: Campaign().get("playerpageid"),
+                _type: "graphic",
+                _subtype: "token",
+                layer: "map",
+                name: "Map",
+            })[0];
+            map.set({
+                height: newHeight + 70,
+                width: newWidth + 70,
+                left: pageInfo.width/2,
+                top: pageInfo.height/2,
+            })
+            LoadPage();
+            
+
+
+
+        }
+/*
+        _.each(ShipArray, ship => {
+            let offset = HexMap[ship.hexLabel].offset;
+            let newOffset = new Offset(offset.col + deltaColumn,offset.row + deltaRow)
+            ship.Move(newOffset.label());
+        })
+*/
+
+
+
+
+
+
+    }
+
+
 
     const Test = (msg) => {
         //test items, change each time
@@ -1996,6 +2076,8 @@ log(dt)
         }
         //AddTerrain();    
         AddTokens();
+        maxRows = Math.floor(pageInfo.height/HexInfo.ySpacing) - 1;
+        maxColumns = Math.floor(pageInfo.width/HexInfo.xSpacing) - 1;
         let elapsed = Date.now()-startTime;
         log("Hex Map Built in " + elapsed/1000 + " seconds");
     };
@@ -2945,7 +3027,7 @@ log(weapon)
         SetupCard(ship.name,"Info",ship.faction);
         outputCard.body.push("Hex Label: " + label);
         outputCard.body.push("X: " + hex.centre.x + " Y: " + hex.centre.y);
-
+        outputCard.body.push("Row: " + hex.offset.row + " Column: " + hex.offset.col);
 
         PrintCard();
     }
@@ -3388,7 +3470,9 @@ log(weapon)
             case '!Jettison':
                 Jettison(msg);
                 break;
-
+            case '!MapAdjust':
+                MapAdjust(msg);
+                break;
             case '!Test':
                 Test(msg);
                 break;
