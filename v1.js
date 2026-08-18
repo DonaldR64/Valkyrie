@@ -83,6 +83,13 @@ const Main = (() => {
     }
     let flipFlop = true;
 
+    
+
+
+
+
+
+
 
     let outputCard = {title: "",subtitle: "",side: "",body: [],buttons: [],};
 
