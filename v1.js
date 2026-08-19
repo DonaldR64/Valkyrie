@@ -83,7 +83,7 @@ const Main = (() => {
     }
     let flipFlop = true;
 
-    
+
 
 
 
@@ -3256,7 +3256,7 @@ log(weapon)
             sendChat("","Selected Same Token");
             return;
         }
-        SetupCard(shooter.name,"LOS",shooter.faction);
+        SetupCard(shooter.name,"Scan Target",shooter.faction);
 
         let losResult = LOS(shooter,target);
     
@@ -3265,13 +3265,19 @@ log(weapon)
             outputCard.body.push("[#ff0000]No LOS[/#]");
             outputCard.body.push(losResult.losReason);
         } else {
-            outputCard.body.push("[#0000ff]There is LOS[/#]");
+            outputCard.body.push("[B]" + target.name + "[/b]");
+            outputCard.body.push("Distance: " + losResult.distance);
+            if (target.token.get("#000000")) {
+                losResult.distance *= 2;
+                outputCard.body.push("Ship is Cloaked");
+                outputCard.body.push("[Effective Distance: " + (losResult.distance));
+            }
             outputCard.body.push("[hr]");
+            outputCard.body.push("[U]Weapons Solutions[/u]");
             let shooterArcs = losResult.shooterArcs;
             let arcs = shooterArcs.map((e) => ArcNames[e]);
             arcs = arcs.toString().replace(","," & ");
             let s = (shooterArcs.length === 1) ? "":"s";
-            outputCard.body.push("The Target is in the " + arcs + " Arc" +s);
             let weaponTypes = {};
             let none = true;
             for (let i=0;i<shooter.weaponArray.length;i++) {
@@ -3297,9 +3303,32 @@ log(weapon)
                     let number = weaponTypes[type];
                     let verb = (number === 1) ? " has ":" have ";
                     let s = (number === 1) ? "":"s";
-                    outputCard.body.push(number + " " + type + s + verb + "Range/Arc");
+                    outputCard.body.push(number + " " + type + s + " can target the ship");
                 }
             }
+            outputCard.body.push("[hr]");
+            outputCard.body.push("[U]Target Information[/u]");
+            let shields = target.token.get("bar2_value");
+            let shieldsMax = target.token.get("bar2_max");
+            shields = parseInt(shields/shieldsMax * 100);
+            if (shields > 0) {
+                outputCard.body.push("Shields are at " + shields + "%");
+            } else {
+                outputCard.body.push("Shields are Down")
+            }
+            let hull = target.token.get("bar1_value");
+            let hullMax = target.token.get("bar1_max");
+            hull = parseInt(hull/hullMax * 100);
+            outputCard.body.push("Hull Integrity is " + hull + "%");
+            let damagedSystems = target.damagedSystems;
+            if (damagedSystems.length > 0) {
+                outputCard.body.push("Damage to " + damagedSystems.toString());
+            } else {
+                outputCard.body.push("No Damaged to Systems")
+            }
+
+
+
 
         }
 

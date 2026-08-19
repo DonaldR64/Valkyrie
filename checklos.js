@@ -63,19 +63,7 @@
                     let number = weaponTypes[type];
                     let verb = (number === 1) ? " has ":" have ";
                     let s = (number === 1) ? "":"s";
-                    if (Projectiles.includes(type)) {
-
-
-                    } else {
-
-
-
-                    }
-//temp
-                    outputCard.body.push(type + " " + number)
-
-
-
+                    outputCard.body.push(number + " " + type + s + " can target the ship");
                 }
             }
             outputCard.body.push("[hr]");
