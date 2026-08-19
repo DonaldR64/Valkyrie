@@ -1665,7 +1665,8 @@ log(dt)
         action = "!Warp;@{selected|token_id}";
         AddAbility("Warp",action,ship.charID);
 
-
+        action = "!CheckLOS;@{selected|token_id};@{target|token_id}";
+        AddAbility("Scan Ship",action,ship.charID);
 
 
         //CreateHelmAbility(ship);
@@ -3267,10 +3268,10 @@ log(weapon)
         } else {
             outputCard.body.push("[B]" + target.name + "[/b]");
             outputCard.body.push("Distance: " + losResult.distance);
-            if (target.token.get("#000000")) {
+            if (target.token.get("tint_color") === "#000000") {
                 losResult.distance *= 2;
+                outputCard.body.push("[Effective Distance: " + (losResult.distance) + "]");
                 outputCard.body.push("Ship is Cloaked");
-                outputCard.body.push("[Effective Distance: " + (losResult.distance));
             }
             outputCard.body.push("[hr]");
             outputCard.body.push("[U]Weapons Solutions[/u]");
@@ -3308,6 +3309,9 @@ log(weapon)
             }
             outputCard.body.push("[hr]");
             outputCard.body.push("[U]Target Information[/u]");
+            if (target.token.get("tint_color") === "#000000") {
+                outputCard.body.push("Target is Cloaked");
+            }
             let shields = target.token.get("bar2_value");
             let shieldsMax = target.token.get("bar2_max");
             shields = parseInt(shields/shieldsMax * 100);
@@ -3324,7 +3328,7 @@ log(weapon)
             if (damagedSystems.length > 0) {
                 outputCard.body.push("Damage to " + damagedSystems.toString());
             } else {
-                outputCard.body.push("No Damaged to Systems")
+                outputCard.body.push("No Damage to Systems")
             }
 
 
