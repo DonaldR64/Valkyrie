@@ -2734,6 +2734,9 @@ log(weapon)
         if (weaponsFiring.length === 0) {
             if (conditions.includes("Range")) {
                 errorMsg.push("Target is out of Range of this Weapon");
+                if (cloaked) {
+                    errorMsg.push("Target is Cloaked");
+                }
             }
             if (conditions.includes("Arc")) {
                 errorMsg.push("One or More Weapons are Out of Arc");
