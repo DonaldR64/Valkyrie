@@ -1669,7 +1669,7 @@ log(dt)
         AddAbility("Scan Ship",action,ship.charID);
 
 
-        //CreateHelmAbility(ship);
+        CreateHelmAbility(ship);
 
 
 
