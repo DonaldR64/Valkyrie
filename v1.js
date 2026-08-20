@@ -3156,30 +3156,6 @@ log(weapon)
         MapInfo.centre = new Point(x,y);
     }
 
-    const getRelativeSide = (target, ship) => {
-        // 1. Convert Object B's rotation from degrees to radians
-        const rad = objB.rotation * (Math.PI / 180);
-
-        // 2. Calculate Object B's forward vector (0 degrees is UP)
-        const fwdX = Math.sin(rad);
-        const fwdY = -Math.cos(rad); // Negative because screen Y goes down
-
-        // 3. Calculate direction vector from B to A
-        const dirX = objA.x - objB.x;
-        const dirY = objA.y - objB.y;
-
-        // 4. Calculate the 2D cross product
-        const crossProduct = (fwdX * dirY) - (fwdY * dirX);
-
-        // 5. Determine the side
-        if (crossProduct > 0) {
-            return "right";
-        } else if (crossProduct < 0) {
-            return "left";
-        } else {
-            return "perfectly aligned";
-        }
-    }
 
 
 
