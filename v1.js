@@ -721,6 +721,8 @@ log(this.damagedSystems)
 
 
 
+
+
         Arcs(b) {
             let phi = Angle(HexMap[this.hexLabel].cube.angle(HexMap[b.hexLabel].cube));
             phi = Angle(phi - this.token.get("rotation"));
@@ -1142,19 +1144,6 @@ log(status)
             return HexMap[this.hexLabel].distance(HexMap[b.hexLabel]);
         }
 
-        Move(newLabel) {
-            let index = HexMap[this.hexLabel].tokenIDs.indexOf(this.id);
-            if (index > -1) {
-                HexMap[this.hexLabel].tokenIDs.splice(index,1);
-            }
-            HexMap[newLabel].tokenIDs.push(newLabel);
-            this.token.set({
-                left: HexMap[newLabel].centre.x,
-                top: HexMap[newLabel].centre.y,
-            })
-            this.hexLabel = newLabel;
-        }
-
         StartTurn() {
 
             //things to do at start of turn
@@ -1276,33 +1265,51 @@ log(status)
             if (warp === true) {
                 currentSpeed = Math.round(currentSpeed/2);
             }
+            for (let i=0;i<currentSpeed;i++) {
+                ShipMove("Drifting");
+            }
+        }
+
+        ShipMove(use = "Normal") {
             let currentHeading =  Heading(Math.round(Angle(this.token.get("rotation"))/30));
             let currentCube = HexMap[this.hexLabel].cube;
-            for (let i=0;i<currentSpeed;i++) {
-                let d;
-                if (currentHeading % 2 === 0) {
-                    d = currentHeading/2;
+            let d;
+            if (currentHeading % 2 === 0) {
+                d = currentHeading/2;
+            } else {
+                if (flipFlop === true) {
+                    d = Heading(currentHeading + 1) / 2;
                 } else {
-                    if (flipFlop === true) {
-                        d = Heading(currentHeading + 1) / 2;
-                    } else {
-                        d = Heading(currentHeading - 1) / 2;
-                    }
-                    flipFlop = (flipFlop === true) ? false:true;
+                    d = Heading(currentHeading - 1) / 2;
                 }
-                let direction = DIRECTIONS[d];
-                currentCube = currentCube.neighbour(direction);
-                let newLabel = currentCube.label();
-                if (HexMap[newLabel]) {
-                    this.Move(newLabel);
-                } else {
+                flipFlop = (flipFlop === true) ? false:true;
+            }
+            let direction = DIRECTIONS[d];
+            currentCube = currentCube.neighbour(direction);
+            let newLabel = currentCube.label();
+            let index = HexMap[this.hexLabel].tokenIDs.indexOf(this.id);
+            if (index > -1) {
+                HexMap[this.hexLabel].tokenIDs.splice(index,1);
+            }
+            HexMap[newLabel].tokenIDs.push(newLabel);
+            this.token.set({
+                left: HexMap[newLabel].centre.x,
+                top: HexMap[newLabel].centre.y,
+            })
+            this.hexLabel = newLabel;
+            if (this.Offmap()) {
+                if (use === "Drifting") {
                     outputCard.body.push("The Ship Drifts out of the area...");
                     this.token.remove();
                     delete ShipArray[this.id];
                     break;
+                } else {
+                    outputCard.body.push("The Ship has Moved Offmap");
+                    break;
                 }
             }
         }
+
 
 
 
