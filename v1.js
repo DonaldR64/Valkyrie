@@ -2289,6 +2289,10 @@ log(fc)
 
                     showplayers_bar1: true,
                     showplayers_bar2: true,
+
+                    compact_bar: "compact",
+                    bar_location: "below",
+
                     aura1_color: shieldColour,
                     aura1_radius: 0.25,
                     showplayers_aura1: true,
@@ -2838,17 +2842,6 @@ log(weapon)
             let facing = weapon.facing; //will be an array of facing #s
             let inArc = facing.some(item => shooterArcs.includes(item));
             let status = Attribute(shooter.charID,"weapon" + (weapon.pos + 1) + "status");
-            if (Projectiles.includes(weaponType)) {
-                if (magazine === 0) {
-                    conditions.push("No Ammo");
-                    continue;
-                }
-                if (magazine < 3 && mode.includes("Spread")) {
-                    conditions.push("Low Ammo");
-                    continue;
-                }
-            }
-
             if (inArc === false) {
                 conditions.push("Arc");
                 continue;
@@ -2883,12 +2876,6 @@ log(weapon)
             }
             if (conditions.includes("Fired")) {
                 errorMsg.push("One or More Weapons have Already Fired");
-            }
-            if (conditions.includes("No Ammo")) {
-                errorMsg.push("Out of Ammunition");
-            }
-            if (conditions.includes("Low Ammo")) {
-                errorMsg.push("Low in Ammunition for a Spread");
             }
             if (conditions.includes("Offline")) {
                 errorMsg.push("One or More Weapons are Offline");
@@ -2980,10 +2967,6 @@ log(weapon)
                 hitTip = '['+ miss + ' ](#" class="showtip" title="' + hitTip + ')';                
                 outputCard.body.push("The " + weaponName + s + hitTip);
             }
-
-            let ammo = (mode.includes("Spread")) ? 3:1;
-            magazine -= ammo;
-            AttributeSet(shooter.charID,"torpedo",magazine);
 
             fxObj = findObjs({type: "custfx", name: "Photon"})[0];
             sound = (mode.includes("Spread")) ? "Spread": (weaponType.includes("Short")) ? "Short Range Photon":"Photon";
