@@ -1302,10 +1302,8 @@ log(status)
                     outputCard.body.push("The Ship Drifts out of the area...");
                     this.token.remove();
                     delete ShipArray[this.id];
-                    break;
                 } else {
                     outputCard.body.push("The Ship has Moved Offmap");
-                    break;
                 }
             }
         }
@@ -2341,11 +2339,12 @@ log(fc)
         let distance = targetHex.cube.distance(startHex.cube);
         SetupCard(ship.name,"Helm",ship.faction);
 
-        let thrust = this.maxThrust;
-        let startSpeed = parseInt(this.token.get("bar3_value"));
-        let turnRate = parseInt(this.turn);
-        let impulse1 = Attribute(this.charID,"impulse1") === "Offline" ? false:true;
-        let impulse2 = Attribute(this.charID,"impulse2") === "Offline" ? false:true;
+        let thrust = ship.maxThrust;
+        let startSpeed = parseInt(ship.token.get("bar3_value"));
+log("Start Speed: " + startSpeed)
+        let turnRate = parseInt(ship.turn);
+        let impulse1 = Attribute(ship.charID,"impulse1") === "Offline" ? false:true;
+        let impulse2 = Attribute(ship.charID,"impulse2") === "Offline" ? false:true;
         if (impulse1 === false || impulse2 === false) {
             thrust = Math.round(thrust/2); //one engine down
         }
@@ -2353,31 +2352,60 @@ log(fc)
             thrust = 0; //no engines
         }
         let cloaked = false;
-        if (this.token.get("tint_color") === "#000000") {
+        if (ship.token.get("tint_color") === "#000000") {
             cloaked = true;
         }
         if (cloaked) {
             thrust = Math.round(thrust/2); //cloaked
         }
         let turnPts = Math.round(thrust/turnRate); //max turn points based on thrust
-
+log("Thrust: " + thrust)
         let turnIntervals = Math.floor(startSpeed/turnPts);
-
+log("Turn Intervals: " + turnIntervals)
         let currentInterval = turnIntervals; //used to track how many hexes moved since last turn
         let turnPtsUsed = 0;
         let speedUsed = 0;
         let thrustUsed = 0;
         let maxD = Math.min(distance,startSpeed + thrust);
         let endSpeed = 0;
-
+log("Max D: " + maxD)
         for (let i=0;i< maxD;i++) {
-            let turnNeeded = Math.ceil(AngleDiff(Angle(ship.token.get("rotation")),HexMap[ship.hexLabel].cube.angle(targetHex.cube))/30); 
+            let angleDif = AngleDiff(Angle(ship.token.get("rotation")),HexMap[ship.hexLabel].cube.angle(targetHex.cube));
+            let turnNeeded = Math.floor(angleDif/30); 
             let currentDistance = HexMap[ship.hexLabel].cube.distance(targetHex.cube);
+log("I: " + i)
+log("Hex: " + ship.hexLabel);
+log("Angle Difference: " + angleDif)
+log("Turn Needed: " + turnNeeded)
+log("Current Distance: " + currentDistance)
+
+
             if (currentInterval >= turnIntervals && turnPtsUsed <= turnPts && turnNeeded > 0) {
                 turnPtsUsed++;
                 thrustUsed++;
                 currentInterval = 0;
-                //turn
+                let arcs = ship.Arcs(target);
+log("Arcs: " + arcs.toString());
+                let rotation = Angle(ship.token.get("rotation"));
+                if (arcs.includes(2) || arcs.includes(3)) {
+log("Turn to Starboard")
+                    ship.token.set("rotation", (rotation + 30));
+                } else if (arcs.includes(5) || arcs.includes(6)) {
+log("Turn to Port")
+                    ship.token.set("rotation", (rotation - 30));
+                } else if (arcs.includes(4)) {
+                    //directly behind, randomly pick
+                    let rnd = randomInteger(2);
+                    if (rnd === 1) {
+                        ship.token.set("rotation", (rotation + 30));
+                    } else {
+                        ship.token.set("rotation", (rotation - 30));
+                    }
+log("Is Astern")
+                } else {
+log("Arcs: " + arcs.toString())
+log("? why turning")
+                }
             }
             currentInterval++;
             if (currentDistance > 0) {
@@ -2391,19 +2419,27 @@ log(fc)
                         thrustUsed++;
                         endSpeed++;
                     }
+                    if (ship.Offmap()) {
+                        break;
+                    }
                 }
-            } else {break}
+            } else {
+                break;
+            }
         }
         //is there an overshoot ?
         let currentDistance = HexMap[ship.hexLabel].cube.distance(targetHex.cube);
         if (currentDistance === 0) {
-            let remainingSpeed = currentSpeed - speedUsed;
+            let remainingSpeed = startSpeed - speedUsed;
             let remainingThrust = thrust - thrustUsed;
             remainingSpeed -= remainingThrust;
             if (remainingSpeed > 0) {
                 endSpeed += remainingSpeed;
                 for (let i=0;i<remainingSpeed;i++) {
                     ship.ShipMove();
+                    if (ship.Offmap()) {
+                        break;
+                    }
                 }
                 outputCard.body.push("[Ship using Thrust to Slow Speed]")
             }
@@ -2412,8 +2448,8 @@ log(fc)
         outputCard.body.push("Speed: " + endSpeed);
         outputCard.body.push("Heading: " + Angle(ship.token.get("rotation")));
         PrintCard();
-
-    }
+        ship.token.set("bar3_value",endSpeed);
+    }   
 
 
     const AngleDiff = (angle1, angle2) => {
@@ -3120,6 +3156,33 @@ log(weapon)
         MapInfo.centre = new Point(x,y);
     }
 
+    const getRelativeSide = (target, ship) => {
+        // 1. Convert Object B's rotation from degrees to radians
+        const rad = objB.rotation * (Math.PI / 180);
+
+        // 2. Calculate Object B's forward vector (0 degrees is UP)
+        const fwdX = Math.sin(rad);
+        const fwdY = -Math.cos(rad); // Negative because screen Y goes down
+
+        // 3. Calculate direction vector from B to A
+        const dirX = objA.x - objB.x;
+        const dirY = objA.y - objB.y;
+
+        // 4. Calculate the 2D cross product
+        const crossProduct = (fwdX * dirY) - (fwdY * dirX);
+
+        // 5. Determine the side
+        if (crossProduct > 0) {
+            return "right";
+        } else if (crossProduct < 0) {
+            return "left";
+        } else {
+            return "perfectly aligned";
+        }
+    }
+
+
+
 
 
 
@@ -3637,6 +3700,9 @@ log(weapon)
                 break;
             case '!Warp':
                 Warp(msg);
+                break;
+            case '!Move':
+                Move(msg);
                 break;
 
         }
