@@ -5,12 +5,10 @@ const Move = (msg) => {
     let targetHex = HexMap[target.hexLabel];
     let startHex = HexMap[ship.hexLabel];
     let distance = targetHex.cube.distance(startHex.cube);
-
-    //Turning
-    let turnNeeded = Math.ceil(AngleDiff(Angle(ship.token.get("rotation")),startHex.cube.angle(targetHex.cube))/30); //number of 30deg turns needed at start
+    SetupCard(ship.name,"Helm",ship.faction);
 
     let thrust = this.maxThrust;
-    let currentSpeed = parseInt(this.token.get("bar3_value"));
+    let startSpeed = parseInt(this.token.get("bar3_value"));
     let turnRate = parseInt(this.turn);
     let impulse1 = Attribute(this.charID,"impulse1") === "Offline" ? false:true;
     let impulse2 = Attribute(this.charID,"impulse2") === "Offline" ? false:true;
@@ -28,33 +26,58 @@ const Move = (msg) => {
         thrust = Math.round(thrust/2); //cloaked
     }
     let turnPts = Math.round(thrust/turnRate); //max turn points based on thrust
-    turnPts = Math.min(turnPts,turnNeeded);
 
-    thrust = Math.max(0,thrust - turnPts);
-    let newSpeed; 
-    if (distance >= currentSpeed) {
-        newSpeed = currentSpeed + Math.min(distance - currentSpeed,thrust); 
-    } else {
-        newSpeed = currentSpeed - Math.min(currentSpeed - distance,thrust);
-    }
-    let turnIntervals = Math.floor(newSpeed/turnPts);
-    let currentInterval = turnIntervals;
+    let turnIntervals = Math.floor(startSpeed/turnPts);
+
+    let currentInterval = turnIntervals; //used to track how many hexes moved since last turn
     let turnPtsUsed = 0;
+    let speedUsed = 0;
+    let thrustUsed = 0;
+    let maxD = Math.min(distance,startSpeed + thrust);
+    let endSpeed = 0;
 
-    for (let i=0;i<newSpeed;i++) {
-        if (currentInterval >= turnIntervals && turnPtsUsed <= turnPts) {
-            let turnNeeded = Math.ceil(AngleDiff(Angle(ship.token.get("rotation")),HexMap[ship.hexLabel].cube.angle(targetHex.cube))/30); 
-            if (turnNeeded > 0) {
-                turnPtsUsed++;
-                currentInterval = 0;
-
-            }
+    for (let i=0;i< maxD;i++) {
+        let turnNeeded = Math.ceil(AngleDiff(Angle(ship.token.get("rotation")),HexMap[ship.hexLabel].cube.angle(targetHex.cube))/30); 
+        let currentDistance = HexMap[ship.hexLabel].cube.distance(targetHex.cube);
+        if (currentInterval >= turnIntervals && turnPtsUsed <= turnPts && turnNeeded > 0) {
+            turnPtsUsed++;
+            thrustUsed++;
+            currentInterval = 0;
+            //turn
         }
         currentInterval++;
-        this.ShipMove();
+        if (currentDistance > 0) {
+            //is there speed or thrust left
+            if (speedUsed + thrustUsed < startSpeed + thrust) {
+                ship.ShipMove();
+                if (speedUsed < startSpeed) {
+                    speedUsed++;
+                    endSpeed++;
+                } else {
+                    thrustUsed++;
+                    endSpeed++;
+                }
+            }
+        } else {break}
+    }
+    //is there an overshoot ?
+    let currentDistance = HexMap[ship.hexLabel].cube.distance(targetHex.cube);
+    if (currentDistance === 0) {
+        let remainingSpeed = currentSpeed - speedUsed;
+        let remainingThrust = thrust - thrustUsed;
+        remainingSpeed -= remainingThrust;
+        if (remainingSpeed > 0) {
+            endSpeed += remainingSpeed;
+            for (let i=0;i<remainingSpeed;i++) {
+                ship.ShipMove();
+            }
+            outputCard.body.push("[Ship using Thrust to Slow Speed]")
+        }
     }
 
-    //blurb
+    outputCard.body.push("Speed: " + endSpeed);
+    outputCard.body.push("Heading: " + Angle(ship.token.get("rotation")));
+    PrintCard();
 
 }
 
