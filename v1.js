@@ -113,6 +113,7 @@ const Main = (() => {
             "fontColour": "#ffffff",
             "borderColour": "#000000",
             "borderStyle": "5px ridge",
+            "logo": "https://files.d20.io/images/494961715/XBNJxsAasyGU_WX5Ub4XyQ/thumb.png?1784771002",
         },
         "Federation": {
             "image": "",
@@ -123,6 +124,7 @@ const Main = (() => {
             "fontColour": "#ffffff",
             "borderColour": "#0000CD",
             "borderStyle": "5px ridge",  
+            "logo": "https://files.d20.io/images/498184636/xPwctq1zJWUUvFPfxQQtFw/thumb.png?1787249460",
         },
     };
 
