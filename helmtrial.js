@@ -11,7 +11,6 @@ const Move = (msg) => {
     let theta = startHex.cube.angle(targetHex.cube); //angle to target hex in degrees
     let currentRotation =  Angle(ship.token.get("rotation"));
 
-
     let thrust = this.maxThrust;
     let currentSpeed = parseInt(this.token.get("bar3_value"));
     let turnRate = parseInt(this.turn);
@@ -30,12 +29,27 @@ const Move = (msg) => {
     if (cloaked) {
         thrust = Math.round(thrust/2); //cloaked
     }
-    let turnPts = Math.round(thrust/turnRate);
+    let turnPts = Math.round(thrust/turnRate); //max turn points based on thrust
+
+    //get difference in degrees
+    let diff = theta - currentRotation;
+    diff = diff % 360;
+    if (diff > 180) diff -= 360;
+    if (diff <= -180) diff += 360;
+    diff = Math.abs(diff);
+    let numberOfTurnPoints = Math.ceil(diff/30); //number of 30deg turn points needed to rotate towards target hex
+    let turnPoints = Math.min(turnPts,numberOfTurnPoints); //number of turn points, either max available or what is needed
+    
+    let availableThrust = thrust - turnPoints;
+    let thrustUsed = 0;
+    thrustUsed = Math.min(Math.abs(distance - currentSpeed),availableThrust);
+
+    //move 1 hex per thrustUsed, turning 1 each  Math.floor(thrustUsed/turnPoints) with first turn at start
+    //so if 3 turnPoints, and moving 10 hexes, is turn, move 3, turn, move 3, turn, move 4
 
 
-
-
-
+// too much speed, overshoot ?
+//left over speed, continue ?
 
 
 
