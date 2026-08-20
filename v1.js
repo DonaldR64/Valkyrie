@@ -2374,77 +2374,82 @@ log(fc)
         waypoint.PlaceAnotherWaypoint();
     }
 
+const Move = (msg) => {
+    let id = msg.selected[0]._id;
+    let lastWaypoint = ShipArray[id];
+    let ship = ShipArray[lastWaypoint.referenceShipID];
+    SetupCard(ship.name,"Helm",ship.faction);
 
+    let waypoints = ship.waypoints; //ids
 
-
-    const Move = (msg) => {
-        let id = msg.selected[0]._id;
-        let lastWaypoint = ShipArray[id];
-        let ship = ShipArray[lastWaypoint.referenceShipID];
-
-        let waypoints = ship.waypoints;
-
-log(waypoints)
-return;
-
-        let targetHex = HexMap[target.hexLabel];
-        let startHex = HexMap[ship.hexLabel];
-        let distance = targetHex.cube.distance(startHex.cube);
-        SetupCard(ship.name,"Helm",ship.faction);
-
-        let thrust = ship.maxThrust;
-        let startSpeed = parseInt(ship.token.get("bar3_value"));
+    let currentHex = HexMap[ship.hexLabel];
+log("Start Hex: " + ship.hexLabel)
+    let thrust = ship.maxThrust;
+    let startSpeed = parseInt(ship.token.get("bar3_value"));
 log("Start Speed: " + startSpeed)
-        let turnRate = parseInt(ship.turn);
-        let impulse1 = Attribute(ship.charID,"impulse1") === "Offline" ? false:true;
-        let impulse2 = Attribute(ship.charID,"impulse2") === "Offline" ? false:true;
-        if (impulse1 === false || impulse2 === false) {
-            thrust = Math.round(thrust/2); //one engine down
-        }
-        if (impulse1 === false && impulse2 === false) {
-            thrust = 0; //no engines
-        }
-        let cloaked = false;
-        if (ship.token.get("tint_color") === "#000000") {
-            cloaked = true;
-        }
-        if (cloaked) {
-            thrust = Math.round(thrust/2); //cloaked
-        }
-        let turnPts = Math.round(thrust/turnRate); //max turn points based on thrust
+    let turnRate = parseInt(ship.turn);
+    let impulse1 = Attribute(ship.charID,"impulse1") === "Offline" ? false:true;
+    let impulse2 = Attribute(ship.charID,"impulse2") === "Offline" ? false:true;
+    if (impulse1 === false || impulse2 === false) {
+        thrust = Math.round(thrust/2); //one engine down
+    }
+    if (impulse1 === false && impulse2 === false) {
+        thrust = 0; //no engines
+    }
+    let cloaked = false;
+    if (ship.token.get("tint_color") === "#000000") {
+        cloaked = true;
+    }
+    if (cloaked) {
+        thrust = Math.round(thrust/2); //cloaked
+    }
+    let turnPts = Math.round(thrust/turnRate); //max turn points based on thrust
 log("Thrust: " + thrust)
-        let turnIntervals = Math.floor(startSpeed/turnPts);
+    let turnIntervals = Math.floor(startSpeed/turnPts);
 log("Turn Intervals: " + turnIntervals)
-        let currentInterval = turnIntervals; //used to track how many hexes moved since last turn
-        let turnPtsUsed = 0;
-        let speedUsed = 0;
-        let thrustUsed = 0;
-        let maxD = Math.min(distance,startSpeed + thrust);
-        let endSpeed = 0;
-log("Max D: " + maxD)
-        for (let i=0;i< maxD;i++) {
+    let currentInterval = turnIntervals; //used to track how many hexes moved since last turn
+    let turnPtsUsed = 0;
+    let speedUsed = 0;
+    let thrustUsed = 0;
+    let endSpeed = 0;
+    let totalAvail = startSpeed + thrust;
+
+log("Total Avail: " + totalAvail)
+
+
+    for (let i=0;i<waypoints.length;i++) {
+        let waypoint = ShipArray[waypoints[i]];
+        let targetHex = HexMap[waypoint.hexLabel];
+        let waypointDistance = HexMap[ship.hexLabel].cube.distance(targetHex.cube);
+        if (thrustUsed + speedUsed === totalAvail) {break};
+log("Waypoint #: " + (i+1))
+log("Target Hex: " + targetHex.label)
+log("DIstance: " + waypointDistance)
+        if (waypointDistance === 0) {continue};
+
+        for (let i=0;i<waypointDistance;i++) {
             let angleDif = AngleDiff(Angle(ship.token.get("rotation")),HexMap[ship.hexLabel].cube.angle(targetHex.cube));
             let turnNeeded = Math.floor(angleDif/30); 
             let currentDistance = HexMap[ship.hexLabel].cube.distance(targetHex.cube);
-log("I: " + i)
+
+            if (currentDistance === 0) {break};
+            if (thrustUsed + speedUsed === totalAvail) {break};
 log("Hex: " + ship.hexLabel);
 log("Angle Difference: " + angleDif)
 log("Turn Needed: " + turnNeeded)
 log("Current Distance: " + currentDistance)
 
-
-            if (currentInterval >= turnIntervals && turnPtsUsed <= turnPts && turnNeeded > 0) {
+            //Turn allowed and needed?
+            if (currentInterval >= turnIntervals && turnPtsUsed < turnPts && turnNeeded > 0) {
+log("Turn executed")
                 turnPtsUsed++;
                 thrustUsed++;
                 currentInterval = 0;
-                let arcs = ship.Arcs(target);
-log("Arcs: " + arcs.toString());
+                let arcs = ship.Arcs(waypoint);
                 let rotation = Angle(ship.token.get("rotation"));
                 if (arcs.includes(2) || arcs.includes(3)) {
-log("Turn to Starboard")
                     ship.token.set("rotation", (rotation + 30));
                 } else if (arcs.includes(5) || arcs.includes(6)) {
-log("Turn to Port")
                     ship.token.set("rotation", (rotation - 30));
                 } else if (arcs.includes(4)) {
                     //directly behind, randomly pick
@@ -2454,16 +2459,16 @@ log("Turn to Port")
                     } else {
                         ship.token.set("rotation", (rotation - 30));
                     }
-log("Is Astern")
                 } else {
-log("Arcs: " + arcs.toString())
-log("? why turning")
+                    log("? why turning")
                 }
             }
-            currentInterval++;
+            //move needed?
             if (currentDistance > 0) {
                 //is there speed or thrust left
-                if (speedUsed + thrustUsed < startSpeed + thrust) {
+                if ((speedUsed + thrustUsed) < (startSpeed + thrust)) {
+                    currentInterval++;
+log("Move executed")
                     ship.ShipMove();
                     if (speedUsed < startSpeed) {
                         speedUsed++;
@@ -2472,37 +2477,37 @@ log("? why turning")
                         thrustUsed++;
                         endSpeed++;
                     }
-                    if (ship.Offmap()) {
-                        break;
-                    }
                 }
-            } else {
+            }
+        } 
+    }
+    //is there an overshoot ?
+    let remainingSpeed = startSpeed - speedUsed;
+    let remainingThrust = thrust - thrustUsed;
+    remainingSpeed -= remainingThrust;
+
+    if (remainingSpeed > 0) {
+        endSpeed += remainingSpeed;
+        for (let i=0;i<remainingSpeed;i++) {
+            ship.ShipMove();
+            if (ship.Offmap()) {
                 break;
             }
         }
-        //is there an overshoot ?
-        let currentDistance = HexMap[ship.hexLabel].cube.distance(targetHex.cube);
-        if (currentDistance === 0) {
-            let remainingSpeed = startSpeed - speedUsed;
-            let remainingThrust = thrust - thrustUsed;
-            remainingSpeed -= remainingThrust;
-            if (remainingSpeed > 0) {
-                endSpeed += remainingSpeed;
-                for (let i=0;i<remainingSpeed;i++) {
-                    ship.ShipMove();
-                    if (ship.Offmap()) {
-                        break;
-                    }
-                }
-                outputCard.body.push("[Ship using Thrust to Slow Speed]")
-            }
-        }
+        outputCard.body.push("[Ship using Thrust to Slow Speed]")
+    }
 
-        outputCard.body.push("Speed: " + endSpeed);
-        outputCard.body.push("Heading: " + Angle(ship.token.get("rotation")));
-        PrintCard();
-        ship.token.set("bar3_value",endSpeed);
-    }   
+    log("Remaining Speed: " + remainingSpeed)
+    log("Remaining Thrust: " + remainingThrust)
+    //RemoveWaypoints();
+    ship.token.set("bar3_value",endSpeed);
+//blurbs
+    outputCard.body.push("Speed: " + endSpeed);
+    outputCard.body.push("Heading: " + ship.token.get("rotation"));    
+    PrintCard();
+
+
+}
 
 
     const AngleDiff = (angle1, angle2) => {
@@ -3300,28 +3305,27 @@ log(weapon)
         }
     }
 
+    const RemoveWaypoints = () => {
+        tokens = findObjs({
+            _pageid: Campaign().get("playerpageid"),
+            _type: "graphic",
+            _subtype: "token",
+        });
+        _.each(tokens,token => {
+            if (token.get("name").includes("Marker")) {
+                token.remove();
+            }
+        })
+    }
+
+
+
     const ClearState = (msg) => {
         let Tag = msg.content.split(";");
-        let tokens;
         LoadPage();
-        //RemoveLines(["Deploy","LOS"]);
+        RemoveWaypoints();
+
         //RemoveDead();
-        if (Tag[1] && Tag[1] === "All") {
-            tokens = findObjs({
-                _pageid: Campaign().get("playerpageid"),
-                _type: "graphic",
-                _subtype: "token",
-                layer: "objects",
-            });
-            _.each(tokens,token => token.remove());
-            tokens = findObjs({
-                _pageid: Campaign().get("playerpageid"),
-                _type: "graphic",
-                _subtype: "token",
-                layer: "foreground",
-            });
-            _.each(tokens,token => token.remove());
-        }
 
         BuildMap();
 
