@@ -113,7 +113,7 @@ const Main = (() => {
             "fontColour": "#ffffff",
             "borderColour": "#000000",
             "borderStyle": "5px ridge",
-            "logo": "https://files.d20.io/images/494961715/XBNJxsAasyGU_WX5Ub4XyQ/thumb.png?1784771002",
+            "move": "-P-VUwa8PDhJ5AN73Opl",
         },
         "Federation": {
             "image": "",
@@ -124,7 +124,7 @@ const Main = (() => {
             "fontColour": "#ffffff",
             "borderColour": "#0000CD",
             "borderStyle": "5px ridge",  
-            "logo": "https://files.d20.io/images/498184636/xPwctq1zJWUUvFPfxQQtFw/thumb.png?1787249460",
+            "move": "-P-VU_5PmM4AccDR0ODm",
         },
     };
 
@@ -646,6 +646,9 @@ const Main = (() => {
             this.advFC = (aa.advancedfirecontrol === "1") ? true:false;
 
             this.hullMax = parseInt(aa.hull_max) || 0;
+
+            this.waypoints = [];
+
 
             let weaponArray = [];
             let weaponList = [];
@@ -1259,6 +1262,9 @@ log(status)
             if (this.token.get(SM.ooc)) {
                 outputCard.body.push("The Ship is currently Out of Command and Drifts");
                 this.Drifts();
+            } else {
+                outputCard.body.push("Place Waypoint(s) and Engage");
+                this.CreateMoveTarget();
             }
         }
 
@@ -1273,22 +1279,7 @@ log(status)
         }
 
         ShipMove(use = "Normal") {
-            let currentHeading =  Heading(Math.round(Angle(this.token.get("rotation"))/30));
-            let currentCube = HexMap[this.hexLabel].cube;
-            let d;
-            if (currentHeading % 2 === 0) {
-                d = currentHeading/2;
-            } else {
-                if (flipFlop === true) {
-                    d = Heading(currentHeading + 1) / 2;
-                } else {
-                    d = Heading(currentHeading - 1) / 2;
-                }
-                flipFlop = (flipFlop === true) ? false:true;
-            }
-            let direction = DIRECTIONS[d];
-            currentCube = currentCube.neighbour(direction);
-            let newLabel = currentCube.label();
+            let newLabel = this.ForwardHex();
             let index = HexMap[this.hexLabel].tokenIDs.indexOf(this.id);
             if (index > -1) {
                 HexMap[this.hexLabel].tokenIDs.splice(index,1);
@@ -1310,7 +1301,47 @@ log(status)
             }
         }
 
+        CreateMoveTarget() {
+            let label = this.ForwardHex();
+            let point = HexMap[label].centre;
+            let waypointToken = summonToken(Factions[this.faction].move,point.x,point.y,70,0,"objects",true);
+            let waypoint = new Ship(waypointToken.get("id"));
+            waypoint.referenceShipID = this.id;
+            this.waypoints.push(waypoint.id);
+        }
 
+        PlaceAnotherWaypoint() {
+            //place another waypoint on top, move original to map layer
+            //reference original in the waypoints referenceShipID
+            //add each waypoints ID to the original ships .waypoints array
+            this.token.set("layer","map");
+            let waypointToken = summonToken(Factions[this.faction].move,this.token.get("left"),this.token.get("top"),70,0,"objects",true);
+            let waypoint = new Ship(waypointToken.get("id"));
+            waypoint.referenceShipID = this.referenceShipID;
+            ShipArray[this.referenceShipID].waypoints.push(waypoint.id);
+        }
+
+
+
+
+        ForwardHex() {
+            let currentHeading =  Heading(Math.round(Angle(this.token.get("rotation"))/30));
+            let currentCube = HexMap[this.hexLabel].cube;
+            let d;
+            if (currentHeading % 2 === 0) {
+                d = currentHeading/2;
+            } else {
+                if (flipFlop === true) {
+                    d = Heading(currentHeading + 1) / 2;
+                } else {
+                    d = Heading(currentHeading - 1) / 2;
+                }
+                flipFlop = (flipFlop === true) ? false:true;
+            }
+            let direction = DIRECTIONS[d];
+            currentCube = currentCube.neighbour(direction);
+            return currentCube.label();
+        }
 
 
         Repairs() {
@@ -1574,7 +1605,7 @@ log(status)
 
 
 
-    summonToken = function(cID,left,top,size = 70,rotation = 0,layer = "map") {
+    summonToken = function(cID,left,top,size = 70,rotation = 0,layer = "map",uniform = false) {
         let character = getObj("character", cID);
         if (!character) {
             sendChat("","No Character")
@@ -1585,6 +1616,8 @@ log(character)
         character.get('defaulttoken',function(defaulttoken){
             const dt = JSON.parse(defaulttoken);
 log(dt)
+            let h = size;
+            let w = (uniform === false) ? size * 1.186:size;
             let img = dt.imgsrc || "";
             img = tokenImage(img);
             if(dt && img){
@@ -1594,8 +1627,8 @@ log(dt)
                 dt.rotation = rotation;
                 dt.pageid = pageInfo.page.get('id');
                 dt.layer = layer;
-                dt.width = size * 1.186;
-                dt.height = size;
+                dt.width = w;
+                dt.height = h;
                 newToken = createObj("graphic", dt);
             } else {
                 sendChat('','/w gm Cannot create token for <b>'+character.get('name')+'</b>');
@@ -2335,11 +2368,25 @@ log(fc)
 
     }
 
+    const PlaceWaypoint = (msg) => {
+        let id = msg.selected[0]._id;
+        let waypoint = ShipArray[id];
+        waypoint.PlaceAnotherWaypoint();
+    }
+
+
+
 
     const Move = (msg) => {
-        let Tag = msg.content.split(';');
-        let ship = ShipArray[Tag[1]];
-        let target = ShipArray[Tag[2]]; //need to remember to add to array when create the target and delete when done
+        let id = msg.selected[0]._id;
+        let lastWaypoint = ShipArray[id];
+        let ship = ShipArray[lastWaypoint.referenceShipID];
+
+        let waypoints = ship.waypoints;
+
+log(waypoints)
+return;
+
         let targetHex = HexMap[target.hexLabel];
         let startHex = HexMap[ship.hexLabel];
         let distance = targetHex.cube.distance(startHex.cube);
@@ -3664,6 +3711,9 @@ log(weapon)
                 break;
             case '!Move':
                 Move(msg);
+                break;
+            case '!PlaceWaypoint':
+                PlaceWaypoint(msg);
                 break;
 
         }
