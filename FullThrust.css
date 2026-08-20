@@ -1380,36 +1380,6 @@ input[type="hidden"][value="None"].cloak-status ~ .cloakstatus {
     display: none;
 }
 
-.torpedostatus {
-    grid-gap: 1px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    text-align: center;
-    align-items: center;
-    padding: 3px;   
-}
-input[type="hidden"][value="Red"].torpedo-status ~ .torpedostatus {
-    background-color: red;
-    display: grid;
-}
-input[type="hidden"][value="Yellow"].torpedo-status ~ .torpedostatus {   
-    background-color:  yellow;
-    display: grid;
-}
-input[type="hidden"][value="Yellow"].torpedo-status ~ .torpedostatus h4{   
-    color:  black;
-}
-input[type="hidden"][value="Green"].torpedo-status ~ .torpedostatus {
-    display: grid;
-    background-color: green;
-}
-input[type="hidden"][value="None"].torpedo-status ~ .torpedostatus {
-    display: none;
-}
-
-
-
-
 
 
 

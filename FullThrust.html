@@ -59,7 +59,6 @@
                 <option value="2">2</option>
             </select>
             <label>Cloaking Device:</label><input type="checkbox" name="attr_cloak_max" value="1">   
-            <label>Torpedo Magazine:</label><input type="number" name="attr_torpedo_max">  
         </div>  
 
         <div class="col">
@@ -638,10 +637,6 @@
             <div class="firecontrolstatus">
                 <h4><span name="attr_fcdisplay"></span></h4>
             </div>
-            <input type="hidden" name="attr_torpedostatus" class="torpedo-status" value="Green">
-            <div class="torpedostatus">
-                <h4>Torpedo Magazine: <span name="attr_torpedo"></span></h4>
-            </div>
             <input type="hidden" name="attr_crewstatus" class="crew-status" value="Green">
             <div class="crewstatus">
                 <h4>Crew Level: <span name="attr_crew"></span></h4>
@@ -897,18 +892,6 @@
                 damagedsystems.push(sys);
             }
 
-            let torpedos = parseInt(values.torpedo);
-            let torpedoMax = parseInt(values.torpedo_max);
-            let torpedoStatus = "Green";
-            if (torpedoMax > 0) {
-                let ratio = Math.round(torpedos/torpedoMax) * 100;
-                if (ratio < 25) {torpedoStatus = "Red"};
-                if (ratio < 50) {torpedoStatus = "Yellow"};
-            } else if (torpedoMax === 0) {
-                torpedoStatus = "None";
-            }
-
-
             let thrusters = parseInt(values.thrusters_max);
             let impulse1 = values.impulse1;
             let impulse2 = values.impulse2;
@@ -994,7 +977,6 @@ console.log(turn)
                 screendisplay: screendisplay,
                 fcimg: fcimg,
                 armourstatus: armourStatus,
-                torpedostatus: torpedoStatus,
             });
         });
     });
